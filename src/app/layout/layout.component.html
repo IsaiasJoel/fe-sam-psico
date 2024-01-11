@@ -1,0 +1,80 @@
+<div class="example-container" [class.example-is-mobile]="mobileQuery.matches">
+    <!-- Header -->
+    <mat-toolbar class="example-toolbar z-50">
+        <!-- Toggle sidebar -->
+        <div class="rounded-full p-2 flex items-center justify-center hover:bg-slate-300 hover:bg-opacity-50 hover:cursor-pointer"
+            (click)="snav.toggle()">
+            <mat-icon class="text-white">menu</mat-icon>
+        </div>
+
+        <!-- Titulo header -->
+        <div class="text-lg text-white font-medium w-full text-center">SAM - NicMaish</div>
+
+        <!-- border p-4 -->
+        <button mat-button [matMenuTriggerFor]="menu">
+            <mat-icon svgIcon="menu-down" class="icon-size-md text-slate-700"></mat-icon>
+        </button>
+        <mat-menu #menu="matMenu">
+            <button mat-menu-item [routerLink]="'./cambiar-contrasenia'">
+                <div class="flex items-center gap-2">
+                    <mat-icon svgIcon="restore"></mat-icon>
+                    <div class="text-sm">Cambiar contraseña</div>
+                </div>
+            </button>
+            <button mat-menu-item (click)="cerrarSesion()">
+                <div class="flex items-center gap-2">
+                    <mat-icon svgIcon="logout"></mat-icon>
+                    <div class="text-sm">Cerrar sesión </div>
+                </div>
+            </button>
+        </mat-menu>
+    </mat-toolbar>
+
+    <!-- Sidebar -->
+    <mat-sidenav-container class="example-sidenav-container z-50" [style.marginTop.px]="mobileQuery.matches ? 56 : 0">
+        <mat-sidenav #snav [mode]="mobileQuery.matches ? 'over' : 'side'" [fixedInViewport]="mobileQuery.matches"
+            fixedTopGap="56" [opened]="mobileQuery.matches ? 'false' : 'true'">
+
+            <!-- Content header -->
+            <div class="flex flex-col items-center justify-center px-10 pt-4">
+                <img src="../../assets/images/avatar.webp" class="w-24 h-24 rounded-full mb-2">
+                <div class="flex flex-col items-center justify-center">
+                    <div class="font-medium">{{nombresUsuario}}</div>
+                    <div class="font-thin text-xs">{{generarCadenaRoles()}}</div>
+                </div>
+            </div>
+
+            <hr class="m-4">
+
+            <mat-nav-list>
+                <ng-container *ngFor="let item of navigation">
+
+                    <!-- Skip the hidden items -->
+                    <!-- (item.hidden && !item.hidden(item)) ||  -->
+                    <ng-container *ngIf="!item.hidden">
+
+                        <!-- Basic -->
+                        <ng-container *ngIf="item.type === 'basico'">
+                            <basic-navigation [item]="item"></basic-navigation>
+                        </ng-container>
+
+                        <!-- Collapsable -->
+                        <ng-container *ngIf="item.type === 'colapsable'">
+                            <collapsable-navigation [item]="item"></collapsable-navigation>
+                        </ng-container>
+                    </ng-container>
+                </ng-container>
+            </mat-nav-list>
+        </mat-sidenav>
+
+        <!-- Contenido principal -->
+        <mat-sidenav-content class="bg-gray-100">
+            <router-outlet></router-outlet>
+        </mat-sidenav-content>
+    </mat-sidenav-container>
+
+    <!-- Footer -->
+    <!-- <div class="w-full flex p-4 border-y-slate-300 shadow-top sticky bottom-0 z-50">
+        <div class="text-color-primario font-bold">SATCH</div>&nbsp;© Todos los derechos reservados
+    </div> -->
+</div>

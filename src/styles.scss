@@ -1,0 +1,116 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Paleta de colores de NIC */
+:root {
+    --color-negro: #000;
+    --color-turquesa: #00AA87;
+    --color-azul: #2289E4;
+    --color-celeste: #54DCFF;
+    --color-rojo: #FF0065;
+    --color-amarillo: #FFCB00;
+    --color-gris: #999999;
+}
+
+.bg-negro {
+    background-color: var(--color-negro);
+}
+
+.bg-turquesa {
+    background-color: var(--color-turquesa) !important;
+}
+
+.bg-azul {
+    background-color: var(--color-azul) !important;
+}
+
+.bg-celeste {
+    background-color: var(--color-celeste);
+}
+
+.bg-rojo {
+    background-color: var(--color-rojo);
+}
+
+.bg-amarillo {
+    background-color: var(--color-amarillo) !important;
+}
+
+.bg-gris {
+    background-color: var(--color-gris) !important;
+}
+
+mat-icon {
+    opacity: 0.5;
+    margin: 0 !important;
+}
+
+
+.icon-size-xs {
+    transform: scale(0.3);
+}
+
+.icon-size-sm {
+    transform: scale(0.8);
+}
+
+.icon-size-md {
+    transform: scale(1.5);
+}
+
+.icon-size-xl {
+    transform: scale(6);
+}
+
+.icon-turquesa {
+    color: var(--color-turquesa);
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+/* Sobreescribir estilos de inputs */
+
+.mdc-text-field--filled:not(.mdc-text-field--disabled) {
+    background-color: white !important;
+}
+
+// Sobreescritura de estilo de angular material
+
+input,
+textarea {
+    /* background-color: #00AA87 !important; */
+    border: var(--color-gris) solid 1px !important;
+    width: 100% !important;
+    height: 2.5em !important;
+    border-radius: 5px !important;
+    padding: 0px 6px;
+
+    &:focus {
+        outline: none;
+        border: var(--color-azul) solid 2px !important;
+    }
+}
+
+select {
+    // background-color: #999999;
+    border: var(--color-gris) solid 1px !important;
+    height: 2.5em !important;
+    border-radius: 5px !important;
+
+    &:focus {
+        outline: none;
+        border: var(--color-azul) solid 2px !important;
+    }
+
+    &:hover {
+        cursor: pointer;
+    }
+}
+
+label {
+    opacity: 0.7;
+}

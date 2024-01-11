@@ -1,0 +1,54 @@
+<!-- Contenedor -->
+<div class="flex flex-col justify-center items-center h-full w-full">
+    <!-- Principal -->
+    <div class="border rounded-lg p-8 shadow-xl bg-white">
+        <div class="flex basis-2/3 justify-center items-center">
+            <!-- Sign in form -->
+            <form class="flex flex-col gap-4" [formGroup]="signInForm" (submit)="procesarSolicitud()"
+                #signInNgForm="ngForm">
+                <div class="font-serif opacity-60">
+                    <div class="font-medium text-sm text-center">Sistema de Apoyo Médico</div>
+                    <div class="font-bold text-4xl text-center">SAM</div>
+                </div>
+
+                <div class="flex flex-col">
+                    <!-- username -->
+                    <mat-form-field>
+                        <mat-label>Usuario</mat-label>
+                        <input matInput type="text" formControlName="usuario">
+                        <mat-error *ngIf="signInForm.get('usuario').hasError('required')">
+                            Correo es requerido
+                        </mat-error>
+                        <!-- <mat-error *ngIf="signInForm.get('usuario').hasError('usuario')">
+              Por favor, ingrese un correo electrónico válido
+            </mat-error> -->
+                    </mat-form-field>
+
+                    <!-- Contrasenia -->
+                    <mat-form-field>
+                        <mat-label>Contraseña</mat-label>
+                        <input matInput type="password" formControlName="contrasenia" #passwordField />
+                        <button mat-icon-button type="button"
+                            (click)="passwordField.type === 'password'? (passwordField.type = 'text'): (passwordField.type = 'password')"
+                            matSuffix>
+                            <mat-icon class="icon-size-5" *ngIf="passwordField.type === 'password'"
+                                [svgIcon]="'eye'"></mat-icon>
+                            <mat-icon class="icon-size-5" *ngIf="passwordField.type === 'text'"
+                                [svgIcon]="'eye-off'"></mat-icon>
+                        </button>
+                        <mat-error> Contraseña es obligatoria </mat-error>
+                    </mat-form-field>
+                </div>
+                <mat-error *ngIf="mensajeError">{{mensajeError}}</mat-error>
+
+                <!-- Submit button -->
+                <button class="flex items-center justify-center w-full bg-azul py-4 rounded-md hover:shadow-md"
+                    type="submit">
+                    <span *ngIf="!signInForm.disabled" class="text-white font-medium"> Entrar </span>
+                    <mat-progress-spinner *ngIf="signInForm.disabled" [diameter]="24" class="mat-progress-spinner"
+                        [mode]="'indeterminate'"></mat-progress-spinner>
+                </button>
+            </form>
+        </div>
+    </div>
+</div>

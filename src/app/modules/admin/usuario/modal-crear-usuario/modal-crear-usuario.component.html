@@ -1,0 +1,115 @@
+<div class="w-full h-full p-8">
+    <!-- Cabecera -->
+    <div class="flex items-center justify-between">
+        <div class="font-medium text-4xl">Crear usuario</div>
+        <mat-icon svgIcon="close" class="hover:cursor-pointer" matTooltip="Cerrar" (click)="matRef.close()"></mat-icon>
+    </div>
+
+    <hr class="my-4">
+
+    <!-- Cuerpo -->
+    <form [formGroup]="form">
+        <div class="w-full grid grid-cols-4 gap-2">
+            <!-- Correo -->
+            <div>
+                <label>Correo</label>
+                <input type="text" formControlName="correo">
+                <mat-error></mat-error>
+            </div>
+
+            <!-- Ap. paterno -->
+            <div>
+                <label>Ap. Paterno</label>
+                <input type="text" formControlName="apPaterno">
+                <mat-error></mat-error>
+            </div>
+
+            <!-- Ap materno -->
+            <div>
+                <label>Ap. Materno</label>
+                <input formControlName="apMaterno">
+                <mat-error></mat-error>
+            </div>
+            <div>
+                <label>Nombres</label>
+                <input formControlName="nombres">
+                <mat-error></mat-error>
+            </div>
+            <div>
+                <label>DNI</label>
+                <input formControlName="dni">
+                <mat-error></mat-error>
+            </div>
+            <div>
+                <label>Fecha nacimiento</label>
+                <input formControlName="fechaNacimiento">
+            </div>
+            <div class="flex flex-col">
+                <label>Sexo</label>
+                <select formControlName="sexo">
+                    <option [value]="item" *ngFor="let item of comboSexo">{{item.nombre}}</option>
+                </select>
+            </div>
+            <div>
+                <label>Celular</label>
+                <input formControlName="celular">
+                <mat-error></mat-error>
+            </div>
+            <div class="flex flex-col">
+                <label>Nacionalidad</label>
+                <select formControlName="nacionalidad">
+                    <option [value]="item" *ngFor="let item of comboNacionalidad">{{item}}</option>
+                </select>
+            </div>
+            <div>
+                <label>Carrera</label>
+                <input formControlName="carrera">
+                <mat-error></mat-error>
+            </div>
+            <div>
+                <label>Especialidad</label>
+                <input formControlName="especialidad">
+                <mat-error></mat-error>
+            </div>
+            <div>
+                <label>Universidad</label>
+                <input formControlName="universidad">
+                <mat-error></mat-error>
+            </div>
+            <div>
+                <label>Año egreso</label>
+                <input formControlName="anioEgreso">
+                <mat-error></mat-error>
+            </div>
+            <div class="flex flex-col">
+                <label>¿Es colegiado?</label>
+                <select formControlName="colegiado" (change)="cambioSelectColegiado()">
+                    <option value="S">SI</option>
+                    <option value="N">NO</option>
+                </select>
+                <mat-error></mat-error>
+            </div>
+            <div *ngIf="esColegiado">
+                <label>Num. colegiatura</label>
+                <input formControlName="numeroColegiatura">
+                <mat-error></mat-error>
+            </div>
+            <div class="flex flex-col col-span-4 h-full">
+                <label>Resumen profesional</label>
+                <textarea rows="3" formControlName="resumenProfesional"></textarea>
+                <mat-error></mat-error>
+            </div>
+        </div>
+    </form>
+
+    <hr class="my-4">
+
+    <!-- Footer -->
+    <div class="flex gap-2 justify-end">
+        <button mat-raised-button (click)="matRef.close()">Cancelar</button>
+        <button mat-raised-button class="bg-azul" (click)="procesarSolicitud()" [disabled]="estaCargando">
+            <span *ngIf="!estaCargando" class="text-white">Guardar</span>
+            <span *ngIf="estaCargando" class="text-white">Cargando...</span>
+        </button>
+    </div>
+</div>
