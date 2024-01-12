@@ -1,6 +1,4 @@
 import { Component, ViewChild } from '@angular/core';
-import { CriterioBusqueda } from 'src/app/shared/models/shared.models';
-import { CRITERIOS_BUSQUEDA } from './usuario.data';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
@@ -12,6 +10,9 @@ import { UsuarioService } from './usuario.service';
 import { MatDialog } from '@angular/material/dialog';
 import { ModalCrearUsuarioComponent } from './modal-crear-usuario/modal-crear-usuario.component';
 import { TEXTO_CONSULTA_EXITOSA, TEXTO_CONSULTA_FALLO } from 'src/app/core/utils/constants.utils';
+import { SweetAlertService } from 'src/app/core/modals/sweet-alert.service';
+import { HttpErrorResponse } from '@angular/common/http';
+import { ModalEditarUsuarioComponent } from './modal-editar-usuario/modal-editar-usuario.component';
 
 @Component({
   selector: 'usuario',
@@ -21,13 +22,13 @@ export class VoluntarioComponent {
   @ViewChild(MatPaginator) _paginator: MatPaginator;
   @ViewChild(MatSort) _sort: MatSort;
 
-  criterioBusquedaSeleccionado: CriterioBusqueda = CRITERIOS_BUSQUEDA[0];
-  criterios: CriterioBusqueda[] = CRITERIOS_BUSQUEDA;
-
-  columnas: string[] = ['nombresApellidos', 'edad', 'carrera', 'especialidad', 'casosAsignados', 'editar', 'eliminar'];
+  columnas: string[] = ['nombresApellidos', 'dni', 'edad', 'carrera', 'especialidad', 'casosAsignados', 'estado', 'editar', 'eliminar'];
   dataSource: MatTableDataSource<DTOUsuarioListar>;
   estaCargando: boolean = true;
-  filtro: string;
+
+  filtroDni: string;
+  filtroNombres: string;
+  filtroEstado: boolean | string; //es string en caso no se seleccione nada
 
   pagination = { numeroPagina: 0, tamanioPagina: 10, tamanioTotal: 0, index: 0 };
   pageableOptions = [10, 25, 100];
@@ -39,13 +40,14 @@ export class VoluntarioComponent {
     private _usuarioService: UsuarioService,
     private _matDialog: MatDialog,
     private _toastr: ToastrService,
-    // private _sweetAlertService: SweetAlertService
+    private _sweetAlertService: SweetAlertService
   ) {
     // Assign the data to the data source for the table to render
     this.dataSource = new MatTableDataSource([]);
   }
 
   ngOnInit(): void {
+    this._iniciarFiltros();
   }
 
   ngAfterViewInit() {
@@ -61,7 +63,7 @@ export class VoluntarioComponent {
     this.estaCargando = true;
 
     try {
-      const http$: Observable<ApiResponse> = this._usuarioService.listarPaginacion$(this._paginator?.pageIndex, this._paginator?.pageSize, this.filtro);
+      const http$: Observable<ApiResponse> = this._usuarioService.listarPaginacion$(this._paginator?.pageIndex, this._paginator?.pageSize, this.filtroDni, this.filtroNombres, this.filtroEstado);
       const respServidor: ApiResponse = await lastValueFrom(http$);
       this._cargarDatosDelServidorAlDatasource(respServidor.data);
       this._toastr.success(TEXTO_CONSULTA_EXITOSA);
@@ -70,6 +72,10 @@ export class VoluntarioComponent {
     } finally {
       this.estaCargando = false;
     }
+  }
+
+  private _iniciarFiltros() {
+    this.filtroEstado = 'xxx';
   }
 
   /**almacenar la respuesta del servidor en variables locales*/
@@ -117,11 +123,74 @@ export class VoluntarioComponent {
     this._listar();
   }
 
+  teclaEnterFiltrar(e: KeyboardEvent) {
+    if (e.key != 'Enter') return;
+    this._listar();
+  }
+
+  cambiarFiltroEstado(item) {
+    this.filtroEstado = item;
+    this._listar();
+  }
+
+  async deshabilitar(idUsuario: string) {
+    const ref = await this._sweetAlertService.preguntarSiNo('¿Desea deshabilitar al usuario?');
+    if (!ref.isConfirmed) return;
+
+    try {
+      const http$ = this._usuarioService.habilitar$(idUsuario, 'deshabilitar');
+      await lastValueFrom(http$);
+      this._listar();
+      this._toastr.success('El usuario fue deshabilitado');
+    } catch (error) {
+      const mensaje = (error as HttpErrorResponse).error.message.ERROR;
+      this._sweetAlertService.mostrarMensaje('No se pudo deshabilitar al usuario', mensaje, 'error');
+    }
+  }
+
+  async habilitar(idUsuario: string) {
+    const ref = await this._sweetAlertService.preguntarSiNo('¿Desea habilitar al usuario?');
+    if (!ref.isConfirmed) return;
+
+    try {
+      const http$ = this._usuarioService.habilitar$(idUsuario, 'habilitar');
+      await lastValueFrom(http$);
+      this._listar();
+      this._toastr.success('El usuario fue habilitado');
+    } catch (error) {
+      const mensaje = (error as HttpErrorResponse).error.message.ERROR;
+      this._sweetAlertService.mostrarMensaje('No se pudo habilitar al usuario', mensaje, 'error');
+    }
+  }
+
+  //=====================================
+  // Modales
+  //=====================================
+
+  abrirModalEditarUsuario(pIdUsuario: string) {
+    const ref = this._matDialog.open(ModalEditarUsuarioComponent,
+      {
+        data: {
+          idUsuario: pIdUsuario
+        },
+        width: '100%',
+        // height: '65%'
+      });
+
+    ref.afterClosed().subscribe(respuestaModal => {
+      if (respuestaModal == 'OK') {
+        this._toastr.success('El usuario fue editado correctamente');
+        this._listar();
+      }
+    });
+  }
+
   abrirModalCrear() {
     const ref = this._matDialog.open(ModalCrearUsuarioComponent);
     ref.afterClosed().subscribe(respuestaModal => {
       if (respuestaModal == 'OK') {
         this._toastr.success('Se agregó correctamente');
+        this._listar();
       }
     });
   }

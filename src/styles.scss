@@ -41,6 +41,11 @@
     background-color: var(--color-gris) !important;
 }
 
+.bg-gris-opaco {
+    background-color: var(--color-gris) !important;
+    opacity: .5;
+}
+
 mat-icon {
     opacity: 0.5;
     margin: 0 !important;
@@ -67,50 +72,58 @@ mat-icon {
     color: var(--color-turquesa);
 }
 
-.form-group {
-    display: flex;
-    flex-direction: column;
-}
+// Sobreescritura de estilo de angular material
+// .form-group {
+//     display: flex;
+//     flex-direction: column;
+// }
 
 /* Sobreescribir estilos de inputs */
 
-.mdc-text-field--filled:not(.mdc-text-field--disabled) {
-    background-color: white !important;
+// .mdc-text-field--filled:not(.mdc-text-field--disabled) {
+//     background-color: white !important;
+// }
+
+// input,
+// textarea {
+//     border: var(--color-gris) solid 1px !important;
+//     width: 100% !important;
+//     height: 2.5em !important;
+//     border-radius: 5px !important;
+//     padding: 0px 6px;
+
+//     &:focus {
+//         outline: none;
+//         border: var(--color-azul) solid 2px !important;
+//     }
+// }
+
+// select {
+//     border: var(--color-gris) solid 1px !important;
+//     height: 2.5em !important;
+//     border-radius: 5px !important;
+
+//     &:focus {
+//         outline: none;
+//         border: var(--color-azul) solid 2px !important;
+//     }
+
+//     &:hover {
+//         cursor: pointer;
+//     }
+// }
+
+// label {
+//     opacity: 0.7;
+// }
+
+//FIN SOBREESCRITURA 
+
+mat-error{
+    margin: 0 !important;
+    font-size: 0.8em !important;
 }
 
-// Sobreescritura de estilo de angular material
-
-input,
-textarea {
-    /* background-color: #00AA87 !important; */
-    border: var(--color-gris) solid 1px !important;
-    width: 100% !important;
-    height: 2.5em !important;
-    border-radius: 5px !important;
-    padding: 0px 6px;
-
-    &:focus {
-        outline: none;
-        border: var(--color-azul) solid 2px !important;
-    }
-}
-
-select {
-    // background-color: #999999;
-    border: var(--color-gris) solid 1px !important;
-    height: 2.5em !important;
-    border-radius: 5px !important;
-
-    &:focus {
-        outline: none;
-        border: var(--color-azul) solid 2px !important;
-    }
-
-    &:hover {
-        cursor: pointer;
-    }
-}
-
-label {
-    opacity: 0.7;
+.icono-verde-activo {
+    color: green;
 }

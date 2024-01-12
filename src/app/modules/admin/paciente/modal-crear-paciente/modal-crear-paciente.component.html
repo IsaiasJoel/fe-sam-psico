@@ -1,0 +1,220 @@
+<div class="w-full h-full p-8">
+    <!-- Cabecera -->
+    <div class="flex items-center justify-between">
+        <div class="font-medium text-4xl">Crear paciente</div>
+        <mat-icon svgIcon="close" class="hover:cursor-pointer" matTooltip="Cerrar" (click)="matRef.close()"></mat-icon>
+    </div>
+
+    <hr class="my-4">
+
+    <!-- Cuerpo -->
+    <mat-stepper class="w-full" [orientation]="(stepperOrientation | async)!">
+
+        <!-- Datos personales -->
+        <mat-step [stepControl]="personalForm" label="Datos personales">
+            <form [formGroup]="personalForm" class="mt-4 grid grid-cols-4 gap-4">
+                <mat-form-field>
+                    <mat-label>Ap Paterno</mat-label>
+                    <input matInput formControlName="apPaterno">
+                </mat-form-field>
+                <mat-form-field>
+                    <mat-label>Ap Materno</mat-label>
+                    <input matInput formControlName="apMaterno">
+                </mat-form-field>
+                <mat-form-field>
+                    <mat-label>Nombres</mat-label>
+                    <input matInput formControlName="nombres">
+                </mat-form-field>
+                <mat-form-field>
+                    <mat-label>DNI</mat-label>
+                    <input matInput formControlName="dni" mask="99999999">
+                </mat-form-field>
+                <mat-form-field>
+                    <mat-label>Fecha nacimiento</mat-label>
+                    <input matInput formControlName="fechaNacimiento" mask="d0/M0/0000">
+                </mat-form-field>
+                <mat-form-field>
+                    <mat-label>Lugar nacimiento</mat-label>
+                    <input matInput formControlName="lugarNacimiento">
+                </mat-form-field>
+                <mat-form-field>
+                    <mat-label>Direccion</mat-label>
+                    <input matInput formControlName="direccion">
+                </mat-form-field>
+                <mat-form-field>
+                    <mat-label>Departamento</mat-label>
+                    <input matInput formControlName="departamento">
+                </mat-form-field>
+                <mat-form-field>
+                    <mat-label>Provincia</mat-label>
+                    <input matInput formControlName="provincia">
+                </mat-form-field>
+                <mat-form-field>
+                    <mat-label>Distrito</mat-label>
+                    <input matInput formControlName="distrito">
+                </mat-form-field>
+                <mat-form-field>
+                    <mat-label>Num contacto</mat-label>
+                    <input matInput formControlName="numeroContacto">
+                </mat-form-field>
+                <mat-form-field>
+                    <mat-label>Sexo</mat-label>
+                    <input matInput formControlName="sexo">
+                </mat-form-field>
+                <mat-form-field>
+                    <mat-label>Nacionalidad</mat-label>
+                    <input matInput formControlName="nacionalidad">
+                </mat-form-field>
+                <mat-form-field>
+                    <mat-label>Correo</mat-label>
+                    <input matInput formControlName="correo">
+                </mat-form-field>
+                <mat-form-field>
+                    <mat-label>Carrera</mat-label>
+                    <input matInput formControlName="carrera">
+                </mat-form-field>
+                <mat-form-field>
+                    <mat-label>Ocupacion</mat-label>
+                    <input matInput formControlName="ocupacion">
+                </mat-form-field>
+                <div class="w-full col-span-4 flex justify-end">
+                    <button mat-button matStepperNext class="bg-gris" matTooltip="Siguiente">
+                        <mat-icon svgIcon="arrow-right-bold" style="color: white;"></mat-icon>
+                        <span class="text-white">Siguiente</span>
+                    </button>
+                </div>
+            </form>
+        </mat-step>
+
+        <!-- Socioeconómico -->
+        <mat-step [stepControl]="socieconomicoForm" label="Socioeconómico">
+            <form [formGroup]="socieconomicoForm" class="mt-4 grid grid-cols-2 gap-4">
+                <mat-form-field>
+                    <mat-label>Tipo de vivienda</mat-label>
+                    <input matInput formControlName="tipoVivienda">
+                </mat-form-field>
+                <mat-form-field>
+                    <mat-label>Habitaciones o camas</mat-label>
+                    <input matInput formControlName="habitacionesCamas">
+                </mat-form-field>
+                <mat-form-field>
+                    <mat-label>Servicios básicos</mat-label>
+                    <input matInput formControlName="serviciosBasicos">
+                </mat-form-field>
+
+                <mat-form-field class="col-span-2">
+                    <mat-label>Gastos mensuales</mat-label>
+                    <input matInput formControlName="gastosMensuales">
+                </mat-form-field>
+                <mat-form-field>
+                    <mat-label>Cuantos familiares tiene</mat-label>
+                    <input matInput formControlName="cantidadFamiliares">
+                </mat-form-field>
+                <mat-form-field>
+                    <mat-label>Tipo de seguro</mat-label>
+                    <input matInput formControlName="tipoSeguro">
+                </mat-form-field>
+                <mat-form-field>
+                    <mat-label>Categoria socioeconómica</mat-label>
+                    <input matInput formControlName="categorizacionSocioeconomica">
+                </mat-form-field>
+                <div class="w-full col-span-2 flex justify-between">
+                    <button mat-button matStepperPrevious class="bg-gris-opaco">
+                        <mat-icon svgIcon="arrow-left-bold" style="color: white;"></mat-icon>
+                        <span class="text-white">Anterior</span>
+                    </button>
+
+                    <button mat-button matStepperNext class="bg-gris" matTooltip="Siguiente">
+                        <mat-icon svgIcon="arrow-right-bold" style="color: white;"></mat-icon>
+                        <span class="text-white">Siguiente</span>
+                    </button>
+                </div>
+            </form>
+        </mat-step>
+
+        <!-- Familiar -->
+        <mat-step [stepControl]="familiarForm" label="Familiar">
+            <form [formGroup]="familiarForm" class="mt-4 grid grid-cols-2 gap-4">
+                <mat-form-field>
+                    <mat-label>Contacto de emergencia</mat-label>
+                    <input matInput formControlName="contactoEmergencia" placeholder="Ex. 12345678">
+                </mat-form-field>
+                <mat-form-field>
+                    <mat-label>Parentezco</mat-label>
+                    <input matInput formControlName="parentezco" placeholder="Ex. 12345678">
+                </mat-form-field>
+                <mat-form-field>
+                    <mat-label>Numero emergencia</mat-label>
+                    <input matInput formControlName="numeroEmergencia" placeholder="Ex. 12345678">
+                </mat-form-field>
+                <mat-form-field class="col-span-2">
+                    <mat-label>Enfermedades que poseen los familiares</mat-label>
+                    <input matInput formControlName="enfermedadesDelLosFamiliares" placeholder="Ex. 12345678">
+                </mat-form-field>
+                <div class="w-full col-span-2 flex justify-between">
+                    <button mat-button matStepperPrevious class="bg-gris-opaco">
+                        <mat-icon svgIcon="arrow-left-bold" style="color: white;"></mat-icon>
+                        <span class="text-white">Anterior</span>
+                    </button>
+
+                    <button mat-button matStepperNext class="bg-gris" matTooltip="Siguiente">
+                        <mat-icon svgIcon="arrow-right-bold" style="color: white;"></mat-icon>
+                        <span class="text-white">Siguiente</span>
+                    </button>
+                </div>
+            </form>
+        </mat-step>
+
+        <!-- Consulta -->
+        <mat-step [stepControl]="consultaForm" label="Consulta">
+            <form [formGroup]="consultaForm" class="mt-4 grid grid-cols-2 gap-4">
+                <mat-form-field>
+                    <mat-label>Atención que solicita</mat-label>
+                    <input matInput formControlName="atencionSolicita">
+                </mat-form-field>
+                <mat-form-field>
+                    <mat-label>Proyecto que refiere</mat-label>
+                    <input matInput formControlName="proyectoRefiere">
+                </mat-form-field>
+                <mat-form-field class="col-span-2">
+                    <mat-label>Motivo de consulta</mat-label>
+                    <input matInput formControlName="motivoConsulta">
+                </mat-form-field>
+                <mat-form-field>
+                    <mat-label>Modalidad</mat-label>
+                    <input matInput formControlName="modalidad">
+                </mat-form-field>
+                <mat-form-field>
+                    <mat-label>Horario de disponibilidad</mat-label>
+                    <input matInput formControlName="horarioDisponibilidad">
+                </mat-form-field>
+                <mat-form-field>
+                    <mat-label>¿Formas parte de NIC MAISH?</mat-label>
+                    <input matInput formControlName="siFormasParteDeNic">
+                </mat-form-field>
+                <mat-form-field>
+                    <mat-label>Colaboración económica</mat-label>
+                    <input matInput formControlName="colaboracionEconomica">
+                </mat-form-field>
+                <div class="w-full col-span-2 flex justify-between">
+                    <button mat-button matStepperPrevious class="bg-gris-opaco">
+                        <mat-icon svgIcon="arrow-left-bold" style="color: white;"></mat-icon>
+                        <span class="text-white">Anterior</span>
+                    </button>
+                </div>
+            </form>
+        </mat-step>
+    </mat-stepper>
+
+    <hr class="my-4">
+
+    <!-- Footer -->
+    <div class="flex gap-2 justify-end">
+        <button mat-raised-button (click)="matRef.close()">Cancelar</button>
+        <button mat-raised-button class="bg-azul disabled:bg-gris" (click)="procesarSolicitud()"
+            [disabled]="estaCargando">
+            <span *ngIf="!estaCargando" class="text-white">Guardar</span>
+            <span *ngIf="estaCargando" class="text-white">Cargando...</span>
+        </button>
+    </div>
+</div>

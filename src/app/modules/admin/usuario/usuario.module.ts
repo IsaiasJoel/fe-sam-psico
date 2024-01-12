@@ -8,6 +8,8 @@ import { UsuarioEdadPipe } from 'src/app/shared/pipes/usuario-edad.pipe';
 import { ModalCrearUsuarioComponent } from './modal-crear-usuario/modal-crear-usuario.component';
 import { ModalEditarUsuarioComponent } from './modal-editar-usuario/modal-editar-usuario.component';
 import { ReactiveFormsModule } from '@angular/forms';
+import { NgxMaskModule } from "ngx-mask";
+import { SharedModule } from 'src/app/shared/shared.module';
 
 const routes: Route[] = [
   // { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
@@ -17,8 +19,6 @@ const routes: Route[] = [
 @NgModule({
   declarations: [
     VoluntarioComponent,
-    UsuarioNombresCompletosPipe,
-    UsuarioEdadPipe,
     ModalCrearUsuarioComponent,
     ModalEditarUsuarioComponent
   ],
@@ -26,7 +26,10 @@ const routes: Route[] = [
     CommonModule,
     RouterModule.forChild(routes),
     MaterialModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+
+    NgxMaskModule.forChild(),
+    SharedModule
   ]
 })
 export class UsuarioModule { }

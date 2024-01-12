@@ -17,15 +17,12 @@
                         <mat-label>Usuario</mat-label>
                         <input matInput type="text" formControlName="usuario">
                         <mat-error *ngIf="signInForm.get('usuario').hasError('required')">
-                            Correo es requerido
+                            Campo obligatorio*
                         </mat-error>
-                        <!-- <mat-error *ngIf="signInForm.get('usuario').hasError('usuario')">
-              Por favor, ingrese un correo electrónico válido
-            </mat-error> -->
                     </mat-form-field>
 
                     <!-- Contrasenia -->
-                    <mat-form-field>
+                    <mat-form-field class="flex items-end">
                         <mat-label>Contraseña</mat-label>
                         <input matInput type="password" formControlName="contrasenia" #passwordField />
                         <button mat-icon-button type="button"
@@ -36,17 +33,17 @@
                             <mat-icon class="icon-size-5" *ngIf="passwordField.type === 'text'"
                                 [svgIcon]="'eye-off'"></mat-icon>
                         </button>
-                        <mat-error> Contraseña es obligatoria </mat-error>
+                        <mat-error *ngIf="false"> Campo obliagtorio* </mat-error>
                     </mat-form-field>
                 </div>
+
                 <mat-error *ngIf="mensajeError">{{mensajeError}}</mat-error>
 
                 <!-- Submit button -->
-                <button class="flex items-center justify-center w-full bg-azul py-4 rounded-md hover:shadow-md"
-                    type="submit">
-                    <span *ngIf="!signInForm.disabled" class="text-white font-medium"> Entrar </span>
-                    <mat-progress-spinner *ngIf="signInForm.disabled" [diameter]="24" class="mat-progress-spinner"
-                        [mode]="'indeterminate'"></mat-progress-spinner>
+                <button class="flex items-center justify-center w-full bg-azul py-4 rounded-md hover:shadow-md disabled:bg-gris"
+                    type="submit" [disabled]="estaCargando">
+                    <span *ngIf="!estaCargando" class="text-white font-medium"> Entrar </span>
+                    <span *ngIf="estaCargando" class="text-white font-medium"> Entrando... </span>
                 </button>
             </form>
         </div>
