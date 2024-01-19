@@ -43,15 +43,21 @@
                 </mat-form-field>
                 <mat-form-field>
                     <mat-label>Departamento</mat-label>
-                    <input matInput formControlName="departamento">
+                    <mat-select formControlName="departamento">
+                        <mat-option *ngFor="let departamento of departamentos">{{departamento}}</mat-option>
+                    </mat-select>
                 </mat-form-field>
                 <mat-form-field>
                     <mat-label>Provincia</mat-label>
-                    <input matInput formControlName="provincia">
+                    <mat-select formControlName="provincia">
+                        <mat-option *ngFor="let provincia of provincias">{{provincia}}</mat-option>
+                    </mat-select>
                 </mat-form-field>
                 <mat-form-field>
                     <mat-label>Distrito</mat-label>
-                    <input matInput formControlName="distrito">
+                    <mat-select formControlName="distrito">
+                        <mat-option *ngFor="let provincia of provincias">{{provincia}}</mat-option>
+                    </mat-select>
                 </mat-form-field>
                 <mat-form-field>
                     <mat-label>Num contacto</mat-label>

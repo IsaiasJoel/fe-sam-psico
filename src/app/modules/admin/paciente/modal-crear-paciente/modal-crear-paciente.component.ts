@@ -3,10 +3,12 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
 import { PacienteService } from '../paciente.service';
 import { ToastrService } from 'ngx-toastr';
-import { Observable, map } from 'rxjs';
-import { TEXTO_CONSULTA_EXITOSA } from 'src/app/core/utils/constants.utils';
+import { Observable, lastValueFrom, map } from 'rxjs';
+import { TEXTO_CONSULTA_EXITOSA, TEXTO_CONSULTA_FALLO } from 'src/app/core/utils/constants.utils';
 import { StepperOrientation } from '@angular/cdk/stepper';
 import { BreakpointObserver } from '@angular/cdk/layout';
+import { UbigeoService } from 'src/app/shared/services/ubigeo.service';
+import { ApiResponse } from 'src/app/core/models/api-response.interface';
 
 @Component({
   selector: 'app-modal-crear-paciente',
@@ -14,6 +16,9 @@ import { BreakpointObserver } from '@angular/cdk/layout';
 })
 export class ModalCrearPacienteComponent {
   estaCargando: boolean = false;
+  departamentos: string[] = [];
+  provincias: string[] = [];
+  distritos: string[] = [];
 
   // Formularios
   personalForm: FormGroup;
@@ -28,6 +33,7 @@ export class ModalCrearPacienteComponent {
     private _formBuilder: FormBuilder,
     private _pacienteService: PacienteService,
     private _toastrService: ToastrService,
+    private _ubigeoService: UbigeoService,
     breakpointObserver: BreakpointObserver
   ) {
     this.stepperOrientation = breakpointObserver
@@ -36,6 +42,8 @@ export class ModalCrearPacienteComponent {
   }
 
   ngOnInit(): void {
+    //cargar data
+    this._cargarDepartamentos();
     this._crearFormularios();
   }
 
@@ -47,6 +55,19 @@ export class ModalCrearPacienteComponent {
     this._crearFormSocioeconomico();
     this._crearFormFamiliar();
     this._crearFormConsulta();
+  }
+
+  private async _cargarDepartamentos() {
+    try {
+      this.estaCargando = true;
+      const http$ = this._ubigeoService.listarDepartamentos$();
+      const respuestaServidor: ApiResponse = await lastValueFrom(http$);
+      this.departamentos = respuestaServidor.data;
+    } catch (error) {
+      this._toastrService.error(TEXTO_CONSULTA_FALLO);
+    } finally {
+      this.estaCargando = false;
+    }
   }
 
   private _crearFormPersonal() {
@@ -69,6 +90,7 @@ export class ModalCrearPacienteComponent {
       ocupacion: ['',]
     });
   }
+
   private _crearFormSocioeconomico() {
     this.socieconomicoForm = this._formBuilder.group({
       tipoVivienda: ['',],
