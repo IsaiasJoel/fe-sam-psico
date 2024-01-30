@@ -3,8 +3,8 @@
     <div class="">
         <div class="flex gap-2 items-center">
             <div class="font-medium text-4xl mb-2">Pacientes</div>
-            <mat-icon (click)="abrirModalCrearPaciente()" class="icon-size-md hover:cursor-pointer icon-turquesa" [svgIcon]="'plus-circle'"
-                matTooltip="Agregar usuario"></mat-icon>
+            <mat-icon (click)="irAPantallaCrear()" class="icon-size-md hover:cursor-pointer icon-turquesa"
+                [svgIcon]="'plus-circle'" matTooltip="Agregar usuario"></mat-icon>
         </div>
         <hr>
     </div>
@@ -12,7 +12,7 @@
     <!-- Contenido -->
     <div class="mt-4 bg-white p-4">
         <!-- Cabecera tabla -->
-        <div class="gap-2 w-full flex flex-col xl:grid xl:grid-cols-5 mb-4">
+        <div class="gap-2 w-full flex flex-col xl:grid xl:grid-cols-6 mb-4">
             <!-- Caja de texto-->
             <mat-form-field class="w-full col-span-1">
                 <mat-label>DNI</mat-label>
@@ -27,6 +27,14 @@
                 <mat-select [(ngModel)]="filtroNacionalidad" (valueChange)="cambiarFiltroNacionalidad($event)">
                     <mat-option value="xxx">Seleccione</mat-option>
                     <mat-option [value]="item" *ngFor="let item of nacionalidades">{{item}}</mat-option>
+                </mat-select>
+            </mat-form-field>
+            <mat-form-field class="flex flex-col col-span-1">
+                <mat-label>Estado</mat-label>
+                <mat-select [(ngModel)]="filtroEstado" (valueChange)="cambiarFiltroEstado($event)">
+                    <mat-option value="xxx">Seleccione</mat-option>
+                    <mat-option [value]="true">Activo</mat-option>
+                    <mat-option [value]="false">Inactivo</mat-option>
                 </mat-select>
             </mat-form-field>
 
@@ -71,14 +79,13 @@
 
                 <ng-container matColumnDef="celular">
                     <th mat-header-cell *matHeaderCellDef> Contacto </th>
-                    <td mat-cell *matCellDef="let element"> {{element.celular}} </td>
+                    <td mat-cell *matCellDef="let element"> {{element.numeroContacto}} </td>
                 </ng-container>
 
-                <!-- (click)="abrirModalEditarUsuario(element.id)" -->
                 <ng-container matColumnDef="editar">
                     <th mat-header-cell *matHeaderCellDef></th>
                     <td mat-cell *matCellDef="let element">
-                        <button mat-raised-button matTooltip="Editar" class="bg-amarillo">
+                        <button mat-raised-button matTooltip="Editar" class="bg-amarillo" (click)="irAPantallEditar(element.id)">
                             <mat-icon svgIcon="pencil"></mat-icon>
                         </button>
                     </td>

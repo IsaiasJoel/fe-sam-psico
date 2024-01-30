@@ -10,8 +10,7 @@ import { ApiResponse } from 'src/app/core/models/api-response.interface';
 import { TEXTO_CONSULTA_EXITOSA, TEXTO_CONSULTA_FALLO } from 'src/app/core/utils/constants.utils';
 import { PacienteService } from './paciente.service';
 import { NACIONALIDADES } from 'src/app/shared/data/shared.data';
-import { ModalCrearPacienteComponent } from './modal-crear-paciente/modal-crear-paciente.component';
-import { ModalEditarPacienteComponent } from './modal-editar-paciente/modal-editar-paciente.component';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-paciente',
@@ -28,7 +27,8 @@ export class PacienteComponent {
 
   filtroDni: string;
   filtroNombres: string;
-  filtroNacionalidad: boolean | string; //es string en caso no se seleccione nada
+  filtroNacionalidad: string; //es string en caso no se seleccione nada
+  filtroEstado: boolean | string; //es string en caso no se seleccione nada
 
   pagination = { numeroPagina: 0, tamanioPagina: 10, tamanioTotal: 0, index: 0 };
   pageableOptions = [10, 25, 100];
@@ -42,7 +42,8 @@ export class PacienteComponent {
     private _pacienteService: PacienteService,
     private _matDialog: MatDialog,
     private _toastr: ToastrService,
-    private _sweetAlertService: SweetAlertService
+    private _sweetAlertService: SweetAlertService,
+    private _router: Router
   ) {
     // Assign the data to the data source for the table to render
     this.dataSource = new MatTableDataSource([]);
@@ -78,6 +79,7 @@ export class PacienteComponent {
 
   private _iniciarFiltros() {
     this.filtroNacionalidad = 'xxx';
+    this.filtroEstado = 'xxx';
   }
 
   /**almacenar la respuesta del servidor en variables locales*/
@@ -135,34 +137,21 @@ export class PacienteComponent {
     this._listar();
   }
 
+  cambiarFiltroEstado(item) {
+    this.filtroEstado = item;
+    this._listar();
+  }
+
+  irAPantallaCrear() {
+    this._router.navigate(['/pacientes/crear']);
+  }
+
+  irAPantallEditar(id: number) {
+    this._router.navigate(['/pacientes/', id]);
+  }
+
   //=====================================
   // Modales
   //=====================================
-  abrirModalCrearPaciente() {
-    const ref = this._matDialog.open(ModalCrearPacienteComponent);
-    ref.afterClosed().subscribe(respuestaModal => {
-      if (respuestaModal == 'OK') {
-        this._toastr.success('Se agregó correctamente');
-        this._listar();
-      }
-    });
-  }
-
-  abrirModalEditarPaciente(pIdPaciente: string) {
-    const ref = this._matDialog.open(ModalEditarPacienteComponent,
-      {
-        data: {
-          idPaciente: pIdPaciente
-        },
-        width: '100%'
-      });
-
-    ref.afterClosed().subscribe(respuestaModal => {
-      if (respuestaModal == 'OK') {
-        this._toastr.success('El usuario fue editado correctamente');
-        this._listar();
-      }
-    });
-  }
 
 }

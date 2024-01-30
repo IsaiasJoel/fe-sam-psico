@@ -8,17 +8,16 @@ import { ToastrService } from 'ngx-toastr';
 import { DTOUsuarioListar } from './usuario.models';
 import { UsuarioService } from './usuario.service';
 import { MatDialog } from '@angular/material/dialog';
-import { ModalCrearUsuarioComponent } from './modal-crear-usuario/modal-crear-usuario.component';
 import { TEXTO_CONSULTA_EXITOSA, TEXTO_CONSULTA_FALLO } from 'src/app/core/utils/constants.utils';
 import { SweetAlertService } from 'src/app/core/modals/sweet-alert.service';
 import { HttpErrorResponse } from '@angular/common/http';
-import { ModalEditarUsuarioComponent } from './modal-editar-usuario/modal-editar-usuario.component';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'usuario',
   templateUrl: './usuario.component.html'
 })
-export class VoluntarioComponent {
+export class UsuarioComponent {
   @ViewChild(MatPaginator) _paginator: MatPaginator;
   @ViewChild(MatSort) _sort: MatSort;
 
@@ -40,7 +39,8 @@ export class VoluntarioComponent {
     private _usuarioService: UsuarioService,
     private _matDialog: MatDialog,
     private _toastr: ToastrService,
-    private _sweetAlertService: SweetAlertService
+    private _sweetAlertService: SweetAlertService,
+    private _router: Router
   ) {
     // Assign the data to the data source for the table to render
     this.dataSource = new MatTableDataSource([]);
@@ -163,36 +163,15 @@ export class VoluntarioComponent {
     }
   }
 
+  irAPantallaCrear() {
+    this._router.navigate(['/usuarios/crear']);
+  }
+
+  irAPantallaEditar(id: string) {
+    this._router.navigate(['/usuarios/', id]);
+  }
+
   //=====================================
   // Modales
   //=====================================
-
-  abrirModalEditarUsuario(pIdUsuario: string) {
-    const ref = this._matDialog.open(ModalEditarUsuarioComponent,
-      {
-        data: {
-          idUsuario: pIdUsuario
-        },
-        width: '100%',
-        // height: '65%'
-      });
-
-    ref.afterClosed().subscribe(respuestaModal => {
-      if (respuestaModal == 'OK') {
-        this._toastr.success('El usuario fue editado correctamente');
-        this._listar();
-      }
-    });
-  }
-
-  abrirModalCrear() {
-    const ref = this._matDialog.open(ModalCrearUsuarioComponent);
-    ref.afterClosed().subscribe(respuestaModal => {
-      if (respuestaModal == 'OK') {
-        this._toastr.success('Se agregó correctamente');
-        this._listar();
-      }
-    });
-  }
-
 }

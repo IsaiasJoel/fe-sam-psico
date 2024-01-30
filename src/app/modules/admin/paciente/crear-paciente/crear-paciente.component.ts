@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MatDialogRef } from '@angular/material/dialog';
 import { PacienteService } from '../paciente.service';
 import { ToastrService } from 'ngx-toastr';
 import { Observable, lastValueFrom, map } from 'rxjs';
@@ -9,16 +8,25 @@ import { StepperOrientation } from '@angular/cdk/stepper';
 import { BreakpointObserver } from '@angular/cdk/layout';
 import { UbigeoService } from 'src/app/shared/services/ubigeo.service';
 import { ApiResponse } from 'src/app/core/models/api-response.interface';
+import { NACIONALIDADES, OPCIONES_SEXO, SERVICIOS_BASICOS, TEXTO_SELECCIONE } from 'src/app/shared/data/shared.data';
+import { OpcionesComboSexo } from 'src/app/shared/models/shared.models';
+import { Router } from '@angular/router';
 
 @Component({
-  selector: 'app-modal-crear-paciente',
-  templateUrl: './modal-crear-paciente.component.html'
+  selector: 'app-crear-paciente',
+  templateUrl: './crear-paciente.component.html'
 })
-export class ModalCrearPacienteComponent {
+export class CrearPacienteComponent {
+  comboSexo: OpcionesComboSexo[] = OPCIONES_SEXO;
+  comboNacionalidad: string[] = NACIONALIDADES;
+  comboServiciosBasicos: string[] = SERVICIOS_BASICOS;
+
   estaCargando: boolean = false;
   departamentos: string[] = [];
   provincias: string[] = [];
   distritos: string[] = [];
+
+  textoSeleccione: string = TEXTO_SELECCIONE;
 
   // Formularios
   personalForm: FormGroup;
@@ -29,12 +37,12 @@ export class ModalCrearPacienteComponent {
   //Fin formularios
 
   constructor(
-    public matRef: MatDialogRef<ModalCrearPacienteComponent>,
+    breakpointObserver: BreakpointObserver,
     private _formBuilder: FormBuilder,
     private _pacienteService: PacienteService,
     private _toastrService: ToastrService,
     private _ubigeoService: UbigeoService,
-    breakpointObserver: BreakpointObserver
+    private _router: Router
   ) {
     this.stepperOrientation = breakpointObserver
       .observe('(min-width: 800px)')
@@ -45,6 +53,7 @@ export class ModalCrearPacienteComponent {
     //cargar data
     this._cargarDepartamentos();
     this._crearFormularios();
+    this._inicializarUbicacionPorDefecto();
   }
 
   // -----------------------------------------------------------------------------------------------------
@@ -54,7 +63,20 @@ export class ModalCrearPacienteComponent {
     this._crearFormPersonal();
     this._crearFormSocioeconomico();
     this._crearFormFamiliar();
-    this._crearFormConsulta();
+  }
+
+  private async _inicializarUbicacionPorDefecto() {
+    const departamento: string = this.personalForm.get('departamento').value;
+
+    //setear provincia por defecto
+    this.listarProvinciaPorDepartamento$(departamento)
+    const provincia: string = 'CHICLAYO';
+    this.listarDistritoPorProvincia$(provincia);
+    this.personalForm.get('provincia').setValue(provincia);
+
+    //setear distritos por defecto
+    const distrito: string = 'CHICLAYO';
+    this.personalForm.get('distrito').setValue(distrito);
   }
 
   private async _cargarDepartamentos() {
@@ -76,15 +98,15 @@ export class ModalCrearPacienteComponent {
       apMaterno: ['', [Validators.required]],
       nombres: ['', [Validators.required]],
       dni: ['', [Validators.required]],
-      fechaNacimiento: ['', [Validators.required]],
+      fechaNacimiento: [null, [Validators.required]],
       lugarNacimiento: ['', [Validators.required]],
       direccion: ['',],
-      departamento: ['', [Validators.required]],
-      provincia: ['', [Validators.required]],
-      distrito: ['', [Validators.required]],
+      departamento: ['LAMBAYEQUE', [Validators.required]],
+      provincia: ['SELECCIONE', [Validators.required]],
+      distrito: ['SELECCIONE', [Validators.required]],
       numeroContacto: ['', [Validators.required]],
-      sexo: ['', [Validators.required]],
-      nacionalidad: ['',],
+      sexo: ['SELECCIONE', [Validators.required]],
+      nacionalidad: ['SELECCIONE',],
       correo: ['',],
       carrera: ['',],
       ocupacion: ['',]
@@ -112,16 +134,21 @@ export class ModalCrearPacienteComponent {
     });
   }
 
-  private _crearFormConsulta() {
-    this.consultaForm = this._formBuilder.group({
-      atencionSolicita: ['',],
-      proyectoRefiere: ['',],
-      motivoConsulta: ['',],
-      modalidad: ['',],
-      horarioDisponibilidad: ['',],
-      siFormasParteDeNic: ['',],
-      colaboracionEconomica: ['',],
-    });
+  // private _crearFormConsulta() {
+  //   this.consultaForm = this._formBuilder.group({
+  //     atencionSolicita: ['',],
+  //     proyectoRefiere: ['',],
+  //     motivoConsulta: ['',],
+  //     modalidad: ['',],
+  //     horarioDisponibilidad: ['',],
+  //     siFormasParteDeNic: ['',],
+  //     colaboracionEconomica: ['',],
+  //   });
+  // }
+
+  /**Al menos un formulario es inválido */
+  private _formulariosSonInvalidos(): boolean {
+    return this.personalForm.invalid || this.socieconomicoForm.invalid || this.familiarForm.invalid;
   }
 
   // -----------------------------------------------------------------------------------------------------
@@ -130,20 +157,47 @@ export class ModalCrearPacienteComponent {
   async procesarSolicitud() {
     this.estaCargando = true;
 
-    // if (this.form.invalid) {
-    //   this.estaCargando = false;
-    //   return;
-    // }
+    if (this._formulariosSonInvalidos()) {
+      this.estaCargando = false;
+      return;
+    }
 
     try {
-      // const http$ = this._pacienteService.crear$(this.form.value);
-      // await lastValueFrom(http$);
+      const http$ = this._pacienteService.crear$(this.personalForm.value, this.socieconomicoForm.value, this.familiarForm.value);
+      await lastValueFrom(http$);
       this._toastrService.success(TEXTO_CONSULTA_EXITOSA);
-      this.matRef.close('OK');
+      this._router.navigate(['/pacientes/']);
     } catch (error) {
       this._toastrService.error(error.message.ERROR);
     } finally {
       this.estaCargando = false;
     }
+  }
+
+  async listarProvinciaPorDepartamento$(departamentoSeleccionado: string) {
+    //reiniciar combo provincias
+    this.personalForm.get('provincia').setValue(this.textoSeleccione);
+    this.provincias = [];
+
+    //reinicar combo distritos
+    this.personalForm.get('distrito').setValue(this.textoSeleccione);
+    this.distritos = [];
+
+    const http$ = this._ubigeoService.listarProvinciaPorDepartamento$(departamentoSeleccionado);
+    const respuestaServidor: ApiResponse = await lastValueFrom(http$);
+    this.provincias = respuestaServidor.data;
+  }
+
+  async listarDistritoPorProvincia$(provinciaSeleccionada: any) {
+    this.personalForm.get('distrito').setValue(this.textoSeleccione);
+    this.distritos = [];
+
+    const http$ = this._ubigeoService.listarDistritoPorProvincia$(provinciaSeleccionada);
+    const respuestaServidor = await lastValueFrom(http$);
+    this.distritos = respuestaServidor.data;
+  }
+
+  irAPantallaListar() {
+    this._router.navigate(['/pacientes/']);
   }
 }

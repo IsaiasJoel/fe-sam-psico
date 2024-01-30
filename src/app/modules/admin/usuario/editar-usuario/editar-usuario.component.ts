@@ -1,6 +1,5 @@
-import { Component, Inject } from '@angular/core';
+import { Component } from '@angular/core';
 import { AbstractControl, FormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { NACIONALIDADES, OPCIONES_SEXO } from 'src/app/shared/data/shared.data';
 import { OpcionesComboSexo } from 'src/app/shared/models/shared.models';
 import { UsuarioService } from '../usuario.service';
@@ -11,12 +10,13 @@ import { DTOUsuarioEncontrado } from '../usuario.models';
 import { ApiResponse } from 'src/app/core/models/api-response.interface';
 import { SweetAlertService } from 'src/app/core/modals/sweet-alert.service';
 import * as moment from 'moment';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
-  selector: 'app-modal-editar-usuario',
-  templateUrl: './modal-editar-usuario.component.html'
+  selector: 'app-editar-usuario',
+  templateUrl: './editar-usuario.component.html'
 })
-export class ModalEditarUsuarioComponent {
+export class EditarUsuarioComponent {
   comboSexo: OpcionesComboSexo[] = OPCIONES_SEXO;
   comboNacionalidad: string[] = NACIONALIDADES;
 
@@ -25,12 +25,12 @@ export class ModalEditarUsuarioComponent {
   estaCargandoFormulario: boolean = false;
 
   constructor(
-    @Inject(MAT_DIALOG_DATA) public data: { idUsuario: string },
-    public matRef: MatDialogRef<ModalEditarUsuarioComponent>,
     private _formBuilder: FormBuilder,
     private _usuarioService: UsuarioService,
     private _toastrService: ToastrService,
-    private _sweetAlertService: SweetAlertService
+    private _sweetAlertService: SweetAlertService,
+    private _router: Router,
+    private _activateRoute: ActivatedRoute
   ) { }
 
   ngOnInit(): void {
@@ -47,7 +47,7 @@ export class ModalEditarUsuarioComponent {
 
   private async _cargarDatosAlFormulario() {
     this.estaCargandoFormulario = true;
-    const id = this.data.idUsuario;
+    const id = this._activateRoute.snapshot.paramMap.get('id');
 
     try {
       const http$ = this._usuarioService.buscarUsuarioPorId$(id);
@@ -93,7 +93,7 @@ export class ModalEditarUsuarioComponent {
   // -----------------------------------------------------------------------------------------------------
   // @ Métodos públicos
   // -----------------------------------------------------------------------------------------------------
-  public async procesarSolicitud() {
+  async procesarSolicitud() {
     this.estaCargando = true;
     console.log(this.form);
 
@@ -106,7 +106,7 @@ export class ModalEditarUsuarioComponent {
       const http$ = this._usuarioService.editar$(this.form.value);
       await lastValueFrom(http$);
       this._toastrService.success(TEXTO_CONSULTA_EXITOSA);
-      this.matRef.close('OK');
+      this._router.navigate(['/usuarios/']);
     } catch (error) {
       this._toastrService.error(error.message.ERROR);
     } finally {
@@ -122,6 +122,9 @@ export class ModalEditarUsuarioComponent {
     return this.form.get('colegiado').value;
   }
 
+  irAPantallaListar() {
+    this._router.navigate(['/usuarios/']);
+  }
 
   // -----------------------------------------------------------------------------------------------------
   // @ Variables de control de errores en campos obligatorios

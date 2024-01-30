@@ -3,7 +3,7 @@
     <div class="">
         <div class="flex gap-2 items-center">
             <div class="font-medium text-4xl mb-2">Usuarios</div>
-            <mat-icon (click)="abrirModalCrear()" class="icon-size-md hover:cursor-pointer icon-turquesa"
+            <mat-icon (click)="irAPantallaCrear()" class="icon-size-md hover:cursor-pointer icon-turquesa"
                 [svgIcon]="'plus-circle'" matTooltip="Agregar usuario"></mat-icon>
         </div>
         <hr>
@@ -89,7 +89,7 @@
                     <th mat-header-cell *matHeaderCellDef></th>
                     <td mat-cell *matCellDef="let element">
                         <button mat-raised-button matTooltip="Editar" class="bg-amarillo"
-                            (click)="abrirModalEditarUsuario(element.id)">
+                            (click)="irAPantallaEditar(element.id)">
                             <mat-icon svgIcon="pencil"></mat-icon>
                         </button>
                     </td>

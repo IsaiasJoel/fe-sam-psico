@@ -8,3 +8,7 @@ export const OPCIONES_SEXO: OpcionesComboSexo[] = [
 ];
 
 export const NACIONALIDADES: string[] = ['PERU', 'VENEZUELA', 'COLOMBIA', 'ECUADOR'];
+
+export const SERVICIOS_BASICOS: string[] = ['LUZ', 'AGUA', 'DESAGUE', 'RECARGA DE TELEFONO'];
+
+export const TEXTO_SELECCIONE: string = 'SELECCIONE';

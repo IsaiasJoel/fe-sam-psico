@@ -6,13 +6,13 @@ import { UsuarioService } from '../usuario.service';
 import { ToastrService } from 'ngx-toastr';
 import { lastValueFrom } from 'rxjs';
 import { TEXTO_CONSULTA_EXITOSA } from 'src/app/core/utils/constants.utils';
-import { MatDialogRef } from '@angular/material/dialog';
+import { Router } from '@angular/router';
 
 @Component({
-  selector: 'app-modal-crear-usuario',
-  templateUrl: './modal-crear-usuario.component.html'
+  selector: 'app-crear-usuario',
+  templateUrl: './crear-usuario.component.html'
 })
-export class ModalCrearUsuarioComponent {
+export class CrearUsuarioComponent {
   comboSexo: OpcionesComboSexo[] = OPCIONES_SEXO;
   comboNacionalidad: string[] = NACIONALIDADES;
 
@@ -20,10 +20,10 @@ export class ModalCrearUsuarioComponent {
   estaCargando: boolean = false;
 
   constructor(
-    public matRef: MatDialogRef<ModalCrearUsuarioComponent>,
     private _formBuilder: FormBuilder,
     private _usuarioService: UsuarioService,
-    private _toastrService: ToastrService
+    private _toastrService: ToastrService,
+    private _router: Router
   ) { }
 
   ngOnInit(): void {
@@ -58,7 +58,7 @@ export class ModalCrearUsuarioComponent {
   // -----------------------------------------------------------------------------------------------------
   // @ Métodos públicos
   // -----------------------------------------------------------------------------------------------------
-  public async procesarSolicitud() {
+  async procesarSolicitud() {
     this.estaCargando = true;
 
     if (this.form.invalid) {
@@ -70,7 +70,7 @@ export class ModalCrearUsuarioComponent {
       const http$ = this._usuarioService.crear$(this.form.value);
       await lastValueFrom(http$);
       this._toastrService.success(TEXTO_CONSULTA_EXITOSA);
-      this.matRef.close('OK');
+      this._router.navigate(['/usuarios/']);
     } catch (error) {
       this._toastrService.error(error.message.ERROR);
     } finally {
@@ -80,6 +80,10 @@ export class ModalCrearUsuarioComponent {
 
   cambioSelectColegiado() {
     this.form.get('numeroColegiatura').setValue('');
+  }
+
+  regresarAListar() {
+    this._router.navigate(['/usuarios/']);
   }
 
   get esColegiado(): boolean {
@@ -119,5 +123,4 @@ export class ModalCrearUsuarioComponent {
     const control: AbstractControl = this.form.get('fechaNacimiento');
     return control.hasError('required') && control.touched;
   }
-
 }

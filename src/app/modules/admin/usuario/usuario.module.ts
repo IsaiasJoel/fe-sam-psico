@@ -1,26 +1,27 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { VoluntarioComponent } from './usuario.component';
+import { UsuarioComponent } from './usuario.component';
 import { Route, RouterModule } from '@angular/router';
 import { MaterialModule } from 'src/app/core/modules/material/material.module';
-import { UsuarioNombresCompletosPipe } from 'src/app/shared/pipes/usuario-nombres-completos.pipe';
-import { UsuarioEdadPipe } from 'src/app/shared/pipes/usuario-edad.pipe';
-import { ModalCrearUsuarioComponent } from './modal-crear-usuario/modal-crear-usuario.component';
-import { ModalEditarUsuarioComponent } from './modal-editar-usuario/modal-editar-usuario.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { NgxMaskModule } from "ngx-mask";
 import { SharedModule } from 'src/app/shared/shared.module';
+import { CrearUsuarioComponent } from './crear-usuario/crear-usuario.component';
+import { EditarUsuarioComponent } from './editar-usuario/editar-usuario.component';
 
 const routes: Route[] = [
   // { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
-  { path: '', component: VoluntarioComponent },
+  { path: '', component: UsuarioComponent },
+  { path: 'crear', component: CrearUsuarioComponent },
+  { path: ':id', component: EditarUsuarioComponent },
 ];
 
 @NgModule({
   declarations: [
-    VoluntarioComponent,
-    ModalCrearUsuarioComponent,
-    ModalEditarUsuarioComponent
+    UsuarioComponent,
+    EditarUsuarioComponent,
+    CrearUsuarioComponent,
+    EditarUsuarioComponent
   ],
   imports: [
     CommonModule,
