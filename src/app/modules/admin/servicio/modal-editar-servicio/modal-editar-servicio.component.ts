@@ -4,7 +4,6 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { ServiciosService } from '../servicios.service';
 import { lastValueFrom } from 'rxjs';
 import { ApiResponse } from 'src/app/core/models/api-response.interface';
-import { DTOServicioCrearEditarRequest } from '../servicio.model';
 
 @Component({
   selector: 'app-modal-editar-servicio',

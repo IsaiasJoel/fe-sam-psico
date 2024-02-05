@@ -1,1 +1,46 @@
-<p>modal-crear-ambiente works!</p>
+<div class="p-4 flex flex-col gap-4">
+    <!-- Cabecera -->
+    <div>
+        <div class="border-b-2 font-medium text-lg pb-2">Crear ambiente</div>
+    </div>
+
+    <!-- Cuerpo -->
+    <mat-dialog-content>
+        <form [formGroup]="form" class="flex flex-col gap-4" style="width: 20rem;">
+            <div>
+                <div class="text-label">Nombre</div>
+                <mat-form-field class="w-full" appearance="outline">
+                    <input matInput formControlName="nombre">
+                </mat-form-field>
+            </div>
+            <div>
+                <div class="text-label">Ubicación</div>
+                <mat-form-field class="w-full" appearance="outline">
+                    <input matInput formControlName="ubicacion">
+                </mat-form-field>
+            </div>
+            <div>
+                <div class="text-label">Aforo</div>
+                <mat-form-field class="w-full" appearance="outline">
+                    <input matInput formControlName="aforo" mask="9*">
+                </mat-form-field>
+            </div>
+            <div>
+                <div class="text-label">Descripción</div>
+                <mat-form-field class="w-full" appearance="outline">
+                    <input matInput formControlName="descripcion">
+                </mat-form-field>
+            </div>
+        </form>
+    </mat-dialog-content>
+
+    <!-- Pie -->
+    <mat-dialog-actions class="flex self-end">
+        <button mat-raised-button mat-dialog-close (click)="matRef.close()">Cancelar</button>
+        <button mat-raised-button class="bg-azul disabled:bg-gris" cdkFocusInitial (click)="procesarSolicitud()"
+            [disabled]="estaCargando">
+            <span *ngIf="!estaCargando" class="text-white">Guardar</span>
+            <span *ngIf="estaCargando" class="text-white">Cargando...</span>
+        </button>
+    </mat-dialog-actions>
+</div>
