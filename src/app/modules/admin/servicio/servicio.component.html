@@ -4,7 +4,7 @@
         <div class="flex gap-2 items-center">
             <div class="font-medium text-4xl mb-2">Servicios</div>
             <mat-icon class="icon-size-md hover:cursor-pointer icon-turquesa" [svgIcon]="'plus-circle'"
-                matTooltip="Agregar servicio"></mat-icon>
+                matTooltip="Agregar servicio" (click)="abrirModalCrear()"></mat-icon>
         </div>
         <hr>
     </div>
@@ -22,7 +22,7 @@
 
                 <ng-container matColumnDef="costo">
                     <th mat-header-cell *matHeaderCellDef> Costo </th>
-                    <td mat-cell *matCellDef="let element"> {{element.dni}} </td>
+                    <td mat-cell *matCellDef="let element"> S/ {{element.costo}} </td>
                 </ng-container>
 
                 <ng-container matColumnDef="estado">
