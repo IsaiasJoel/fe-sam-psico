@@ -51,7 +51,7 @@ export class IniciarSesionComponent {
   }
 
   private _mostrarMensajeSesionExpirada(): void {
-    if (this._authService.tokenVencido) {
+    if (!this._authService.tokenVencido) {
       this._toastrCustomService.mostrar('Por favor ingrese nuevamente', 'Su sesión expiró', 'Warning');
     }
   }
