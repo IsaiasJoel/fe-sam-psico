@@ -43,10 +43,10 @@ export class IniciarSesionComponent {
   // -----------------------------------------------------------------------------------------------------
   private _crearFormulario() {
     this.signInForm = this._formBuilder.group({
-      // lnevado@nicmaish.org
-      // lnevado
-      usuario: ['', [Validators.required]],
-      contrasenia: ['', Validators.required]
+      // 
+      // 
+      usuario: ['lnevado@nicmaish.org', [Validators.required]],
+      contrasenia: ['lnevado', Validators.required]
     });
   }
 

@@ -47,7 +47,7 @@ export class EditarUsuarioComponent {
 
   private async _cargarDatosAlFormulario() {
     this.estaCargandoFormulario = true;
-    const id = this._activateRoute.snapshot.paramMap.get('id');
+    const id: number = Number.parseInt(this._activateRoute.snapshot.paramMap.get('id'));
 
     try {
       const http$ = this._usuarioService.buscarUsuarioPorId$(id);

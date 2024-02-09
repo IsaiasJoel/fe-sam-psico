@@ -1,0 +1,110 @@
+<div class="p-4 flex flex-col gap-4">
+    <!-- Cabecera -->
+    <div>
+        <div class="border-b-2 font-medium text-lg pb-2">Horario de atención</div>
+    </div>
+
+    <!-- Cuerpo -->
+    <mat-dialog-content>
+        <div class="flex flex-col justify-between gap-6">
+            <div class="flex gap-4 items-cemter justify-between">
+                <mat-checkbox class="example-margin">Lunes</mat-checkbox>
+                <div class="flex gap-4">
+                    <div>
+                        <!-- <div>Desde</div> -->
+                        <input type="time">
+                    </div>
+                    <div>
+                        <!-- <div>Hasta</div> -->
+                        <input type="time">
+                    </div>
+                </div>
+            </div>
+            <div class="flex gap-4 items-cemter justify-between">
+                <mat-checkbox class="example-margin">Martes</mat-checkbox>
+                <div class="flex gap-4">
+                    <div>
+                        <!-- <div>Desde</div> -->
+                        <input type="time">
+                    </div>
+                    <div>
+                        <!-- <div>Hasta</div> -->
+                        <input type="time">
+                    </div>
+                </div>
+            </div>
+            <div class="flex gap-4 items-cemter justify-between">
+                <mat-checkbox class="example-margin">Miércoles</mat-checkbox>
+                <div class="flex gap-4">
+                    <div>
+                        <!-- <div>Desde</div> -->
+                        <input type="time">
+                    </div>
+                    <div>
+                        <!-- <div>Hasta</div> -->
+                        <input type="time">
+                    </div>
+                </div>
+            </div>
+            <div class="flex gap-4 items-cemter justify-between">
+                <mat-checkbox class="example-margin">Jueves</mat-checkbox>
+                <div class="flex gap-4">
+                    <div>
+                        <!-- <div>Desde</div> -->
+                        <input type="time">
+                    </div>
+                    <div>
+                        <!-- <div>Hasta</div> -->
+                        <input type="time">
+                    </div>
+                </div>
+            </div>
+            <div class="flex gap-4 items-cemter justify-between">
+                <mat-checkbox class="example-margin">Viernes</mat-checkbox>
+                <div class="flex gap-4">
+                    <div>
+                        <!-- <div>Desde</div> -->
+                        <input type="time">
+                    </div>
+                    <div>
+                        <!-- <div>Hasta</div> -->
+                        <input type="time">
+                    </div>
+                </div>
+            </div>
+            <div class="flex gap-4 items-cemter justify-between">
+                <mat-checkbox class="example-margin">Sábado</mat-checkbox>
+                <div class="flex gap-4">
+                    <div>
+                        <!-- <div>Desde</div> -->
+                        <input type="time">
+                    </div>
+                    <div>
+                        <!-- <div>Hasta</div> -->
+                        <input type="time">
+                    </div>
+                </div>
+            </div>
+            <div class="flex gap-4 items-cemter justify-between">
+                <mat-checkbox class="example-margin">Domingo</mat-checkbox>
+                <div class="flex gap-4">
+                    <div>
+                        <!-- <div>Desde</div> -->
+                        <input type="time">
+                    </div>
+                    <div>
+                        <!-- <div>Hasta</div> -->
+                        <input type="time">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </mat-dialog-content>
+
+    <!-- Pie -->
+    <mat-dialog-actions class="flex self-end">
+        <button mat-raised-button mat-dialog-close class="bg-azul" (click)="matRef.close()">
+            <span class="text-white">OK</span>
+        </button>
+    </mat-dialog-actions>
+</div>

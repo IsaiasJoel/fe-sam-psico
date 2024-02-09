@@ -51,6 +51,11 @@ mat-icon {
     margin: 0 !important;
 }
 
+// eliminar espacio debajo de los input
+.mat-mdc-form-field-subscript-wrapper,
+.mat-mdc-form-field-bottom-align {
+    display: none;
+}
 
 .icon-size-xs {
     transform: scale(0.3);
@@ -131,4 +136,9 @@ mat-error{
 .text-label{
     color:var(--color-negro);
     opacity: 80%;
+}
+
+.texto-label-azul{
+    color:var(--color-azul);
+    font-weight: 300;
 }

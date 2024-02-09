@@ -12,6 +12,8 @@ import { TEXTO_CONSULTA_EXITOSA, TEXTO_CONSULTA_FALLO } from 'src/app/core/utils
 import { SweetAlertService } from 'src/app/core/modals/sweet-alert.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Router } from '@angular/router';
+import { ModalVerUsuarioComponent } from './modal-ver-usuario/modal-ver-usuario.component';
+import { ModalUsuarioHorarioAtencionComponent } from './modal-usuario-horario-atencion/modal-usuario-horario-atencion.component';
 
 @Component({
   selector: 'usuario',
@@ -21,7 +23,7 @@ export class UsuarioComponent {
   @ViewChild(MatPaginator) _paginator: MatPaginator;
   @ViewChild(MatSort) _sort: MatSort;
 
-  columnas: string[] = ['nombresApellidos', 'dni', 'edad', 'carrera', 'especialidad', 'casosAsignados', 'estado', 'editar', 'eliminar'];
+  columnas: string[] = ['nombresApellidos', 'dni', 'carrera', 'especialidad', 'casosAsignados', 'horario', 'estado', 'editar', 'eliminar'];
   dataSource: MatTableDataSource<DTOUsuarioListar>;
   estaCargando: boolean = true;
 
@@ -75,7 +77,7 @@ export class UsuarioComponent {
   }
 
   private _iniciarFiltros() {
-    this.filtroEstado = 'xxx';
+    this.filtroEstado = 'Todos';
   }
 
   /**almacenar la respuesta del servidor en variables locales*/
@@ -174,4 +176,11 @@ export class UsuarioComponent {
   //=====================================
   // Modales
   //=====================================
+  abrirModalVerUsuario(id: number) {
+    this._matDialog.open(ModalVerUsuarioComponent, { data: { pId: id } });
+  }
+
+  abrirModalHorario(id: number) {
+    this._matDialog.open(ModalUsuarioHorarioAtencionComponent, { data: { pId: id } });
+  }
 }

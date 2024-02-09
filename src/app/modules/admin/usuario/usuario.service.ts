@@ -50,7 +50,7 @@ export class UsuarioService {
     return this._http.get<any>(currentUrl);
   }
 
-  buscarUsuarioPorId$(id: string): Observable<ApiResponse> {
+  buscarUsuarioPorId$(id: number): Observable<ApiResponse> {
     let currentUrl = `${this._url}/${id}`;
     return this._http.get<any>(currentUrl);
   }
@@ -64,7 +64,7 @@ export class UsuarioService {
     let urlActual: string = `${this._url}/page?numeroPagina=${numeroPagina}&tamanioPagina=${tamanioPagina}`;
     if (filtroDni) urlActual += `&filtroDni=${filtroDni}`;
     if (filtroNombres) urlActual += `&filtroNombres=${filtroNombres}`;
-    if (filtroEstado != 'xxx') urlActual += `&filtroEstado=${filtroEstado}`;
+    if (filtroEstado != 'Todos') urlActual += `&filtroEstado=${filtroEstado}`;
     return this._http.get<ApiResponse>(urlActual);
   }
 

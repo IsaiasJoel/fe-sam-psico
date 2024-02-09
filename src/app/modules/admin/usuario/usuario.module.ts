@@ -8,6 +8,8 @@ import { NgxMaskModule } from "ngx-mask";
 import { SharedModule } from 'src/app/shared/shared.module';
 import { CrearUsuarioComponent } from './crear-usuario/crear-usuario.component';
 import { EditarUsuarioComponent } from './editar-usuario/editar-usuario.component';
+import { ModalVerUsuarioComponent } from './modal-ver-usuario/modal-ver-usuario.component';
+import { ModalUsuarioHorarioAtencionComponent } from './modal-usuario-horario-atencion/modal-usuario-horario-atencion.component';
 
 const routes: Route[] = [
   // { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
@@ -21,7 +23,9 @@ const routes: Route[] = [
     UsuarioComponent,
     EditarUsuarioComponent,
     CrearUsuarioComponent,
-    EditarUsuarioComponent
+    EditarUsuarioComponent,
+    ModalVerUsuarioComponent,
+    ModalUsuarioHorarioAtencionComponent
   ],
   imports: [
     CommonModule,
