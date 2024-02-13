@@ -173,6 +173,10 @@ export class UsuarioComponent {
     this._router.navigate(['/usuarios/', id]);
   }
 
+  irAPantallaVerCasosAsignados(id: number) {
+    this._router.navigate(['/usuarios/', id, 'casos-asignados']);
+  }
+
   //=====================================
   // Modales
   //=====================================

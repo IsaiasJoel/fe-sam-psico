@@ -11,6 +11,7 @@ import { TEXTO_CONSULTA_EXITOSA, TEXTO_CONSULTA_FALLO } from 'src/app/core/utils
 import { PacienteService } from './paciente.service';
 import { NACIONALIDADES } from 'src/app/shared/data/shared.data';
 import { Router } from '@angular/router';
+import { DTOPacienteListar } from './paciente.models';
 
 @Component({
   selector: 'app-paciente',
@@ -22,7 +23,7 @@ export class PacienteComponent {
 
   // ,'eliminar'
   columnas: string[] = ['nombresApellidos', 'dni', 'edad', 'nacionalidad', 'sexo', 'celular', 'editar'];
-  dataSource: MatTableDataSource<any>;
+  dataSource: MatTableDataSource<DTOPacienteListar>;
   estaCargando: boolean = true;
 
   filtroDni: string;

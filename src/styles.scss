@@ -142,3 +142,12 @@ mat-error{
     color:var(--color-azul);
     font-weight: 300;
 }
+
+.link {
+    text-decoration: underline;
+    color: blue;
+
+    &:hover {
+        cursor: pointer;
+    }
+}

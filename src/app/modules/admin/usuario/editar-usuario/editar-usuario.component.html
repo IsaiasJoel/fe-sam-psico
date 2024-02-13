@@ -1,176 +1,185 @@
-<div class="h-max p-8 bg-white">
-    <!-- Cabecera -->
-    <div class="flex items-center justify-between">
-        <div class="font-medium text-4xl">Editar usuario</div>
-    </div>
-
-    <hr class="my-4">
-
-    <!-- Cuerpo -->
-    <form [formGroup]="form" *ngIf="!estaCargandoFormulario">
-        <div class="w-full flex flex-col h-full">
-            <!-- Correo -->
-            <div>
-                <div class="text-label">Correo</div>
-                <mat-form-field class="w-full">
-                    <input matInput type="text" formControlName="correo" suffix="@nicmaish.org" mask="S*">
-                    <mat-error *ngIf="correoEsRequerido">Campo obligatorio*</mat-error>
-                </mat-form-field>
-            </div>
-
-            <!-- Ap. paterno -->
-            <div>
-                <div class="text-label">Ap. Paterno</div>
-                <mat-form-field class="w-full">
-                    <input matInput type="text" formControlName="apPaterno">
-                    <mat-error *ngIf="apPaternoEsRequerido">Campo obligatorio*</mat-error>
-                </mat-form-field>
-            </div>
-
-            <!-- Ap materno -->
-            <div>
-                <div class="text-label">Ap. Materno</div>
-                <mat-form-field class="w-full">
-                    <input matInput formControlName="apMaterno">
-                    <mat-error *ngIf="apMaternoEsRequerido">Campo obligatorio*</mat-error>
-                </mat-form-field>
-            </div>
-
-            <!-- Nombres -->
-            <div>
-                <div class="text-label">Nombres</div>
-                <mat-form-field class="w-full">
-                    <input matInput formControlName="nombres">
-                    <mat-error *ngIf="nombresEsRequerido">Campo obligatorio*</mat-error>
-                </mat-form-field>
-            </div>
-
-            <!-- DNI -->
-            <div>
-                <div class="text-label">DNI</div>
-                <mat-form-field class="w-full">
-                    <input matInput formControlName="dni" mask="99999999">
-                    <mat-error *ngIf="dniEsRequerido">Campo obligatorio*</mat-error>
-                </mat-form-field>
-            </div>
-
-            <!-- FECHA NACIMIENTO -->
-            <div>
-                <div class="text-label">Fecha nacimiento</div>
-                <mat-form-field class="w-full">
-                    <input matInput formControlName="fechaNacimiento" mask="d0/M0/0000">
-                    <mat-error *ngIf="fechaNacimientoEsRequerido">Campoobligatorio*</mat-error>
-                </mat-form-field>
-            </div>
-
-            <!-- SEXO -->
-            <div>
-                <div class="text-label">Sexo</div>
-                <mat-form-field class="flex flex-col w-full">
-                    <mat-select formControlName="sexo">
-                        <mat-option [value]="item.nombre" *ngFor="let item of comboSexo">{{item.nombre}}</mat-option>
-                    </mat-select>
-                </mat-form-field>
-            </div>
-
-            <!-- CELULAR -->
-            <div>
-                <div class="text-label">Celular</div>
-                <mat-form-field class="w-full">
-                    <input matInput formControlName="celular">
-                    <mat-error></mat-error>
-                </mat-form-field>
-            </div>
-
-            <!-- NACIONALIDAD -->
-            <div>
-                <div class="text-label">Nacionalidad</div>
-                <mat-form-field class="flex flex-col w-full">
-                    <mat-select formControlName="nacionalidad">
-                        <mat-option [value]="item" *ngFor="let item of comboNacionalidad">{{item}}</mat-option>
-                    </mat-select>
-                </mat-form-field>
-            </div>
-
-            <!-- CARRERA -->
-            <div>
-                <div class="text-label">Carrera</div>
-                <mat-form-field class="w-full">
-                    <input matInput formControlName="carrera">
-                    <mat-error></mat-error>
-                </mat-form-field>
-            </div>
-
-            <!-- ESPECIALIDAD -->
-            <div>
-                <div class="text-label">Especialidad</div>
-                <mat-form-field class="w-full">
-                    <input matInput formControlName="especialidad">
-                    <mat-error></mat-error>
-                </mat-form-field>
-            </div>
-
-            <!-- UNIVERSIDAD -->
-            <div>
-                <div class="text-label">Universidad</div>
-                <mat-form-field class="w-full">
-                    <input matInput formControlName="universidad">
-                    <mat-error></mat-error>
-                </mat-form-field>
-            </div>
-
-            <!-- AÑO EGRESO -->
-            <div>
-                <div class="text-label">Año egreso</div>
-                <mat-form-field class="w-full">
-                    <input matInput formControlName="anioEgreso" mask="0000">
-                    <mat-error></mat-error>
-                </mat-form-field>
-            </div>
-
-            <!-- COLEGIADO -->
-            <div>
-                <div class="text-label">¿Es colegiado?</div>
-                <mat-form-field class="flex flex-col w-full">
-                    <mat-select formControlName="colegiado" (change)="cambioSelectColegiado()">
-                        <mat-option [value]="true">SI</mat-option>
-                        <mat-option [value]="false">NO</mat-option>
-                    </mat-select>
-                    <mat-error></mat-error>
-                </mat-form-field>
-            </div>
-
-            <!-- NUM COLEGIATURA -->
-            <div *ngIf="esColegiado">
-                <div class="text-label">Num. colegiatura</div>
-                <mat-form-field class="w-full">
-                    <input matInput formControlName="numeroColegiatura">
-                    <mat-error></mat-error>
-                </mat-form-field>
-            </div>
-
-            <!-- RESUMEN PROFESIONAL -->
-            <div>
-                <div class="text-label">Resumen profesional</div>
-                <mat-form-field class="flex flex-col col-span-4 h-full w-full">
-                    <textarea matInput formControlName="resumenProfesional" rows="3" style="resize: none;"></textarea>
-                    <mat-error></mat-error>
-                </mat-form-field>
-            </div>
+<div class="h-max p-8 bg-white grid grid-cols-6">
+    <div class="col-span-4 col-star col-start-2">
+        <!-- Cabecera -->
+        <div class="flex items-center justify-between">
+            <div class="font-medium text-4xl">Editar usuario</div>
+            <a class="flex items-center" routerLink="../">
+                <mat-icon svgIcon="pan-left"></mat-icon>
+                <span>Regresar</span>
+            </a>
         </div>
-    </form>
 
-    <div *ngIf="estaCargandoFormulario" class="mb-96 w-full flex items-center justify-center">Cargando datos...</div>
+        <hr class="my-4">
 
-    <hr class="my-4">
+        <!-- Cuerpo -->
+        <form [formGroup]="form">
+            <div class="w-full flex flex-col h-full gap-8">
+                <!-- Correo -->
+                <div>
+                    <div class="text-label">Correo</div>
+                    <mat-form-field [appearance]="'outline'" class="w-full">
+                        <input matInput type="text" formControlName="correo" suffix="@nicmaish.org" mask="S*">
+                        <mat-error *ngIf="correoEsRequerido">Campo obligatorio*</mat-error>
+                    </mat-form-field>
+                </div>
 
-    <!-- Footer -->
-    <div class="flex gap-2 justify-end">
-        <button mat-raised-button (click)="irAPantallaListar()">Cancelar</button>
-        <button mat-raised-button class="bg-azul disabled:bg-gris" (click)="procesarSolicitud()"
-            [disabled]="estaCargando">
-            <span *ngIf="!estaCargando" class="text-white">Guardar</span>
-            <span *ngIf="estaCargando" class="text-white">Guardando...</span>
-        </button>
+                <!-- Ap. paterno -->
+                <div>
+                    <div class="text-label">Ap. Paterno</div>
+                    <mat-form-field [appearance]="'outline'" class="w-full">
+                        <input matInput type="text" formControlName="apPaterno">
+                        <mat-error *ngIf="apPaternoEsRequerido">Campo obligatorio*</mat-error>
+                    </mat-form-field>
+                </div>
+
+                <!-- Ap materno -->
+                <div>
+                    <div class="text-label">Ap. Materno</div>
+                    <mat-form-field [appearance]="'outline'" class="w-full">
+                        <input matInput formControlName="apMaterno">
+                        <mat-error *ngIf="apMaternoEsRequerido">Campo obligatorio*</mat-error>
+                    </mat-form-field>
+                </div>
+
+                <!-- Nombres -->
+                <div>
+                    <div class="text-label">Nombres</div>
+                    <mat-form-field [appearance]="'outline'" class="w-full">
+                        <input matInput formControlName="nombres">
+                        <mat-error *ngIf="nombresEsRequerido">Campo obligatorio*</mat-error>
+                    </mat-form-field>
+                </div>
+
+                <!-- DNI -->
+                <div>
+                    <div class="text-label">DNI</div>
+                    <mat-form-field [appearance]="'outline'" class="w-full">
+                        <input matInput formControlName="dni" mask="99999999">
+                        <mat-error *ngIf="dniEsRequerido">Campo obligatorio*</mat-error>
+                    </mat-form-field>
+                </div>
+
+                <!-- FECHA NACIMIENTO -->
+                <div>
+                    <div class="text-label">Fecha nacimiento</div>
+                    <mat-form-field [appearance]="'outline'" class="w-full">
+                        <input matInput formControlName="fechaNacimiento" mask="d0/M0/0000">
+                        <mat-error *ngIf="fechaNacimientoEsRequerido">Campo obligatorio*</mat-error>
+                    </mat-form-field>
+                </div>
+
+                <!-- SEXO -->
+                <div>
+                    <div class="text-label">Sexo</div>
+                    <mat-form-field [appearance]="'outline'" class="flex flex-col w-full">
+                        <mat-select formControlName="sexo">
+                            <mat-option [value]="item.nombre"
+                                *ngFor="let item of comboSexo">{{item.nombre}}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+
+                <!-- CELULAR -->
+                <div>
+                    <div class="text-label">Celular</div>
+                    <mat-form-field [appearance]="'outline'" class="w-full">
+                        <input matInput formControlName="celular">
+                        <mat-error></mat-error>
+                    </mat-form-field>
+                </div>
+
+                <!-- NACIONALIDAD -->
+                <div>
+                    <div class="text-label">Nacionalidad</div>
+                    <mat-form-field [appearance]="'outline'" class="flex flex-col w-full">
+                        <mat-select formControlName="nacionalidad">
+                            <mat-option [value]="item" *ngFor="let item of comboNacionalidad">{{item}}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+
+                <!-- CARRERA -->
+                <div>
+                    <div class="text-label">Carrera</div>
+                    <mat-form-field [appearance]="'outline'" class="w-full">
+                        <input matInput formControlName="carrera">
+                        <mat-error></mat-error>
+                    </mat-form-field>
+                </div>
+
+                <!-- ESPECIALIDAD -->
+                <div>
+                    <div class="text-label">Especialidad</div>
+                    <mat-form-field [appearance]="'outline'" class="w-full">
+                        <input matInput formControlName="especialidad">
+                        <mat-error></mat-error>
+                    </mat-form-field>
+                </div>
+
+                <!-- UNIVERSIDAD -->
+                <div>
+                    <div class="text-label">Universidad</div>
+                    <mat-form-field [appearance]="'outline'" class="w-full">
+                        <input matInput formControlName="universidad">
+                        <mat-error></mat-error>
+                    </mat-form-field>
+                </div>
+
+                <!-- AÑO EGRESO -->
+                <div>
+                    <div class="text-label">Año egreso</div>
+                    <mat-form-field [appearance]="'outline'" class="w-full">
+                        <input matInput formControlName="anioEgreso" mask="0000">
+                        <mat-error></mat-error>
+                    </mat-form-field>
+                </div>
+
+                <!-- COLEGIADO -->
+                <div>
+                    <div class="text-label">¿Es colegiado?</div>
+                    <mat-form-field [appearance]="'outline'" class="flex flex-col w-full">
+                        <mat-select formControlName="colegiado" (change)="cambioSelectColegiado()">
+                            <mat-option [value]="true">SI</mat-option>
+                            <mat-option [value]="false">NO</mat-option>
+                        </mat-select>
+                        <mat-error></mat-error>
+                    </mat-form-field>
+                </div>
+
+                <!-- NUM COLEGIATURA -->
+                <div *ngIf="esColegiado">
+                    <div class="text-label">Num. colegiatura</div>
+                    <mat-form-field [appearance]="'outline'" class="w-full">
+                        <input matInput formControlName="numeroColegiatura">
+                        <mat-error></mat-error>
+                    </mat-form-field>
+                </div>
+
+                <!-- RESUMEN PROFESIONAL -->
+                <div>
+                    <div class="text-label">Resumen profesional</div>
+                    <mat-form-field [appearance]="'outline'" class="flex flex-col col-span-4 h-full w-full">
+                        <textarea matInput formControlName="resumenProfesional" rows="3"
+                            style="resize: none;"></textarea>
+                        <mat-error></mat-error>
+                    </mat-form-field>
+                </div>
+            </div>
+        </form>
+
+        <div *ngIf="estaCargandoFormulario" class="mb-96 w-full flex items-center justify-center">Cargando datos...
+        </div>
+
+        <hr class="my-4">
+
+        <!-- Footer -->
+        <div class="flex gap-2 justify-end">
+            <button mat-raised-button (click)="irAPantallaListar()">Cancelar</button>
+            <button mat-raised-button class="bg-azul disabled:bg-gris" (click)="procesarSolicitud()"
+                [disabled]="estaCargando">
+                <span *ngIf="!estaCargando" class="text-white">Guardar</span>
+                <span *ngIf="estaCargando" class="text-white">Guardando...</span>
+            </button>
+        </div>
     </div>
 </div>

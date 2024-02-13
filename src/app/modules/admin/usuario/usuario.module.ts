@@ -10,12 +10,14 @@ import { CrearUsuarioComponent } from './crear-usuario/crear-usuario.component';
 import { EditarUsuarioComponent } from './editar-usuario/editar-usuario.component';
 import { ModalVerUsuarioComponent } from './modal-ver-usuario/modal-ver-usuario.component';
 import { ModalUsuarioHorarioAtencionComponent } from './modal-usuario-horario-atencion/modal-usuario-horario-atencion.component';
+import { CasosAsignadosPorUsuarioComponent } from './casos-asignados-por-usuario/casos-asignados-por-usuario.component';
 
 const routes: Route[] = [
   // { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
   { path: '', component: UsuarioComponent },
   { path: 'crear', component: CrearUsuarioComponent },
   { path: ':id', component: EditarUsuarioComponent },
+  { path: ':id/casos-asignados', component: CasosAsignadosPorUsuarioComponent },
 ];
 
 @NgModule({
@@ -25,7 +27,8 @@ const routes: Route[] = [
     CrearUsuarioComponent,
     EditarUsuarioComponent,
     ModalVerUsuarioComponent,
-    ModalUsuarioHorarioAtencionComponent
+    ModalUsuarioHorarioAtencionComponent,
+    CasosAsignadosPorUsuarioComponent
   ],
   imports: [
     CommonModule,

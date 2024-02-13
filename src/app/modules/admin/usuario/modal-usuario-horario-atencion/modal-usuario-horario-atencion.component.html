@@ -8,61 +8,61 @@
     <mat-dialog-content>
         <form [formGroup]="form">
             <div class="flex flex-col justify-between gap-6">
-                <div class="flex gap-4 items-cemter justify-between" formGroupName="lunes">
-                    <mat-checkbox class="example-margin" formControlName="activo">Lunes</mat-checkbox>
+                <div class="flex gap-6 items-center justify-between" formGroupName="lunes">
+                    <mat-checkbox color="primary" formControlName="activo">Lunes</mat-checkbox>
                     <div class="flex gap-4" *ngIf="this.form.get('lunes').get('activo').value">
                         <input type="time" formControlName="horaInicio">
                         <input type="time" formControlName="horaFin">
                     </div>
-                    <div *ngIf="!this.form.get('lunes').get('activo').value">SIN ATENCIÓN</div>
+                    <div *ngIf="!this.form.get('lunes').get('activo').value" class="text-sm">SIN ATENCIÓN</div>
                 </div>
-                <div class="flex gap-4 items-cemter justify-between" formGroupName="martes">
-                    <mat-checkbox class="example-margin" formControlName="activo">Martes</mat-checkbox>
+                <div class="flex gap-6 items-center justify-between" formGroupName="martes">
+                    <mat-checkbox color="primary" formControlName="activo">Martes</mat-checkbox>
                     <div class="flex gap-4" *ngIf="this.form.get('martes').get('activo').value">
                         <input type="time" formControlName="horaInicio">
                         <input type="time" formControlName="horaFin">
                     </div>
-                    <div *ngIf="!this.form.get('martes').get('activo').value">SIN ATENCIÓN</div>
+                    <div *ngIf="!this.form.get('martes').get('activo').value" class="text-sm">SIN ATENCIÓN</div>
                 </div>
-                <div class="flex gap-4 items-cemter justify-between" formGroupName="miercoles">
-                    <mat-checkbox class="example-margin" formControlName="activo">Miércoles</mat-checkbox>
+                <div class="flex gap-6 items-center justify-between" formGroupName="miercoles">
+                    <mat-checkbox color="primary" formControlName="activo">Miércoles</mat-checkbox>
                     <div class="flex gap-4" *ngIf="this.form.get('miercoles').get('activo').value">
                         <input type="time" formControlName="horaInicio">
                         <input type="time" formControlName="horaFin">
                     </div>
-                    <div *ngIf="!this.form.get('miercoles').get('activo').value">SIN ATENCIÓN</div>
+                    <div *ngIf="!this.form.get('miercoles').get('activo').value" class="text-sm">SIN ATENCIÓN</div>
                 </div>
-                <div class="flex gap-4 items-cemter justify-between" formGroupName="jueves">
-                    <mat-checkbox class="example-margin" formControlName="activo">Jueves</mat-checkbox>
+                <div class="flex gap-6 items-center justify-between" formGroupName="jueves">
+                    <mat-checkbox color="primary" formControlName="activo">Jueves</mat-checkbox>
                     <div class="flex gap-4" *ngIf="this.form.get('jueves').get('activo').value">
                         <input type="time" formControlName="horaInicio">
                         <input type="time" formControlName="horaFin">
                     </div>
-                    <div *ngIf="!this.form.get('jueves').get('activo').value">SIN ATENCIÓN</div>
+                    <div *ngIf="!this.form.get('jueves').get('activo').value" class="text-sm">SIN ATENCIÓN</div>
                 </div>
-                <div class="flex gap-4 items-cemter justify-between" formGroupName="viernes">
-                    <mat-checkbox class="example-margin" formControlName="activo">Viernes</mat-checkbox>
+                <div class="flex gap-6 items-center justify-between" formGroupName="viernes">
+                    <mat-checkbox color="primary" formControlName="activo">Viernes</mat-checkbox>
                     <div class="flex gap-4" *ngIf="this.form.get('viernes').get('activo').value">
                         <input type="time" formControlName="horaInicio">
                         <input type="time">
                     </div>
-                    <div *ngIf="!this.form.get('viernes').get('activo').value">SIN ATENCIÓN</div>
+                    <div *ngIf="!this.form.get('viernes').get('activo').value" class="text-sm">SIN ATENCIÓN</div>
                 </div>
-                <div class="flex gap-4 items-cemter justify-between" formGroupName="sabado">
-                    <mat-checkbox class="example-margin" formControlName="activo">Sábado</mat-checkbox>
+                <div class="flex gap-6 items-center justify-between" formGroupName="sabado">
+                    <mat-checkbox color="primary" formControlName="activo">Sábado</mat-checkbox>
                     <div class="flex gap-4" *ngIf="this.form.get('sabado').get('activo').value">
                         <input type="time" formControlName="horaInicio">
                         <input type="time" formControlName="horaFin">
                     </div>
-                    <div *ngIf="!this.form.get('sabado').get('activo').value">SIN ATENCIÓN</div>
+                    <div *ngIf="!this.form.get('sabado').get('activo').value" class="text-sm">SIN ATENCIÓN</div>
                 </div>
-                <div class="flex gap-4 items-cemter justify-between" formGroupName="domingo">
-                    <mat-checkbox class="example-margin" formControlName="activo">Domingo</mat-checkbox>
+                <div class="flex gap-6 items-center justify-between" formGroupName="domingo">
+                    <mat-checkbox color="primary" formControlName="activo">Domingo</mat-checkbox>
                     <div class="flex gap-4" *ngIf="this.form.get('domingo').get('activo').value">
                         <input type="time" formControlName="horaInicio">
                         <input type="time" formControlName="horaFin">
                     </div>
-                    <div *ngIf="!this.form.get('domingo').get('activo').value">SIN ATENCIÓN</div>
+                    <div *ngIf="!this.form.get('domingo').get('activo').value" class="text-sm">SIN ATENCIÓN</div>
                 </div>
             </div>
         </form>
@@ -71,7 +71,7 @@
     <!-- Pie -->
     <mat-dialog-actions class="flex self-end">
         <button mat-raised-button mat-dialog-close class="bg-azul" (click)="matRef.close()">
-            <span class="text-white">OK</span>
+            <span class="text-white">Guardar</span>
         </button>
     </mat-dialog-actions>
 </div>
