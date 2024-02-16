@@ -124,7 +124,7 @@ mat-icon {
 
 //FIN SOBREESCRITURA 
 
-mat-error{
+mat-error {
     margin: 0 !important;
     font-size: 0.8em !important;
 }
@@ -133,13 +133,17 @@ mat-error{
     color: green;
 }
 
-.text-label{
-    color:var(--color-negro);
+.icono-rojo {
+    color: var(--color-rojo);
+}
+
+.text-label {
+    color: var(--color-negro);
     opacity: 80%;
 }
 
-.texto-label-azul{
-    color:var(--color-azul);
+.texto-label-azul {
+    color: var(--color-azul);
     font-weight: 300;
 }
 

@@ -60,16 +60,52 @@
         </div>
         <div class="mt-4 flex flex-col gap-4">
             <!-- Este va a iterar -->
-            <div class="w-full bg-white">
-                <div class="bg-green-600 inline-flex p-2 text-white">En proceso</div>
-                <div>Isaías Joel Domínguez Montalbán</div>
-                <div>24 años</div>
-                <div>PERU</div>
-                <div>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the
-                    industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type
-                    and scrambled it to make a type specimen book</div>
-                <div>Atenciones efectivas: 3</div>
-                <div>Atenciones canceladas: 1</div>
+            <div class="w-full bg-white rounded-md shadow-lg">
+                <div class="bg-green-600 inline-flex px-2 text-white text-xs rounded-md">En proceso</div>
+                <div class="p-4 grid grid-cols-10">
+                    <div class="col-span-2 flex flex-col gap-4">
+                        <div>
+                            <div class="font-medium text-lg">Isaías Joel Domínguez Montalbán</div>
+                            <div>24 años | PERU </div>
+                        </div>
+                        <div class="">
+                            <div class="flex items-center">
+                                <mat-icon svgIcon="check" class="icono-verde-activo"></mat-icon>
+                                <div>Atenciones efectivas: 3</div>
+                            </div>
+                            <div class="flex items-center">
+                                <mat-icon svgIcon="close" class="icono-rojo"></mat-icon>
+                                <div>Atenciones canceladas: 1</div>
+                            </div>
+                            <div>Próximas atenciones: </div>
+                        </div>
+                    </div>
+                    <div class="col-span-8 flex flex-col gap-4">
+                        <div>
+                            <div class="text-blue-500 font-medium">Motivo de consulta</div>
+                            <div>Lorem Ipsum is simply dummy text of the printing and typesetting
+                                industry.
+                                Lorem Ipsum has been the
+                                industry's standard dummy text ever since the 1500s, when an unknown printer took a
+                                galley
+                                of
+                                type
+                                and scrambled it to make a type specimen book</div>
+                        </div>
+                        <div>
+                            <div class="text-blue-500 font-medium">Diagnóstico</div>
+                            <div>Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+                                Lorem
+                                Ipsum
+                                has been the
+                                industry's standard dummy text ever since the 1500s, when an unknown printer took a
+                                galley
+                                of
+                                type
+                                and scrambled it to make a type specimen book</div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
