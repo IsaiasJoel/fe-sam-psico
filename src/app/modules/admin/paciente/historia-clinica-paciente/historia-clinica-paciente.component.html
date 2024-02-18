@@ -1,0 +1,28 @@
+<div class="p-8 flex flex-col h-full w-full">
+    <!-- Header -->
+    <div class="flex items-center justify-between w-full">
+        <div class="flex gap-2 flex-col mb-2">
+            <div class="font-medium text-4xl">{{historia.paciente}}</div>
+            <div class="text-lg">{{historia.sexo}} | {{historia.edad}} | {{historia.nacionalidad}}</div>
+        </div>
+        <a class="flex items-center">
+            <mat-icon svgIcon="pan-left"></mat-icon>
+            <span>Regresar</span>
+        </a>
+    </div>
+    <hr>
+
+    <!-- Body -->
+    <div class="mt-2 flex flex-col gap-4">
+        <div class="p-4 bg-white rounded-lg flex flex-col gap-4" *ngFor="let atencion of historia.atenciones">
+            <div>{{atencion.fechaHora}} | {{atencion.ambiente}} | {{atencion.estadoPago}}</div>
+
+            <div>{{atencion.notas}}</div>
+            <div class="flex gap-4">
+                <div *ngFor="let archivo of atencion.archivosAdjuntos">
+                    <!-- TODO: hacer los modelos de archivos -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -7,7 +7,7 @@
     <!-- Cuerpo -->
     <mat-dialog-content>
         <form [formGroup]="form">
-            <div class="flex flex-col justify-between gap-6">
+            <div class="flex flex-col justify-between gap-2">
                 <div class="flex gap-6 items-center justify-between" formGroupName="lunes">
                     <mat-checkbox color="primary" formControlName="activo">Lunes</mat-checkbox>
                     <div class="flex gap-4" *ngIf="this.form.get('lunes').get('activo').value">

@@ -11,6 +11,7 @@ import { ApiResponse } from 'src/app/core/models/api-response.interface';
 import { SweetAlertService } from 'src/app/core/modals/sweet-alert.service';
 import * as moment from 'moment';
 import { ActivatedRoute, Router } from '@angular/router';
+import { VER_USUARIO_ENCONTRADO } from '../modal-ver-usuario/modal-ver-usuario.mock';
 
 @Component({
   selector: 'app-editar-usuario',
@@ -50,9 +51,10 @@ export class EditarUsuarioComponent {
     const id: number = Number.parseInt(this._activateRoute.snapshot.paramMap.get('id'));
 
     try {
-      const http$ = this._usuarioService.buscarUsuarioPorId$(id);
-      const respuestaServidor: ApiResponse = await lastValueFrom(http$);
-      let usuario: DTOUsuarioEncontrado = respuestaServidor.data;
+      // const http$ = this._usuarioService.buscarUsuarioPorId$(id);
+      // const respuestaServidor: ApiResponse = await lastValueFrom(http$);
+
+      let usuario: DTOUsuarioEncontrado = VER_USUARIO_ENCONTRADO;
 
       //Formatear y setear la fecha
       usuario.fechaNacimiento = moment(usuario.fechaNacimiento).format(FORMATO_FECHA_DMY)

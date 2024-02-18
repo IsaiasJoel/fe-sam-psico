@@ -14,6 +14,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { ModalVerUsuarioComponent } from './modal-ver-usuario/modal-ver-usuario.component';
 import { ModalUsuarioHorarioAtencionComponent } from './modal-usuario-horario-atencion/modal-usuario-horario-atencion.component';
+import { USUARIOS } from './usuario.mock';
 
 @Component({
   selector: 'usuario',
@@ -25,7 +26,7 @@ export class UsuarioComponent {
 
   columnas: string[] = ['nombresApellidos', 'dni', 'carrera', 'especialidad', 'casosAsignados', 'horario', 'estado', 'editar', 'eliminar'];
   dataSource: MatTableDataSource<DTOUsuarioListar>;
-  estaCargando: boolean = true;
+  estaCargando: boolean = false;
 
   filtroDni: string;
   filtroNombres: string;
@@ -62,18 +63,20 @@ export class UsuarioComponent {
   // Métodos privados
   //=====================================
   private async _listar() {
-    this.estaCargando = true;
+    // this.estaCargando = true;
+    this.dataSource = new MatTableDataSource(USUARIOS);
 
-    try {
-      const http$: Observable<ApiResponse> = this._usuarioService.listarPaginacion$(this._paginator?.pageIndex, this._paginator?.pageSize, this.filtroDni, this.filtroNombres, this.filtroEstado);
-      const respServidor: ApiResponse = await lastValueFrom(http$);
-      this._cargarDatosDelServidorAlDatasource(respServidor.data);
-      this._toastr.success(TEXTO_CONSULTA_EXITOSA);
-    } catch (error) {
-      this._toastr.error(TEXTO_CONSULTA_FALLO);
-    } finally {
-      this.estaCargando = false;
-    }
+    //TODO: 
+    // try {
+    //   const http$: Observable<ApiResponse> = this._usuarioService.listarPaginacion$(this._paginator?.pageIndex, this._paginator?.pageSize, this.filtroDni, this.filtroNombres, this.filtroEstado);
+    //   const respServidor: ApiResponse = await lastValueFrom(http$);
+    //   this._cargarDatosDelServidorAlDatasource(respServidor.data);
+    //   this._toastr.success(TEXTO_CONSULTA_EXITOSA);
+    // } catch (error) {
+    //   this._toastr.error(TEXTO_CONSULTA_FALLO);
+    // } finally {
+    //   this.estaCargando = false;
+    // }
   }
 
   private _iniciarFiltros() {
@@ -95,20 +98,21 @@ export class UsuarioComponent {
   }
 
   private _suscribirseAlPaginator() {
-    if (this._paginator != undefined && this._paginator != null) {
-      // Obtener nuevamente los resultados si la paginación cambia de alguna manera
-      this._paginator.page.pipe(
-        switchMap((event) => {
-          this.pagination.tamanioTotal = event.length;
-          this.estaCargando = true;
-          return this._usuarioService.listarPaginacion$(this._paginator?.pageIndex, this._paginator?.pageSize);
-        }),
-        map((respuestaServidor) => {
-          this._cargarDatosDelServidorAlDatasource(respuestaServidor.data);
-          this.estaCargando = false;
-        })
-      ).subscribe();
-    }
+    //TODO: descomentar cuando se complete
+    // if (this._paginator != undefined && this._paginator != null) {
+    //   // Obtener nuevamente los resultados si la paginación cambia de alguna manera
+    //   this._paginator.page.pipe(
+    //     switchMap((event) => {
+    //       this.pagination.tamanioTotal = event.length;
+    //       this.estaCargando = true;
+    //       return this._usuarioService.listarPaginacion$(this._paginator?.pageIndex, this._paginator?.pageSize);
+    //     }),
+    //     map((respuestaServidor) => {
+    //       this._cargarDatosDelServidorAlDatasource(respuestaServidor.data);
+    //       this.estaCargando = false;
+    //     })
+    //   ).subscribe();
+    // }
   }
 
   //=====================================
@@ -139,30 +143,30 @@ export class UsuarioComponent {
     const ref = await this._sweetAlertService.preguntarSiNo('¿Desea deshabilitar al usuario?');
     if (!ref.isConfirmed) return;
 
-    try {
-      const http$ = this._usuarioService.habilitar$(idUsuario, 'deshabilitar');
-      await lastValueFrom(http$);
-      this._listar();
-      this._toastr.success('El usuario fue deshabilitado');
-    } catch (error) {
-      const mensaje = (error as HttpErrorResponse).error.message.ERROR;
-      this._sweetAlertService.mostrarMensaje('No se pudo deshabilitar al usuario', mensaje, 'error');
-    }
+    // try {
+    //   const http$ = this._usuarioService.habilitar$(idUsuario, 'deshabilitar');
+    //   await lastValueFrom(http$);
+    //   this._listar();
+    //   this._toastr.success('El usuario fue deshabilitado');
+    // } catch (error) {
+    //   const mensaje = (error as HttpErrorResponse).error.message.ERROR;
+    //   this._sweetAlertService.mostrarMensaje('No se pudo deshabilitar al usuario', mensaje, 'error');
+    // }
   }
 
   async habilitar(idUsuario: string) {
     const ref = await this._sweetAlertService.preguntarSiNo('¿Desea habilitar al usuario?');
     if (!ref.isConfirmed) return;
 
-    try {
-      const http$ = this._usuarioService.habilitar$(idUsuario, 'habilitar');
-      await lastValueFrom(http$);
-      this._listar();
-      this._toastr.success('El usuario fue habilitado');
-    } catch (error) {
-      const mensaje = (error as HttpErrorResponse).error.message.ERROR;
-      this._sweetAlertService.mostrarMensaje('No se pudo habilitar al usuario', mensaje, 'error');
-    }
+    // try {
+    //   const http$ = this._usuarioService.habilitar$(idUsuario, 'habilitar');
+    //   await lastValueFrom(http$);
+    //   this._listar();
+    //   this._toastr.success('El usuario fue habilitado');
+    // } catch (error) {
+    //   const mensaje = (error as HttpErrorResponse).error.message.ERROR;
+    //   this._sweetAlertService.mostrarMensaje('No se pudo habilitar al usuario', mensaje, 'error');
+    // }
   }
 
   irAPantallaCrear() {

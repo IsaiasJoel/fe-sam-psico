@@ -11,6 +11,7 @@ import { EditarUsuarioComponent } from './editar-usuario/editar-usuario.componen
 import { ModalVerUsuarioComponent } from './modal-ver-usuario/modal-ver-usuario.component';
 import { ModalUsuarioHorarioAtencionComponent } from './modal-usuario-horario-atencion/modal-usuario-horario-atencion.component';
 import { CasosAsignadosPorUsuarioComponent } from './casos-asignados-por-usuario/casos-asignados-por-usuario.component';
+import { ModalAtencionesCanceladasComponent } from './casos-asignados-por-usuario/modal-atenciones-canceladas/modal-atenciones-canceladas.component';
 
 const routes: Route[] = [
   // { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
@@ -28,7 +29,8 @@ const routes: Route[] = [
     EditarUsuarioComponent,
     ModalVerUsuarioComponent,
     ModalUsuarioHorarioAtencionComponent,
-    CasosAsignadosPorUsuarioComponent
+    CasosAsignadosPorUsuarioComponent,
+    ModalAtencionesCanceladasComponent
   ],
   imports: [
     CommonModule,

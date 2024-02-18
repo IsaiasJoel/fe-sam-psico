@@ -91,8 +91,11 @@
 
                 <ng-container matColumnDef="casosAsignados">
                     <th mat-header-cell *matHeaderCellDef> Casos asignados </th>
-                    <td mat-cell *matCellDef="let element" class="link"
-                        (click)="irAPantallaVerCasosAsignados(element.id)"> 2 </td>
+                    <td mat-cell *matCellDef="let element">
+                        <div *ngIf="element.casosAsignados > 0" class="inline-flex hover:cursor-pointer hover:shadow-md hover:text-blue-600"
+                            (click)="irAPantallaVerCasosAsignados(element.id)" matTooltip="Ver casos asignados">{{element.casosAsignados}}</div>
+                        <div *ngIf="element.casosAsignados == 0">{{element.casosAsignados}}</div>
+                    </td>
                 </ng-container>
 
                 <ng-container matColumnDef="estado">

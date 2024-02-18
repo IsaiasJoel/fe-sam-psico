@@ -4,6 +4,7 @@ import { DTOUsuarioEncontrado } from '../usuario.models';
 import { UsuarioService } from '../usuario.service';
 import { ApiResponse } from 'src/app/core/models/api-response.interface';
 import { lastValueFrom } from 'rxjs';
+import { VER_USUARIO_ENCONTRADO } from './modal-ver-usuario.mock';
 
 @Component({
   selector: 'app-modal-ver-usuario',
@@ -34,8 +35,10 @@ export class ModalVerUsuarioComponent implements OnInit {
   // Métodos privados
   //===========================================================
   private async _obtenerDatos() {
-    const http$ = this._usuarioService.buscarUsuarioPorId$(this.data.pId);
-    const respuestaServidor: ApiResponse = await lastValueFrom(http$);
-    this.usuario = respuestaServidor.data;
+    // const http$ = this._usuarioService.buscarUsuarioPorId$(this.data.pId);
+    // const respuestaServidor: ApiResponse = await lastValueFrom(http$);
+    // this.usuario = respuestaServidor.data;
+
+    this.usuario = VER_USUARIO_ENCONTRADO;
   }
 }

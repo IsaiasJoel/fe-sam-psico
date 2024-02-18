@@ -1,0 +1,32 @@
+<div class="p-4 flex flex-col gap-4">
+    <!-- Cabecera -->
+    <div>
+        <div class="border-b-2 font-medium text-lg">Atenciones canceladas | Isaías Joel Dommínguez Montalbán</div>
+    </div>
+
+    <!-- Cuerpo -->
+    <div class="flex ml-2 gap-2" *ngFor="let atencionCancelada of atencionesCanceladas">
+        <mat-icon svgIcon="close" class="icono-rojo"></mat-icon>
+        <div class="grid grid-cols-6 gap-6">
+            <div class="col-span-1">
+                <div class="texto-label-azul">Fecha cancelación</div>
+                <div>{{atencionCancelada.fechaCancelacion}}</div>
+            </div>
+            <div class="col-span-1">
+                <div class="texto-label-azul">Fecha de cita</div>
+                <div>{{atencionCancelada.fechaCita}}</div>
+            </div>
+            <div class="col-span-4">
+                <div class="texto-label-azul">Motivo</div>
+                <div>{{atencionCancelada.motivo}}</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Pie -->
+    <mat-dialog-actions class="flex self-end">
+        <button mat-raised-button mat-dialog-close class="bg-azul" (click)="matRef.close()">
+            <span class="text-white">OK</span>
+        </button>
+    </mat-dialog-actions>
+</div>
