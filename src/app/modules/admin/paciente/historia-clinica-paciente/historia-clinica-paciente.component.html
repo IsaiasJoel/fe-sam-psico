@@ -14,13 +14,36 @@
 
     <!-- Body -->
     <div class="mt-2 flex flex-col gap-4">
+        <div class="flex items-center justify-between">
+            <div class="font-semibold text-lg">Total: {{historia.atenciones.length}}</div>
+            
+            <div class="flex self-end items-center gap-2 bg-gray-200 rounded-lg p-2 cursor-pointer"
+                [matMenuTriggerFor]="menu">
+                <mat-icon svgIcon="filter-variant"></mat-icon>
+                <div>Ordenar</div>
+            </div>
+            <mat-menu #menu="matMenu">
+                <button mat-menu-item>
+                    <mat-icon svgIcon="order-alphabetical-ascending"></mat-icon>
+                    <div>Más reciente</div>
+                </button>
+                <button mat-menu-item>
+                    <mat-icon svgIcon="order-alphabetical-descending"></mat-icon>
+                    <div>Más antiguo</div>
+                </button>
+            </mat-menu>
+        </div>
+
         <div class="p-4 bg-white rounded-lg flex flex-col gap-4" *ngFor="let atencion of historia.atenciones">
             <div>{{atencion.fechaHora}} | {{atencion.ambiente}} | {{atencion.estadoPago}}</div>
 
             <div>{{atencion.notas}}</div>
             <div class="flex gap-4">
-                <div *ngFor="let archivo of atencion.archivosAdjuntos">
-                    <!-- TODO: hacer los modelos de archivos -->
+                <div *ngFor="let archivo of atencion.archivosAdjuntos" class="flex">
+                    <div class="flex flex-col items-center w-24 p-3 rounded-md hover:shadow-xl hover:cursor-pointer">
+                        <img src="../../../../../assets/images/icono-pdf.webp" alt="">
+                        <div>{{archivo.nombre}}</div>
+                    </div>
                 </div>
             </div>
         </div>
