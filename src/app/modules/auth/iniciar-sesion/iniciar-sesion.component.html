@@ -1,51 +1,107 @@
-<!-- Contenedor -->
-<div class="flex flex-col justify-center items-center h-full w-full">
-    <!-- Principal -->
-    <div class="border rounded-lg p-8 shadow-xl bg-white">
-        <div class="flex basis-2/3 justify-center items-center">
+<div
+    class="flex flex-col h-full sm:flex-row items-center md:items-start sm:justify-center md:justify-start flex-auto min-w-0">
+    <div
+        class="md:flex md:items-center md:justify-end w-full sm:w-auto md:h-full md:w-1/2 py-8 px-4 sm:p-12 md:p-16 sm:rounded-2xl md:rounded-none sm:shadow md:shadow-none sm:bg-card">
+        <div class="w-full max-w-80 sm:w-80 mx-auto sm:mx-0">
+
+            <!-- Title -->
+            <div class="mt-8 text-4xl font-extrabold tracking-tight leading-tight text-center">Iniciar sesión</div>
+            <div class="flex mt-0.5 font-medium items-center justify-center">
+                <img src="assets/images/avatar.webp" alt="" width="50%">
+            </div>
+
             <!-- Sign in form -->
-            <form class="flex flex-col gap-4" [formGroup]="signInForm" (submit)="procesarSolicitud()"
-                #signInNgForm="ngForm">
-                <div class="font-serif opacity-60">
-                    <div class="font-medium text-sm text-center">Sistema de Apoyo Médico</div>
-                    <div class="font-bold text-4xl text-center">SAM</div>
+            <form class="mt-8 flex flex-col gap-4" [formGroup]="signInForm" #signInNgForm="ngForm">
+
+                <!-- Email field -->
+                <div>
+                    <div class="text-label">Correo</div>
+                    <mat-form-field class="w-full">
+                        <input id="email" matInput formControlName="usuario">
+                        <!-- <mat-error *ngIf="signInForm.get('email').hasError('required')">
+                            Email address is required
+                        </mat-error>
+                        <mat-error *ngIf="signInForm.get('email').hasError('email')">
+                            Please enter a valid email address
+                        </mat-error> -->
+                    </mat-form-field>
                 </div>
 
-                <div class="flex flex-col">
-                    <!-- username -->
-                    <mat-form-field>
-                        <mat-label>Usuario</mat-label>
-                        <input matInput type="text" formControlName="usuario">
-                        <mat-error *ngIf="signInForm.get('usuario').hasError('required')">
-                            Campo obligatorio*
-                        </mat-error>
-                    </mat-form-field>
-
-                    <!-- Contrasenia -->
-                    <mat-form-field class="flex items-end">
-                        <mat-label>Contraseña</mat-label>
-                        <input matInput type="password" formControlName="contrasenia" #passwordField />
+                <!-- Password field -->
+                <div>
+                    <div class="text-label">Contraseña</div>
+                    <mat-form-field class="w-full">
+                        <input matInput type="password" #passwordField formControlName="contrasenia">
                         <button mat-icon-button type="button"
-                            (click)="passwordField.type === 'password'? (passwordField.type = 'text'): (passwordField.type = 'password')"
+                            (click)="passwordField.type === 'password' ? passwordField.type = 'text' : passwordField.type = 'password'"
                             matSuffix>
                             <mat-icon class="icon-size-5" *ngIf="passwordField.type === 'password'"
                                 [svgIcon]="'eye'"></mat-icon>
                             <mat-icon class="icon-size-5" *ngIf="passwordField.type === 'text'"
                                 [svgIcon]="'eye-off'"></mat-icon>
                         </button>
-                        <mat-error *ngIf="false"> Campo obliagtorio* </mat-error>
+                        <!-- <mat-error>
+                            Password is required
+                        </mat-error> -->
                     </mat-form-field>
                 </div>
 
-                <mat-error *ngIf="mensajeError">{{mensajeError}}</mat-error>
-
                 <!-- Submit button -->
-                <button class="flex items-center justify-center w-full bg-azul py-4 rounded-md hover:shadow-md disabled:bg-gris"
-                    type="submit" [disabled]="estaCargando">
-                    <span *ngIf="!estaCargando" class="text-white font-medium"> Entrar </span>
-                    <span *ngIf="estaCargando" class="text-white font-medium"> Entrando... </span>
+                <button class="fuse-mat-button-large w-full mt-6" mat-flat-button [color]="'primary'" (click)="procesarSolicitud()">
+                    <span>
+                        Entrar
+                    </span>
                 </button>
             </form>
+        </div>
+    </div>
+    <div
+        class="relative hidden md:flex flex-auto items-center justify-center w-1/2 h-full p-16 lg:px-28 overflow-hidden bg-gray-800 dark:border-l">
+        <!-- Background - @formatter:off -->
+        <!-- Rings -->
+        <svg class="absolute inset-0 pointer-events-none" viewBox="0 0 960 540" width="100%" height="100%"
+            preserveAspectRatio="xMidYMax slice" xmlns="http://www.w3.org/2000/svg">
+            <g class="text-gray-700 opacity-25" fill="none" stroke="currentColor" stroke-width="100">
+                <circle r="234" cx="196" cy="23"></circle>
+                <circle r="234" cx="790" cy="491"></circle>
+            </g>
+        </svg>
+        <!-- Dots -->
+        <svg class="absolute -top-16 -right-16 text-gray-700" viewBox="0 0 220 192" width="220" height="192"
+            fill="none">
+            <defs>
+                <pattern id="837c3e70-6c3a-44e6-8854-cc48c737b659" x="0" y="0" width="20" height="20"
+                    patternUnits="userSpaceOnUse">
+                    <rect x="0" y="0" width="4" height="4" fill="currentColor"></rect>
+                </pattern>
+            </defs>
+            <rect width="220" height="192" fill="url(#837c3e70-6c3a-44e6-8854-cc48c737b659)"></rect>
+        </svg>
+        <!-- @formatter:on -->
+        <!-- Content -->
+        <div class="z-10 relative w-full max-w-2xl">
+            <div class="text-7xl font-bold leading-none text-gray-100">
+                <div>Bienvenidos a </div>
+                <div>SAM</div>
+            </div>
+            <div class="mt-6 text-lg tracking-tight leading-6 text-gray-400">
+                El Sistema de Apoyo Médico es un software diseñado para dar soporte a las operaciones del Proyecto
+                Centro de
+                Escucha de la Organización Nic Maish.
+            </div>
+            <div class="mt-8">
+                <div class="flex flex-0 items-center -space-x-1.5">
+                    <img class="flex-0 w-10 h-10 rounded-full ring-4 ring-offset-1 ring-gray-800 ring-offset-gray-800 object-cover"
+                        src="assets/images/logo-centro-escucha.webp">
+                    <img class="flex-0 w-10 h-10 rounded-full ring-4 ring-offset-1 ring-gray-800 ring-offset-gray-800 object-cover"
+                        src="assets/images/logo-amautas.webp">
+                    <img class="flex-0 w-10 h-10 rounded-full ring-4 ring-offset-1 ring-gray-800 ring-offset-gray-800 object-cover"
+                        src="assets/images/logo-contigo.webp">
+                    <img class="flex-0 w-10 h-10 rounded-full ring-4 ring-offset-1 ring-gray-800 ring-offset-gray-800 object-cover"
+                        src="assets/images/logo-despegue-adolescente.webp">
+                </div>
+                <div class="mt-8 font-medium tracking-tight text-gray-400">#SaberParaServir</div>
+            </div>
         </div>
     </div>
 </div>

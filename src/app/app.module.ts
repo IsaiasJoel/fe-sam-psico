@@ -16,6 +16,7 @@ import { LayoutComponent } from './layout/layout.component';
 import { BasicNavigationComponent } from './layout/basic-navigation/basic-navigation.component';
 import { CollapsableNavigationComponent } from './layout/collapsable-navigation/collapsable-navigation.component';
 import { NgxMaskModule } from 'ngx-mask';
+import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
 
 export function tokenGetter() {
   return sessionStorage.getItem(environment.TOKEN_NAME);
@@ -49,7 +50,8 @@ export function tokenGetter() {
     NgxMaskModule.forRoot(),
   ],
   providers: [
-    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
+    {provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: {appearance: 'outline'}}
   ],
   bootstrap: [AppComponent]
 })

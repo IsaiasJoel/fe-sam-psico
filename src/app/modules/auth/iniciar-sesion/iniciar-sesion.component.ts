@@ -17,7 +17,7 @@ export class IniciarSesionComponent {
   estaCargando: boolean = false;
   mensajeError: string;
 
-  @ViewChild('signInNgForm') public signInNgForm: NgForm;
+  // @ViewChild('signInNgForm') public signInNgForm: NgForm;
 
   signInForm: UntypedFormGroup;
 
@@ -43,8 +43,6 @@ export class IniciarSesionComponent {
   // -----------------------------------------------------------------------------------------------------
   private _crearFormulario() {
     this.signInForm = this._formBuilder.group({
-      // 
-      // 
       usuario: ['lnevado@nicmaish.org', [Validators.required]],
       contrasenia: ['lnevado', Validators.required]
     });
