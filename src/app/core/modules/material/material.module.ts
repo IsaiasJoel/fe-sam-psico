@@ -34,6 +34,7 @@ import { MatListModule } from '@angular/material/list';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { FormsModule } from '@angular/forms';
 import { ToastrModule } from 'ngx-toastr';
+import { NgApexchartsModule } from 'ng-apexcharts';
 
 @NgModule({
   declarations: [],
@@ -72,7 +73,8 @@ import { ToastrModule } from 'ngx-toastr';
     MatToolbarModule,
     MatListModule,
     MatSnackBarModule,
-    MatChipsModule
+    MatChipsModule,
+    NgApexchartsModule
   ],
   providers: [
     { provide: MatPaginatorIntl, useClass: MatPaginatorImpl },

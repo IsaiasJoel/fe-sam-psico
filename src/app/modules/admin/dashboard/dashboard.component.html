@@ -1,10 +1,202 @@
-<div class="p-4 flex flex-col h-full">
+<div class="flex flex-col flex-auto min-w-0">
+
     <!-- Header -->
     <div class="">
-        <div class="font-medium text-4xl">Dashboard</div>
-        <p></p>
+        <div class="flex flex-col w-full max-w-screen-xl mx-auto px-6">
+            <div class="flex flex-col sm:flex-row flex-auto sm:items-center min-w-0 my-4 sm:my-8">
+                <!-- Avatar and name -->
+                <div class="flex flex-auto items-center min-w-0">
+                    <div class="flex flex-col min-w-0">
+                        <div
+                            class="text-2xl md:text-5xl font-semibold tracking-tight leading-7 md:leading-snug truncate">
+                            ¡Bienvenido, Luis!</div>
+                    </div>
+                </div>
+                <!-- Actions -->
+                <!-- <div class="flex items-center mt-6 sm:mt-0 sm:ml-2 space-x-3">
+                    <button class="bg-accent" mat-flat-button [color]="'primary'" type="button">
+                        <span class="ml-2">Exportar reporte</span>
+                    </button>
+                </div> -->
+            </div>
+        </div>
     </div>
 
-    <!-- Contenido -->
-    <div class="text-5xl mt-4">¡Esta página se encuentra en mantenimiento!</div>
+    <!-- Main -->
+    <div class="flex-auto -mt-px pt-4 sm:pt-6">
+        <div class="w-full max-w-screen-xl mx-auto">
+            <!-- Tabs -->
+            <mat-tab-group class="sm:px-2" mat-stretch-tabs="false" [animationDuration]="'0'">
+
+                <!-- Home -->
+                <mat-tab label="Centro de escucha">
+                    <ng-template matTabContent>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 w-full min-w-0">
+
+                            <!-- Item resumen -->
+                            <ng-container *ngFor="let item of data.resumenAtenciones">
+                                <div class="flex flex-col flex-auto bg-card shadow rounded-2xl overflow-hidden">
+                                    <div class="flex flex-col items-center py-4" [ngClass]="item.claseColor">
+                                        <div class="text-7xl sm:text-8xl font-bold tracking-tight leading-none">
+                                            {{item.valor}}</div>
+                                        <div class="text-lg font-medium ">{{item.titulo}}</div>
+                                    </div>
+                                </div>
+                            </ng-container>
+
+                            <!-- Github issues summary -->
+                            <div
+                                class="sm:col-span-2 md:col-span-4 flex flex-col flex-auto p-6 bg-card shadow rounded-2xl overflow-hidden">
+                                <div class="flex flex-col sm:flex-row items-start justify-between">
+                                    <div class="text-lg font-medium tracking-tight leading-6 truncate">Resumen</div>
+                                </div>
+                                <div class="grid grid-cols-1 lg:grid-cols-2 grid-flow-row gap-6 w-full mt-8 sm:mt-4">
+                                    <!-- New vs. Closed -->
+                                    <div class="flex flex-col flex-auto">
+                                        <div class="font-medium text-secondary">Casos atendidos</div>
+                                        <div class="flex flex-col flex-auto">
+                                            <apx-chart class="flex-auto w-full h-80"
+                                                [chart]="chartCasosAtendidos.chart"
+                                                [colors]="chartCasosAtendidos.colors"
+                                                [dataLabels]="chartCasosAtendidos.dataLabels"
+                                                [grid]="chartCasosAtendidos.grid"
+                                                [labels]="chartCasosAtendidos.labels"
+                                                [legend]="chartCasosAtendidos.legend"
+                                                [plotOptions]="chartCasosAtendidos.plotOptions"
+                                                [series]="chartCasosAtendidos.series"
+                                                [states]="chartCasosAtendidos.states"
+                                                [stroke]="chartCasosAtendidos.stroke"
+                                                [tooltip]="chartCasosAtendidos.tooltip"
+                                                [xaxis]="chartCasosAtendidos.xaxis"
+                                                [yaxis]="chartCasosAtendidos.yaxis">
+                                            </apx-chart>
+                                        </div>
+                                    </div>
+                                    <!-- Overview -->
+                                    <div class="flex flex-col">
+                                        <div class="font-medium text-secondary flex gap-2 items-center">
+                                            <div>Recaudación</div>
+                                            <mat-icon svgIcon="information"
+                                                matTooltip="Por consulta efectuada"></mat-icon>
+                                        </div>
+                                        <div class="flex-auto grid grid-cols-4 gap-4 mt-6">
+                                            <!-- Total recaudado -->
+                                            <div
+                                                class="col-span-4 flex flex-col items-center justify-center py-8 px-1 rounded-2xl bg-green-50 text-green-800">
+                                                <div
+                                                    class="text-5xl sm:text-7xl font-semibold leading-none tracking-tight">
+                                                    S/{{data.recaudacion.totalRecaudado}}
+                                                </div>
+                                                <div class="mt-1 text-sm sm:text-lg font-medium">Total recaudado</div>
+                                            </div>
+                                            <!-- total atenciones -->
+                                            <button
+                                                class="col-span-2 sm:col-span-1 flex flex-col items-center justify-center py-8  px-1 rounded-2xl bg-blue-50 text-blue-800 text-secondary hover:shadow-lg">
+                                                <div class="text-5xl font-semibold leading-none tracking-tight">
+                                                    {{data.recaudacion.totalAtenciones}}
+                                                </div>
+                                                <div class="mt-1 text-sm font-medium text-center">Total atenciones</div>
+                                            </button>
+                                            <!-- Total pagadas -->
+                                            <button
+                                                class="col-span-2 sm:col-span-1 flex flex-col items-center justify-center py-8  px-1 rounded-2xl bg-green-50 text-green-800 text-secondary hover:shadow-lg">
+                                                <div class="text-5xl font-semibold leading-none tracking-tight">
+                                                    {{data.recaudacion.atencionesPagadas}}
+                                                </div>
+                                                <div class="mt-1 text-sm font-medium text-center">Atenciones pagadas
+                                                </div>
+                                            </button>
+                                            <!--Pendientes de pago -->
+                                            <button
+                                                class="col-span-2 sm:col-span-1 flex flex-col items-center justify-center py-8  px-1 rounded-2xl bg-yellow-50 text-yellow-500 text-secondary hover:shadow-lg">
+                                                <div class="text-5xl font-semibold leading-none tracking-tight">
+                                                    {{data.recaudacion.atencionesPendientesPago}}
+                                                </div>
+                                                <div class="mt-1 text-sm font-medium text-center">Atenciones pendientes
+                                                    de
+                                                    pago</div>
+                                            </button>
+                                            <!-- Sin pagar -->
+                                            <button
+                                                class="col-span-2 sm:col-span-1 flex flex-col items-center justify-center py-8  px-1 rounded-2xl bg-red-50 text-red-800 text-secondary hover:shadow-lg">
+                                                <div class="text-5xl font-semibold leading-none tracking-tight">
+                                                    {{data.recaudacion.atencionesSinPagar}}
+                                                </div>
+                                                <div class="mt-1 text-sm font-medium text-center">Atenciones sin pagar
+                                                </div>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Task distribution -->
+                            <div
+                                class="sm:col-span-2 md:col-span-4 lg:col-span-2 flex flex-col flex-auto p-6 bg-card shadow rounded-2xl overflow-hidden">
+                                <div class="flex flex-col sm:flex-row items-start justify-between">
+                                    <div class="text-lg font-medium tracking-tight leading-6 truncate">Rango de edad
+                                    </div>
+                                </div>
+                                <div class="flex flex-col flex-auto mt-6">
+                                    <apx-chart class="flex-auto w-full h-80" [chart]="chartRangoEdades.chart"
+                                        [labels]="chartRangoEdades.labels" [legend]="chartRangoEdades.legend"
+                                        [plotOptions]="chartRangoEdades.plotOptions"
+                                        [series]="chartRangoEdades.series"
+                                        [states]="chartRangoEdades.states" [stroke]="chartRangoEdades.stroke"
+                                        [theme]="chartRangoEdades.theme" [tooltip]="chartRangoEdades.tooltip"
+                                        [yaxis]="chartRangoEdades.yaxis"></apx-chart>
+                                </div>
+                            </div>
+
+                            <!-- Schedule -->
+                            <div
+                                class="sm:col-span-2 md:col-span-4 lg:col-span-2 flex flex-col flex-auto p-6 bg-card shadow rounded-2xl overflow-hidden">
+                                <div class="flex flex-col sm:flex-row items-start justify-between">
+                                    <div class="text-lg font-medium tracking-tight leading-6 truncate">Últimas
+                                        atenciones</div>
+                                </div>
+                                <div class="flex flex-col mt-2 divide-y">
+                                    <ng-container
+                                        *ngFor="let scheduleItem of data.proximasAtenciones; trackBy: trackByFn">
+                                        <div class="flex flex-row items-center justify-between py-4 px-0.5">
+                                            <div class="flex flex-col">
+                                                <div class="font-medium">{{scheduleItem.paciente}}</div>
+                                                <div class="flex gap-2 items-center mt-2">
+                                                    <mat-icon svgIcon="account-heart"></mat-icon>
+                                                    <div>Psi. {{scheduleItem.psicologo}}</div>
+                                                </div>
+                                                <div
+                                                    class="flex flex-col sm:flex-row sm:items-center -ml-0.5 mt-2 sm:mt-1 space-y-1 sm:space-y-0 sm:space-x-3">
+                                                    <ng-container *ngIf="scheduleItem.hora">
+                                                        <div class="flex items-center">
+                                                            <mat-icon class="icon-size-5 text-hint"
+                                                                [svgIcon]="'clock'"></mat-icon>
+                                                            <div class="ml-1.5 text-md text-secondary">
+                                                                {{scheduleItem.hora}}</div>
+                                                        </div>
+                                                    </ng-container>
+                                                    <ng-container *ngIf="scheduleItem.ambiente">
+                                                        <div class="flex items-center">
+                                                            <mat-icon class="icon-size-5 text-hint"
+                                                                [svgIcon]="'map-marker'"></mat-icon>
+                                                            <div class="ml-1.5 text-md text-secondary">
+                                                                {{scheduleItem.ambiente}}</div>
+                                                        </div>
+                                                    </ng-container>
+                                                </div>
+                                            </div>
+                                            <button mat-icon-button type="button">
+                                                <mat-icon [svgIcon]="'chevron-right'"></mat-icon>
+                                            </button>
+                                        </div>
+                                    </ng-container>
+                                </div>
+                            </div>
+                        </div>
+                    </ng-template>
+                </mat-tab>
+            </mat-tab-group>
+        </div>
+    </div>
+
 </div>

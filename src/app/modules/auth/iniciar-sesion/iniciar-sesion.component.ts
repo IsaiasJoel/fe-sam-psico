@@ -84,7 +84,7 @@ export class IniciarSesionComponent {
       this._menuService.guardarListaMenuesDesdeListaRoles(respuestaUsuario.data.roles);
 
       this.estaCargando = false;
-      this._router.navigate(['./inicio']);
+      this._router.navigate(['./dashboard']);
     } catch (error) {
       this.mensajeError = (error as HttpErrorResponse).error?.message?.ERROR;
       this.signInForm.enable();
