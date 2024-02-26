@@ -3,9 +3,29 @@
     <div class="flex items-center justify-between w-full">
         <div class="flex gap-2 flex-col mb-2">
             <div class="font-medium text-4xl">{{historia.paciente}}</div>
-            <div class="text-lg">{{historia.sexo}} | {{historia.edad}} | {{historia.nacionalidad}}</div>
+            <div class="text-lg flex text-opacity-80 text-gray-700">
+                <div class="flex gap-2 border-r border-gray-400 px-2" matTooltip="Sexo">
+                    <mat-icon svgIcon="gender-male-female"></mat-icon>
+                    <div>{{historia.sexo}}</div>
+                </div>
+
+                <div class="flex gap-2 border-r border-gray-400 px-2" matTooltip="Edad">
+                    <mat-icon svgIcon="cake-variant"></mat-icon>
+                    <div>{{historia.edad}}</div>
+                </div>
+
+                <div class="flex gap-2 border-r border-gray-400 px-2" matTooltip="Nacionalidad">
+                    <mat-icon svgIcon="earth"></mat-icon>
+                    <div>{{historia.nacionalidad}}</div>
+                </div>
+
+                <div class="flex gap-2 px-2" matTooltip="Psicólogo">
+                    <mat-icon svgIcon="account-heart"></mat-icon>
+                    <div>Psi. {{historia.psicologo}}</div>
+                </div>
+            </div>
         </div>
-        <a class="flex items-center">
+        <a class="flex items-center" routerLink="/pacientes/">
             <mat-icon svgIcon="pan-left"></mat-icon>
             <span>Regresar</span>
         </a>
@@ -15,8 +35,19 @@
     <!-- Body -->
     <div class="mt-2 flex flex-col gap-4">
         <div class="flex items-center justify-between">
-            <div class="font-semibold text-lg">Total: {{historia.atenciones.length}}</div>
-            
+            <div class="flex gap-2">
+                <button class="p-2 rounded-xl text-green-800 bg-green-100 flex items-center gap-1"
+                    matTooltip="Atenciones realizadas">
+                    <mat-icon svgIcon="check"></mat-icon>
+                    {{historia.atenciones.length}} Realizadas
+                </button>
+                <button class="p-2 rounded-xl text-red-800 bg-red-100 flex items-center gap-1"
+                    matTooltip="Atenciones canceladas">
+                    <mat-icon svgIcon="cancel"></mat-icon>
+                    {{historia.atencionesCanceladas}} Canceladas
+                </button>
+            </div>
+
             <div class="flex self-end items-center gap-2 bg-gray-200 rounded-lg p-2 cursor-pointer"
                 [matMenuTriggerFor]="menu">
                 <mat-icon svgIcon="filter-variant"></mat-icon>
@@ -35,13 +66,28 @@
         </div>
 
         <div class="p-4 bg-white rounded-lg flex flex-col gap-4" *ngFor="let atencion of historia.atenciones">
-            <div>{{atencion.fechaHora}} | {{atencion.ambiente}} | {{atencion.estadoPago}}</div>
+            <div class="flex gap-2">
+                <div class="rounded-lg px-2 py-1 bg-gray-200 flex items-center gap-1"
+                    matTooltip="Fecha y hora de consulta">
+                    <mat-icon svgIcon="clock"></mat-icon>
+                    {{atencion.fechaHora}}
+                </div>
+                <div class="rounded-lg px-2 py-1 bg-sky-100 flex items-center gap-1" matTooltip="Ambiente">
+                    <mat-icon svgIcon="sofa-single"></mat-icon>
+                    {{atencion.ambiente}}
+                </div>
+                <div class="rounded-lg px-2 py-1 flex items-center gap-1" matTooltip="Estado del pago"
+                    [ngClass]="{'bg-amber-200':atencion.estadoPago=='PENDIENTE','bg-green-200':atencion.estadoPago=='PAGADO','bg-red-200':atencion.estadoPago=='GRATIS'}">
+                    <mat-icon svgIcon="cash-multiple"></mat-icon>
+                    {{atencion.estadoPago}}
+                </div>
+            </div>
 
             <div>{{atencion.notas}}</div>
             <div class="flex gap-4">
                 <div *ngFor="let archivo of atencion.archivosAdjuntos" class="flex">
                     <div class="flex flex-col items-center w-24 p-3 rounded-md hover:shadow-xl hover:cursor-pointer">
-                        <img src="../../../../../assets/images/icono-pdf.webp" alt="">
+                        <img src="assets/images/icono-pdf.webp" alt="">
                         <div>{{archivo.nombre}}</div>
                     </div>
                 </div>

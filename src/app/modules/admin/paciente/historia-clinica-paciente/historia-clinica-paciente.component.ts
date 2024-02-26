@@ -8,6 +8,8 @@ export class HistoriaClinicaPacienteComponent {
   historia: any = {
     idPaciente: 1,
     paciente: 'Isaías Joel Domínguez Montalbán',
+    idPsicologo: 1,
+    psicologo: 'Luis Nevado Sánchez',
     sexo: 'Masculino',
     edad: '24 años',
     nacionalidad: 'Perú',
@@ -55,6 +57,7 @@ export class HistoriaClinicaPacienteComponent {
           { tipo: 'IMG', nombre: 'Archivo 4', contenido: '' }
         ]
       }
-    ]
+    ],
+    atencionesCanceladas: 1
   }
 }

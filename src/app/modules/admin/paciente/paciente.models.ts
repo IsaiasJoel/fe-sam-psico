@@ -79,6 +79,7 @@ export interface DTOPacienteListar {
     apPaterno: string;
     apMaterno: string;
     nombres: string;
+    nacionalidad: string;
     fechaNacimiento: string; //fecha
     dni: string;
     sexo: string;

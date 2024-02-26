@@ -22,7 +22,7 @@ export class PacienteComponent {
   @ViewChild(MatSort) _sort: MatSort;
 
   // ,'eliminar'
-  columnas: string[] = ['nombresApellidos', 'dni', 'edad', 'nacionalidad', 'sexo', 'celular', 'editar'];
+  columnas: string[] = ['nombresApellidos', 'dni', 'edad', 'nacionalidad', 'sexo', 'celular', 'editar', 'verHistoria'];
   dataSource: MatTableDataSource<DTOPacienteListar>;
   estaCargando: boolean = true;
 
@@ -35,6 +35,65 @@ export class PacienteComponent {
   pageableOptions = [10, 25, 100];
 
   nacionalidades: string[] = NACIONALIDADES;
+
+  //Mock
+  listaPacientes: DTOPacienteListar[] = [
+    {
+      id: 1,
+      apPaterno: 'González',
+      apMaterno: 'Pérez',
+      nombres: 'Juan',
+      nacionalidad: 'PERU',
+      fechaNacimiento: '1990-05-15',
+      dni: '12345678',
+      sexo: 'Masculino',
+      numeroContacto: '987654321',
+    },
+    {
+      id: 2,
+      apPaterno: 'Rodríguez',
+      apMaterno: 'López',
+      nombres: 'María',
+      nacionalidad: 'VENEZUELA',
+      fechaNacimiento: '1985-08-20',
+      dni: '87654321',
+      sexo: 'Femenino',
+      numeroContacto: '123456789',
+    },
+    {
+      id: 3,
+      apPaterno: 'Martínez',
+      apMaterno: 'Gómez',
+      nombres: 'Carlos',
+      nacionalidad: 'PERU',
+      fechaNacimiento: '1993-11-10',
+      dni: '98765432',
+      sexo: 'Masculino',
+      numeroContacto: '654321987',
+    },
+    {
+      id: 4,
+      apPaterno: 'Sánchez',
+      apMaterno: 'Fernández',
+      nombres: 'Laura',
+      nacionalidad: 'PERU',
+      fechaNacimiento: '1988-03-25',
+      dni: '54321678',
+      sexo: 'Femenino',
+      numeroContacto: '789654123',
+    },
+    {
+      id: 5,
+      apPaterno: 'López',
+      apMaterno: 'Hernández',
+      nombres: 'Pedro',
+      nacionalidad: 'PERU',
+      fechaNacimiento: '1995-07-18',
+      dni: '87654321',
+      sexo: 'Masculino',
+      numeroContacto: '321654987',
+    },
+  ];
 
   //===================================================
   // Ciclo de vida
@@ -56,8 +115,9 @@ export class PacienteComponent {
 
   ngAfterViewInit() {
     //debe estar aquí porque en este punto ya cargó el MatPaginator, de lo contrario es undefined
-    this._suscribirseAlPaginator();
-    this._listar();
+    //this._suscribirseAlPaginator();
+    //this._listar();
+    this.dataSource = new MatTableDataSource(this.listaPacientes)
   }
 
   //=====================================
@@ -149,6 +209,10 @@ export class PacienteComponent {
 
   irAPantallEditar(id: number) {
     this._router.navigate(['/pacientes/', id]);
+  }
+
+  verHistoria(id: number) {
+    this._router.navigate(['/pacientes/historias/', id]);
   }
 
   //=====================================
