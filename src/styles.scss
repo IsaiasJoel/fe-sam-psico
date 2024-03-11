@@ -7,7 +7,7 @@
     --color-negro: #000;
     --color-turquesa: #00AA87;
     --color-azul: #2289E4;
-    --color-celeste: #54DCFF;
+    --color-celeste: rgb(84, 220, 255);
     --color-rojo: #FF0065;
     --color-amarillo: #FFCB00;
     --color-gris: #999999;
@@ -26,7 +26,11 @@
 }
 
 .bg-celeste {
-    background-color: var(--color-celeste);
+    background-color: var(--color-celeste) !important;
+}
+
+.bg-celeste-05 {
+    background-color: rgba(84, 220, 255,.4)  !important;
 }
 
 .bg-rojo {

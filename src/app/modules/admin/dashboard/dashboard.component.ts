@@ -4,6 +4,7 @@ import { ApexOptions } from 'ng-apexcharts';
 import { Subject } from 'rxjs';
 import { DASHBOARD_DATA } from './dashboard.data';
 import { DTODataDashboard } from './dashboard.models';
+import { configPuntos, configTorta } from './dashboard.config';
 
 @Component({
   selector: 'app-dashboard',
@@ -13,8 +14,10 @@ import { DTODataDashboard } from './dashboard.models';
 export class DashboardComponent {
   chartCasosAtendidos: ApexOptions | any = {};
   chartRangoEdades: ApexOptions | any = {};
-  colorBorder: string = "#e2e8f0";
-  textoSecundario: string = "#64748b";
+  chartMayoriaEdad: ApexOptions | any = {};
+  chartDiagnosticoPreventivo: ApexOptions | any = {};
+  chartNacionalidad: ApexOptions | any = {};
+
   data: DTODataDashboard;
   private _unsubscribeAll: Subject<any> = new Subject<any>();
 
@@ -120,141 +123,10 @@ export class DashboardComponent {
    * @private
    */
   private _prepareChartData(): void {
-    // Github issues
-    this.chartCasosAtendidos = {
-      chart: {
-        fontFamily: 'inherit',
-        foreColor: 'inherit',
-        height: '100%',
-        type: 'line',
-        toolbar: {
-          show: false
-        },
-        zoom: {
-          enabled: false
-        }
-      },
-      colors: ['#64748B', '#94A3B8'],
-      dataLabels: {
-        enabled: true,
-        enabledOnSeries: [0],
-        background: {
-          borderWidth: 0
-        }
-      },
-      grid: {
-        borderColor: this.colorBorder
-      },
-      labels: this.data.casosAtendidos.labels,
-      legend: {
-        show: false
-      },
-      plotOptions: {
-        bar: {
-          columnWidth: '50%'
-        }
-      },
-      series: this.data.casosAtendidos.series,
-      states: {
-        hover: {
-          filter: {
-            type: 'darken',
-            value: 0.75
-          }
-        }
-      },
-      stroke: {
-        width: [3, 0]
-      },
-      tooltip: {
-        followCursor: true,
-        theme: 'dark'
-      },
-      xaxis: {
-        axisBorder: {
-          show: false
-        },
-        axisTicks: {
-          color: this.colorBorder
-        },
-        labels: {
-          style: {
-            colors: this.textoSecundario
-          }
-        },
-        tooltip: {
-          enabled: false
-        }
-      },
-      yaxis: {
-        labels: {
-          offsetX: -16,
-          style: {
-            colors: this.textoSecundario
-          }
-        }
-      }
-    };
-
-    // Task distribution
-    this.chartRangoEdades = {
-      chart: {
-        fontFamily: 'inherit',
-        foreColor: 'inherit',
-        height: '100%',
-        type: 'polarArea',
-        toolbar: {
-          show: false
-        },
-        zoom: {
-          enabled: false
-        }
-      },
-      labels: this.data.rangoEdades.labels,
-      legend: {
-        position: 'bottom'
-      },
-      plotOptions: {
-        polarArea: {
-          spokes: {
-            connectorColors: this.colorBorder
-          },
-          rings: {
-            strokeColor: this.colorBorder
-          }
-        }
-      },
-      series: this.data.rangoEdades.series,
-      states: {
-        hover: {
-          filter: {
-            type: 'darken',
-            value: 0.75
-          }
-        }
-      },
-      stroke: {
-        width: 2
-      },
-      theme: {
-        monochrome: {
-          enabled: true,
-          color: '#93C5FD',
-          shadeIntensity: 0.75,
-          shadeTo: 'dark'
-        }
-      },
-      tooltip: {
-        followCursor: true,
-        theme: 'dark'
-      },
-      yaxis: {
-        labels: {
-          style: {
-            colors: this.textoSecundario
-          }
-        }
-      }
-    };
+    this.chartCasosAtendidos = configPuntos(this.data.casosAtendidos.labels, this.data.casosAtendidos.series);
+    this.chartRangoEdades = configTorta(this.data.rangoEdades.labels, this.data.rangoEdades.series);
+    this.chartMayoriaEdad = configTorta(this.data.comparacionMayoriaEdad.labels, this.data.comparacionMayoriaEdad.series);
+    this.chartDiagnosticoPreventivo = configTorta(this.data.comparacionDiagnosticoPreventivo.labels, this.data.comparacionDiagnosticoPreventivo.series);
+    this.chartNacionalidad = configTorta(this.data.comparacionNacionalidad.labels, this.data.comparacionNacionalidad.series);
   }
 }

@@ -1,0 +1,129 @@
+<div class="h-full bg-white p-4">
+    <!-- Cabecera -->
+    <div class="flex items-center justify-between">
+        <div class="font-medium text-4xl">Nueva atención</div>
+        <a class="flex items-center" routerLink="../">
+            <mat-icon svgIcon="pan-left"></mat-icon>
+            <span>Regresar</span>
+        </a>
+    </div>
+
+    <hr class="my-4">
+
+    <!-- Cuerpo -->
+    <form [formGroup]="form">
+        <div class="w-full flex flex-col h-full gap-4">
+            <div class="flex justify-between gap-4">
+                <!-- DNI -->
+                <div>
+                    <div class="font-medium">DNI Paciente</div>
+                    <mat-form-field [appearance]="'outline'" class="w-full">
+                        <input matInput type="text" formControlName="correo" suffix="@nicmaish.org" mask="S*">
+                        <!-- <mat-error *ngIf="correoEsRequerido">Campo obligatorio*</mat-error> -->
+                    </mat-form-field>
+                </div>
+
+                <div>
+                    <div class="font-medium">Nombres</div>
+                    <div>Isaías Joel Domínguez Montalbán</div>
+                </div>
+
+                <div>
+                    <div class="font-medium">Edad</div>
+                    <div>dasdsadfkds</div>
+                </div>
+
+                <div>
+                    <div class="font-medium">Sexo</div>
+                    <div>dasdsadfkds</div>
+                </div>
+
+                <div>
+                    <div class="font-medium">Nacionalidad</div>
+                    <div>dasdsadfkds</div>
+                </div>
+            </div>
+
+            <div class="flex justify-between gap-4">
+                <div class="w-full">
+                    <div class="font-medium">Atención que solicita</div>
+                    <mat-form-field class="w-full">
+                        <input matInput type="text" suffix="@nicmaish.org" mask="S*">
+                        <!-- <mat-error *ngIf="correoEsRequerido">Campo obligatorio*</mat-error> -->
+                    </mat-form-field>
+                </div>
+
+                <div class="w-full">
+                    <div class="font-medium">Proyecto que refiere</div>
+                    <mat-form-field class="w-full">
+                        <input matInput type="text" suffix="@nicmaish.org" mask="S*">
+                        <!-- <mat-error *ngIf="correoEsRequerido">Campo obligatorio*</mat-error> -->
+                    </mat-form-field>
+                </div>
+            </div>
+
+            <div class="flex gap-4">
+                <div class="w-full">
+                    <div class="font-medium">Motivo de consulta</div>
+                    <mat-form-field class="w-full">
+                        <input matInput type="text" suffix="@nicmaish.org" mask="S*">
+                        <!-- <mat-error *ngIf="correoEsRequerido">Campo obligatorio*</mat-error> -->
+                    </mat-form-field>
+                </div>
+            </div>
+
+            <div class="flex justify-between gap-4">
+                <div class="w-full">
+                    <div class="text-label">Modalidad</div>
+                    <mat-form-field [appearance]="'outline'" class="w-full">
+                        <input matInput type="text">
+                    </mat-form-field>
+                </div>
+                <div class="w-full">
+                    <div class="text-label">Horario de disponibilidad</div>
+                    <mat-form-field [appearance]="'outline'" class="w-full">
+                        <input matInput type="text">
+                    </mat-form-field>
+                </div>
+                <div class="w-full">
+                    <!-- <div class="text-label">Ap. Paterno</div> -->
+                    <button mat-flat-button color="primary">Comprobar</button>
+                </div>
+            </div>
+
+            <div class="flex justify-between gap-4">
+                <div class="w-full">
+                    <div class="text-label">Voluntario</div>
+                    <mat-form-field [appearance]="'outline'" class="w-full">
+                        <input matInput>
+                        <!-- <mat-error *ngIf="apMaternoEsRequerido">Campo obligatorio*</mat-error> -->
+                    </mat-form-field>
+                </div>
+                <div class="w-full">
+                    <div class="text-label">Ambiente</div>
+                    <mat-form-field [appearance]="'outline'" class="w-full">
+                        <input matInput>
+                        <!-- <mat-error *ngIf="apMaternoEsRequerido">Campo obligatorio*</mat-error> -->
+                    </mat-form-field>
+                </div>
+                <div class="w-full">
+                    <div class="text-label">Colaboración económica</div>
+                    <mat-form-field [appearance]="'outline'" class="w-full">
+                        <input matInput>
+                        <!-- <mat-error *ngIf="apMaternoEsRequerido">Campo obligatorio*</mat-error> -->
+                    </mat-form-field>
+                </div>
+            </div>
+        </div>
+    </form>
+
+    <hr class="my-4">
+
+    <!-- Footer -->
+    <div class="flex gap-2 justify-end">
+        <button mat-raised-button (click)="regresarAListar()">Cancelar</button>
+        <button mat-raised-button class="bg-azul" (click)="procesarSolicitud()">
+            <div class="text-white">Guardar</div>
+        </button>
+    </div>
+</div>

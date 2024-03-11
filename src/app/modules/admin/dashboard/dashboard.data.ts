@@ -80,5 +80,17 @@ export const DASHBOARD_DATA: DTODataDashboard = {
             fecha: '2 de agosto 2024',
             ambiente: 'Overseer\'s room'
         }
-    ]
+    ],
+    comparacionMayoriaEdad: {
+        labels: ['Mayor de edad', 'Menor de edad'],
+        series: [19, 6]
+    },
+    comparacionDiagnosticoPreventivo: {
+        labels: ['Depresión', 'Ansiedad', 'Xenofobia', 'Población vulnerable'],
+        series: [19, 6, 7, 19]
+    },
+    comparacionNacionalidad: {
+        labels: ['Perú', 'Venezuela', 'Colombia', 'Ecuador', 'Bolivia', 'Argentina'],
+        series: [19, 6, 7, 16, 1, 1]
+    }
 };

@@ -21,7 +21,6 @@ export class PacienteComponent {
   @ViewChild(MatPaginator) _paginator: MatPaginator;
   @ViewChild(MatSort) _sort: MatSort;
 
-  // ,'eliminar'
   columnas: string[] = ['nombresApellidos', 'dni', 'edad', 'nacionalidad', 'sexo', 'celular', 'editar', 'verHistoria'];
   dataSource: MatTableDataSource<DTOPacienteListar>;
   estaCargando: boolean = true;

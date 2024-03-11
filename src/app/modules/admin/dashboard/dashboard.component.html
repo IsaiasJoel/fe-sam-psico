@@ -55,20 +55,17 @@
                                     <div class="flex flex-col flex-auto">
                                         <div class="font-medium text-secondary">Casos atendidos</div>
                                         <div class="flex flex-col flex-auto">
-                                            <apx-chart class="flex-auto w-full h-80"
-                                                [chart]="chartCasosAtendidos.chart"
+                                            <apx-chart class="flex-auto w-full h-80" [chart]="chartCasosAtendidos.chart"
                                                 [colors]="chartCasosAtendidos.colors"
                                                 [dataLabels]="chartCasosAtendidos.dataLabels"
-                                                [grid]="chartCasosAtendidos.grid"
-                                                [labels]="chartCasosAtendidos.labels"
+                                                [grid]="chartCasosAtendidos.grid" [labels]="chartCasosAtendidos.labels"
                                                 [legend]="chartCasosAtendidos.legend"
                                                 [plotOptions]="chartCasosAtendidos.plotOptions"
                                                 [series]="chartCasosAtendidos.series"
                                                 [states]="chartCasosAtendidos.states"
                                                 [stroke]="chartCasosAtendidos.stroke"
                                                 [tooltip]="chartCasosAtendidos.tooltip"
-                                                [xaxis]="chartCasosAtendidos.xaxis"
-                                                [yaxis]="chartCasosAtendidos.yaxis">
+                                                [xaxis]="chartCasosAtendidos.xaxis" [yaxis]="chartCasosAtendidos.yaxis">
                                             </apx-chart>
                                         </div>
                                     </div>
@@ -131,7 +128,7 @@
                             </div>
 
                             <!-- Task distribution -->
-                            <div
+                            <!-- <div
                                 class="sm:col-span-2 md:col-span-4 lg:col-span-2 flex flex-col flex-auto p-6 bg-card shadow rounded-2xl overflow-hidden">
                                 <div class="flex flex-col sm:flex-row items-start justify-between">
                                     <div class="text-lg font-medium tracking-tight leading-6 truncate">Rango de edad
@@ -140,13 +137,12 @@
                                 <div class="flex flex-col flex-auto mt-6">
                                     <apx-chart class="flex-auto w-full h-80" [chart]="chartRangoEdades.chart"
                                         [labels]="chartRangoEdades.labels" [legend]="chartRangoEdades.legend"
-                                        [plotOptions]="chartRangoEdades.plotOptions"
-                                        [series]="chartRangoEdades.series"
+                                        [plotOptions]="chartRangoEdades.plotOptions" [series]="chartRangoEdades.series"
                                         [states]="chartRangoEdades.states" [stroke]="chartRangoEdades.stroke"
                                         [theme]="chartRangoEdades.theme" [tooltip]="chartRangoEdades.tooltip"
                                         [yaxis]="chartRangoEdades.yaxis"></apx-chart>
                                 </div>
-                            </div>
+                            </div> -->
 
                             <!-- Schedule -->
                             <div
@@ -190,6 +186,63 @@
                                             </button>
                                         </div>
                                     </ng-container>
+                                </div>
+                            </div>
+
+                            <!-- Mayoría de edad -->
+                            <div
+                                class="sm:col-span-2 md:col-span-4 lg:col-span-2 flex flex-col flex-auto p-6 bg-card shadow rounded-2xl overflow-hidden">
+                                <div class="flex flex-col sm:flex-row items-start justify-between">
+                                    <div class="text-lg font-medium tracking-tight leading-6 truncate">Mayoría de edad
+                                    </div>
+                                </div>
+                                <div class="flex flex-col flex-auto mt-6">
+                                    <apx-chart class="flex-auto w-full h-80" [chart]="chartMayoriaEdad.chart"
+                                        [labels]="chartMayoriaEdad.labels" [legend]="chartMayoriaEdad.legend"
+                                        [plotOptions]="chartMayoriaEdad.plotOptions" [series]="chartMayoriaEdad.series"
+                                        [states]="chartMayoriaEdad.states" [stroke]="chartMayoriaEdad.stroke"
+                                        [theme]="chartMayoriaEdad.theme" [tooltip]="chartMayoriaEdad.tooltip"
+                                        [yaxis]="chartMayoriaEdad.yaxis"></apx-chart>
+                                </div>
+                            </div>
+
+                            <!-- Diagnóstico preventivo -->
+                            <div
+                                class="sm:col-span-2 md:col-span-4 lg:col-span-2 flex flex-col flex-auto p-6 bg-card shadow rounded-2xl overflow-hidden">
+                                <div class="flex flex-col sm:flex-row items-start justify-between">
+                                    <div class="text-lg font-medium tracking-tight leading-6 truncate">Diagnóstico
+                                        preventivo
+                                    </div>
+                                </div>
+                                <div class="flex flex-col flex-auto mt-6">
+                                    <apx-chart class="flex-auto w-full h-80" [chart]="chartDiagnosticoPreventivo.chart"
+                                        [labels]="chartDiagnosticoPreventivo.labels"
+                                        [legend]="chartDiagnosticoPreventivo.legend"
+                                        [plotOptions]="chartDiagnosticoPreventivo.plotOptions"
+                                        [series]="chartDiagnosticoPreventivo.series"
+                                        [states]="chartDiagnosticoPreventivo.states"
+                                        [stroke]="chartDiagnosticoPreventivo.stroke"
+                                        [theme]="chartDiagnosticoPreventivo.theme"
+                                        [tooltip]="chartDiagnosticoPreventivo.tooltip"
+                                        [yaxis]="chartDiagnosticoPreventivo.yaxis"></apx-chart>
+                                </div>
+                            </div>
+
+                            <!-- Nacionalidad -->
+                            <div
+                                class="sm:col-span-2 md:col-span-4 lg:col-span-2 flex flex-col flex-auto p-6 bg-card shadow rounded-2xl overflow-hidden">
+                                <div class="flex flex-col sm:flex-row items-start justify-between">
+                                    <div class="text-lg font-medium tracking-tight leading-6 truncate">Nacionalidad
+                                    </div>
+                                </div>
+                                <div class="flex flex-col flex-auto mt-6">
+                                    <apx-chart class="flex-auto w-full h-80" [chart]="chartNacionalidad.chart"
+                                        [labels]="chartNacionalidad.labels" [legend]="chartNacionalidad.legend"
+                                        [plotOptions]="chartNacionalidad.plotOptions"
+                                        [series]="chartNacionalidad.series" [states]="chartNacionalidad.states"
+                                        [stroke]="chartNacionalidad.stroke" [theme]="chartNacionalidad.theme"
+                                        [tooltip]="chartNacionalidad.tooltip"
+                                        [yaxis]="chartNacionalidad.yaxis"></apx-chart>
                                 </div>
                             </div>
                         </div>

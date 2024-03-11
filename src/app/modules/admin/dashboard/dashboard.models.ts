@@ -6,6 +6,24 @@ export interface DTODataDashboard {
     recaudacion: DTODashboardRecaudacion;
     rangoEdades: DTODashboardRangoEdades;
     proximasAtenciones: DTODashboardProximasAtenciones[];
+    comparacionMayoriaEdad: DTODashboardRangoComparacionEdades;
+    comparacionDiagnosticoPreventivo: DTODashboardComparacionDiagnosticoPreventivo;
+    comparacionNacionalidad: DTODashboardComparacionNacionalidad;
+}
+
+export interface DTODashboardRangoComparacionEdades {
+    labels: string[];
+    series: ApexNonAxisChartSeries;
+}
+
+export interface DTODashboardComparacionDiagnosticoPreventivo {
+    labels: string[];
+    series: ApexNonAxisChartSeries;
+}
+
+export interface DTODashboardComparacionNacionalidad {
+    labels: string[];
+    series: ApexNonAxisChartSeries;
 }
 
 export interface DTODashboardResumenAtencion {
