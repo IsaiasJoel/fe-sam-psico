@@ -17,8 +17,8 @@
                 <!-- DNI -->
                 <div>
                     <div class="font-medium">DNI Paciente</div>
-                    <mat-form-field [appearance]="'outline'" class="w-full">
-                        <input matInput type="text" formControlName="correo" suffix="@nicmaish.org" mask="S*">
+                    <mat-form-field class="w-full">
+                        <input matInput type="text" formControlName="dniPaciente">
                         <!-- <mat-error *ngIf="correoEsRequerido">Campo obligatorio*</mat-error> -->
                     </mat-form-field>
                 </div>
@@ -46,18 +46,22 @@
 
             <div class="flex justify-between gap-4">
                 <div class="w-full">
-                    <div class="font-medium">Atención que solicita</div>
+                    <div class="font-medium">Servicio que solicita</div>
                     <mat-form-field class="w-full">
-                        <input matInput type="text" suffix="@nicmaish.org" mask="S*">
-                        <!-- <mat-error *ngIf="correoEsRequerido">Campo obligatorio*</mat-error> -->
+                        <mat-select formControlName="servicio">
+                            <mat-option *ngFor="let servicio of servicios"
+                                [value]="servicio">{{servicio.descripcion}}</mat-option>
+                        </mat-select>
                     </mat-form-field>
                 </div>
 
                 <div class="w-full">
                     <div class="font-medium">Proyecto que refiere</div>
                     <mat-form-field class="w-full">
-                        <input matInput type="text" suffix="@nicmaish.org" mask="S*">
-                        <!-- <mat-error *ngIf="correoEsRequerido">Campo obligatorio*</mat-error> -->
+                        <mat-select formControlName="proyecto">
+                            <mat-option *ngFor="let proyecto of proyectos"
+                                [value]="proyecto">{{proyecto.nombre}}</mat-option>
+                        </mat-select>
                     </mat-form-field>
                 </div>
             </div>
@@ -66,8 +70,7 @@
                 <div class="w-full">
                     <div class="font-medium">Motivo de consulta</div>
                     <mat-form-field class="w-full">
-                        <input matInput type="text" suffix="@nicmaish.org" mask="S*">
-                        <!-- <mat-error *ngIf="correoEsRequerido">Campo obligatorio*</mat-error> -->
+                        <textarea matInput formControlName="motivoConsulta" name="" id="" cols="30" rows="5"></textarea>
                     </mat-form-field>
                 </div>
             </div>
@@ -75,14 +78,17 @@
             <div class="flex justify-between gap-4">
                 <div class="w-full">
                     <div class="text-label">Modalidad</div>
-                    <mat-form-field [appearance]="'outline'" class="w-full">
-                        <input matInput type="text">
+                    <mat-form-field class="w-full">
+                        <mat-select formControlName="modalidad">
+                            <mat-option value="VIRTUAL">Virtual</mat-option>
+                            <mat-option value="PRESENCIAL">Presencial</mat-option>
+                        </mat-select>
                     </mat-form-field>
                 </div>
                 <div class="w-full">
                     <div class="text-label">Horario de disponibilidad</div>
-                    <mat-form-field [appearance]="'outline'" class="w-full">
-                        <input matInput type="text">
+                    <mat-form-field class="w-full">
+                        <input matInput type="text" formControlName="horarioDisponibilidad">
                     </mat-form-field>
                 </div>
                 <div class="w-full">
@@ -93,23 +99,24 @@
 
             <div class="flex justify-between gap-4">
                 <div class="w-full">
-                    <div class="text-label">Voluntario</div>
-                    <mat-form-field [appearance]="'outline'" class="w-full">
-                        <input matInput>
+                    <div class="text-label">Psicólogx</div>
+                    <mat-form-field class="w-full">
+                        <input matInput formControlName="psicologo">
                         <!-- <mat-error *ngIf="apMaternoEsRequerido">Campo obligatorio*</mat-error> -->
                     </mat-form-field>
                 </div>
                 <div class="w-full">
                     <div class="text-label">Ambiente</div>
-                    <mat-form-field [appearance]="'outline'" class="w-full">
-                        <input matInput>
+                    <mat-form-field class="w-full">
+                        <input matInput formControlName="ambiente">
                         <!-- <mat-error *ngIf="apMaternoEsRequerido">Campo obligatorio*</mat-error> -->
                     </mat-form-field>
                 </div>
                 <div class="w-full">
                     <div class="text-label">Colaboración económica</div>
-                    <mat-form-field [appearance]="'outline'" class="w-full">
-                        <input matInput>
+                    <mat-form-field class="w-full">
+                        <input matInput formControlName="colaboracionEconomica"
+                            [value]="form.get('servicio').value?.costo">
                         <!-- <mat-error *ngIf="apMaternoEsRequerido">Campo obligatorio*</mat-error> -->
                     </mat-form-field>
                 </div>
