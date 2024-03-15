@@ -1,10 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { DTOServicioListar } from '../../servicio/servicio.model';
 
 @Component({
   selector: 'regitrar-atencion',
-  templateUrl: './regitrar-atencion.component.html'
+  templateUrl: './regitrar-atencion.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class RegitrarAtencionComponent implements OnInit {
   //==================================================
@@ -21,8 +22,18 @@ export class RegitrarAtencionComponent implements OnInit {
     { id: 2, nombre: 'Contigo' },
     { id: 3, nombre: 'Despegue adolescente' }
   ];
-  psicologos: any[] = [];
-  ambientes: any[] = [];
+  psicologos: any[] = [
+    { id: 1, nombre: 'Luis Nevado' },
+    { id: 2, nombre: 'Marjorie Horna' },
+    { id: 3, nombre: 'Fiorella Chanta' },
+    { id: 4, nombre: 'Betsabeth Cabrera' },
+    { id: 5, nombre: 'Elisa Nevado' }
+  ];
+  ambientes: any[] = [
+    { id: 1, nombre: 'Ambiente 1' },
+    { id: 2, nombre: 'Ambiente 2' },
+    { id: 3, nombre: 'Ambiente 3' }
+  ];
 
   //==================================================
   // Ciclo de vida
@@ -55,7 +66,7 @@ export class RegitrarAtencionComponent implements OnInit {
   }
 
   private _cargarDatosPorDefecto() {
-    const servicio:DTOServicioListar = this.servicios[0];
+    const servicio: DTOServicioListar = this.servicios[0];
     const proyecto = this.proyectos[0];
     const modalidad = 'PRESENCIAL';
 
@@ -63,6 +74,8 @@ export class RegitrarAtencionComponent implements OnInit {
       servicio: servicio,
       proyecto: proyecto,
       modalidad: modalidad,
+      psicologo: 'Seleccionar',
+      ambiente: 'Seleccionar',
       colaboracionEconomica: servicio.costo
     });
   }
@@ -79,8 +92,7 @@ export class RegitrarAtencionComponent implements OnInit {
 
   }
 
-  // actualizarColaboracionEconomica(item:DTOServicioListar){
-  //   console.log(item);
-    
+  // abrirHorario() {
+
   // }
 }

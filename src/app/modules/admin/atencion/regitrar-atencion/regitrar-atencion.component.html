@@ -56,6 +56,15 @@
                 </div>
 
                 <div class="w-full">
+                    <div class="text-label">Colaboración económica</div>
+                    <mat-form-field class="w-full">
+                        <input matInput formControlName="colaboracionEconomica"
+                            [value]="form.get('servicio').value?.costo">
+                        <!-- <mat-error *ngIf="apMaternoEsRequerido">Campo obligatorio*</mat-error> -->
+                    </mat-form-field>
+                </div>
+
+                <div class="w-full">
                     <div class="font-medium">Proyecto que refiere</div>
                     <mat-form-field class="w-full">
                         <mat-select formControlName="proyecto">
@@ -86,38 +95,30 @@
                     </mat-form-field>
                 </div>
                 <div class="w-full">
-                    <div class="text-label">Horario de disponibilidad</div>
-                    <mat-form-field class="w-full">
-                        <input matInput type="text" formControlName="horarioDisponibilidad">
-                    </mat-form-field>
-                </div>
-                <div class="w-full">
-                    <!-- <div class="text-label">Ap. Paterno</div> -->
-                    <button mat-flat-button color="primary">Comprobar</button>
-                </div>
-            </div>
-
-            <div class="flex justify-between gap-4">
-                <div class="w-full">
                     <div class="text-label">Psicólogx</div>
                     <mat-form-field class="w-full">
-                        <input matInput formControlName="psicologo">
-                        <!-- <mat-error *ngIf="apMaternoEsRequerido">Campo obligatorio*</mat-error> -->
+                        <mat-select formControlName="psicologo">
+                            <mat-option value="Seleccionar">Seleccionar</mat-option>
+                            <mat-option [value]="psicologo" *ngFor="let psicologo of psicologos">
+                                <div>{{psicologo.nombre}}</div>
+                                <!-- <div class="flex justify-between">
+                                    <div class="flex gap-1 items-center bg-amber-400 rounded-sm">
+                                        <mat-icon svgIcon="information"></mat-icon>
+                                        <div class="text-xs">Ver perfil</div>
+                                    </div>
+                                </div> -->
+                            </mat-option>
+                        </mat-select>
                     </mat-form-field>
                 </div>
                 <div class="w-full">
                     <div class="text-label">Ambiente</div>
                     <mat-form-field class="w-full">
-                        <input matInput formControlName="ambiente">
-                        <!-- <mat-error *ngIf="apMaternoEsRequerido">Campo obligatorio*</mat-error> -->
-                    </mat-form-field>
-                </div>
-                <div class="w-full">
-                    <div class="text-label">Colaboración económica</div>
-                    <mat-form-field class="w-full">
-                        <input matInput formControlName="colaboracionEconomica"
-                            [value]="form.get('servicio').value?.costo">
-                        <!-- <mat-error *ngIf="apMaternoEsRequerido">Campo obligatorio*</mat-error> -->
+                        <mat-select formControlName="ambiente">
+                            <mat-option value="Seleccionar">Seleccionar</mat-option>
+                            <mat-option [value]="ambiente"
+                                *ngFor="let ambiente of ambientes">{{ambiente.nombre}}</mat-option>
+                        </mat-select>
                     </mat-form-field>
                 </div>
             </div>

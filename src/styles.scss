@@ -160,3 +160,9 @@ mat-error {
         text-decoration: underline;
     }
 }
+
+mat-option{
+    .mdc-list-item__primary-text{
+        width: 100% !important;
+    }
+}
