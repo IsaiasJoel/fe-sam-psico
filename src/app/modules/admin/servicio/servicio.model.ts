@@ -7,7 +7,8 @@ export interface DTOServicioCrearEditarRequest {
 
 export interface DTOServicioListar {
     id: number;
-    descripcion: string;
+    nombre: string;
     costo: number;
+    imagen: string;
     habilitado: boolean;
 }

@@ -1,34 +1,68 @@
-<div class="p-4 flex flex-col gap-4">
+<div class="p-4 flex flex-col gap-4 w-full" style="width: 60em;">
     <!-- Cabecera -->
     <div>
-        <div class="border-b-2 font-medium text-lg pb-2">Editar Servicio</div>
+        <div class="border-b-2 font-medium text-lg pb-2">Editar servicio</div>
     </div>
 
     <!-- Cuerpo -->
-    <mat-dialog-content>
-        <form [formGroup]="form" class="flex flex-col gap-4">
-            <div style="width: 20rem;">
-                <div class="text-label">Descripción</div>
-                <mat-form-field class="w-full" appearance="outline">
-                    <input matInput formControlName="descripcion">
-                </mat-form-field>
+    <div>
+        <form [formGroup]="form" class="flex gap-4">
+            <div class="basis-1/2 grid grid-cols-6 gap-4">
+                <div class="col-span-6">
+                    <div class="text-label">Nombre</div>
+                    <mat-form-field class="w-full" appearance="outline">
+                        <input matInput formControlName="nombre">
+                    </mat-form-field>
+                </div>
+                <div class="col-span-6">
+                    <div class="text-label">Costo</div>
+                    <mat-form-field class="w-full" appearance="outline">
+                        <input matInput formControlName="costo" mask="9*">
+                    </mat-form-field>
+                </div>
+                <div class="col-span-6">
+                    <div class="text-label">Descripción</div>
+                    <mat-form-field class="w-full" appearance="outline">
+                        <textarea matInput formControlName="descripcion"></textarea>
+                    </mat-form-field>
+                </div>
             </div>
-            <div>
-                <div class="text-label">Costo</div>
-                <mat-form-field class="w-full" appearance="outline">
-                    <input matInput prefix="S/" mask="9*" formControlName="costo">
-                </mat-form-field>
+
+            <div class="basis-1/2 flex flex-auto items-end aspect-video">
+                <div class="relative flex items-center justify-center w-full h-full ring-bg-card">
+                    <!-- Upload / Remove avatar -->
+                    <div class="absolute inset-0 bg-black bg-opacity-50 z-10"></div>
+                    <div class="absolute inset-0 flex items-center justify-center z-20">
+                        <div>
+                            <input id="avatar-file-input"
+                                class="absolute h-0 w-0 opacity-0 invisible pointer-events-none" type="file"
+                                [multiple]="false" [accept]="'image/jpeg, image/png'"
+                                (change)="procesarAchivo(fileInput.files)" #fileInput>
+                            <label
+                                class="flex items-center justify-center w-10 h-10 rounded-full cursor-pointer hover:bg-hover"
+                                for="avatar-file-input" matRipple>
+                                <mat-icon class="text-white" [svgIcon]="'camera'"></mat-icon>
+                            </label>
+                        </div>
+                        <div>
+                            <button mat-icon-button (click)="eliminarImagen()">
+                                <mat-icon class="text-white" [svgIcon]="'delete'"></mat-icon>
+                            </button>
+                        </div>
+                    </div>
+                    <!-- Image/Letter -->
+                    <img class="object-cover w-full h-full" *ngIf="form?.get('imagen')?.value"
+                        [src]="form?.get('imagen')?.value">
+                </div>
             </div>
         </form>
-    </mat-dialog-content>
+    </div>
 
     <!-- Pie -->
     <mat-dialog-actions class="flex self-end">
         <button mat-raised-button mat-dialog-close (click)="matRef.close()">Cancelar</button>
-        <button mat-raised-button class="bg-azul disabled:bg-gris" cdkFocusInitial (click)="procesarSolicitud()"
-            [disabled]="estaCargando">
-            <span *ngIf="!estaCargando" class="text-white">Guardar</span>
-            <span *ngIf="estaCargando" class="text-white">Cargando...</span>
+        <button mat-raised-button class="bg-azul" cdkFocusInitial (click)="procesarSolicitud()">
+            <span class="text-white">Guardar</span>
         </button>
     </mat-dialog-actions>
 </div>
