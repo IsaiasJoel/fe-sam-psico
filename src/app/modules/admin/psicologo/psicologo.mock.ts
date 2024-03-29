@@ -1,6 +1,6 @@
-import { DTOUsuarioListar } from "./usuario.models";
+import { DTOPsicologoListar } from "./psicologo.models";
 
-export const USUARIOS: DTOUsuarioListar[] = [
+export const USUARIOS: DTOPsicologoListar[] = [
     {
         id: 1, dni: '12345678', apPaterno: 'Dominguez', apMaterno: 'Montalbán', nombres: 'Isaías Joel', fechaNacimiento: '2 de agosto de 1999', carrera: 'Ing de sistemas',
         especialidad: 'Programación', casosAsignados: 0, habilitado: true

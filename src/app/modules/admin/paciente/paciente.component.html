@@ -4,7 +4,7 @@
         <div class="flex gap-2 items-center">
             <div class="font-medium text-4xl mb-2">Pacientes</div>
             <mat-icon (click)="irAPantallaCrear()" class="icon-size-md hover:cursor-pointer icon-turquesa"
-                [svgIcon]="'plus-circle'" matTooltip="Agregar usuario"></mat-icon>
+                [svgIcon]="'plus-circle'" matTooltip="Agregar Paciente"></mat-icon>
         </div>
         <hr>
     </div>
@@ -66,7 +66,7 @@
 
                 <ng-container matColumnDef="nombresApellidos">
                     <th mat-header-cell *matHeaderCellDef> Nombres y apellidos </th>
-                    <td mat-cell *matCellDef="let element"> {{element | usuarioNombresCompletos}} </td>
+                    <td mat-cell *matCellDef="let element"> {{element | psicologoNombresCompletos}} </td>
                 </ng-container>
 
                 <ng-container matColumnDef="dni">
@@ -76,7 +76,7 @@
 
                 <ng-container matColumnDef="edad">
                     <th mat-header-cell *matHeaderCellDef> Edad </th>
-                    <td mat-cell *matCellDef="let element"> {{element.fechaNacimiento | usuarioEdad}} </td>
+                    <td mat-cell *matCellDef="let element"> {{element.fechaNacimiento | edad}} </td>
                 </ng-container>
 
                 <ng-container matColumnDef="nacionalidad">
@@ -107,9 +107,19 @@
                 <ng-container matColumnDef="verHistoria">
                     <th mat-header-cell *matHeaderCellDef></th>
                     <td mat-cell *matCellDef="let element">
-                        <button mat-raised-button matTooltip="Ver historia clínica" color="primary" (click)="verHistoria(element.id)">
+                        <button mat-raised-button class="flex gap-2" color="primary" (click)="verHistoria(element.id)">
                             <mat-icon svgIcon="text-box-search"></mat-icon>
                             <div>Ver Historia</div>
+                        </button>
+                    </td>
+                </ng-container>
+
+                <ng-container matColumnDef="horarioDisponibilidad">
+                    <th mat-header-cell *matHeaderCellDef></th>
+                    <td mat-cell *matCellDef="let element">
+                        <button mat-raised-button class="flex gap-2">
+                            <mat-icon svgIcon="clock"></mat-icon>
+                            <div>Horario disponibilidad</div>
                         </button>
                     </td>
                 </ng-container>

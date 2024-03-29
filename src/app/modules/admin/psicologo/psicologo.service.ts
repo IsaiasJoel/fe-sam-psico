@@ -4,17 +4,17 @@ import { Observable } from 'rxjs';
 import { ApiResponse } from 'src/app/core/models/api-response.interface';
 import { environment } from 'src/environments/environment.dev';
 import { FORMATO_FECHA_ESTANDAR, USUARIO_SESION } from 'src/app/core/utils/constants.utils';
-import { DTOUsuarioCrearEditarRequest, DTOUsuarioEnSesion } from './usuario.models';
+import { DTOPsicologoCrearEditarRequest, DTOPsicologoEnSesion } from './psicologo.models';
 import * as moment from 'moment';
 
 @Injectable({
   providedIn: 'root'
 })
-export class UsuarioService {
+export class PsicologoService {
   //=====================================================================
   // Variables
   //=====================================================================
-  private _url: string = `${environment.HOST}/usuarios`;
+  private _url: string = `${environment.HOST}/psicologos`;
 
   //=====================================================================
   // Ciclo de vida
@@ -26,11 +26,11 @@ export class UsuarioService {
   //=====================================================================
   // Accesores
   //=====================================================================
-  get usuarioEnSesion(): DTOUsuarioEnSesion {
+  get usuarioEnSesion(): DTOPsicologoEnSesion {
     return JSON.parse(sessionStorage.getItem(USUARIO_SESION));
   }
 
-  set usuarioEnSesion(usuario: DTOUsuarioEnSesion) {
+  set usuarioEnSesion(usuario: DTOPsicologoEnSesion) {
     sessionStorage.setItem(USUARIO_SESION, JSON.stringify(usuario));
   }
 
@@ -45,18 +45,18 @@ export class UsuarioService {
   //=====================================================================
   // Métodos HTTP
   //=====================================================================
-  buscarUsuarioPorCorreo$(correo: string): Observable<ApiResponse> {
+  buscarPsicologoPorCorreo$(correo: string): Observable<ApiResponse> {
     let currentUrl = `${this._url}/?correo=${correo}`;
     return this._http.get<any>(currentUrl);
   }
 
-  buscarUsuarioPorId$(id: number): Observable<ApiResponse> {
+  buscarPsicologoPorId$(id: number): Observable<ApiResponse> {
     let currentUrl = `${this._url}/${id}`;
     return this._http.get<any>(currentUrl);
   }
 
-  habilitar$(idUsuario: string, tipo: 'habilitar' | 'deshabilitar'): Observable<ApiResponse> {
-    let currentUrl = `${this._url}/habilitar/${idUsuario}/?tipo=${tipo}`;
+  habilitar$(idPsicologo: string, tipo: 'habilitar' | 'deshabilitar'): Observable<ApiResponse> {
+    let currentUrl = `${this._url}/habilitar/${idPsicologo}/?tipo=${tipo}`;
     return this._http.put<any>(currentUrl, null);
   }
 
@@ -69,7 +69,7 @@ export class UsuarioService {
   }
 
   crear$(item: any): Observable<ApiResponse> {
-    let formulario: DTOUsuarioCrearEditarRequest = item;
+    let formulario: DTOPsicologoCrearEditarRequest = item;
     const fechaNacimiento = moment(new Date(formulario.fechaNacimiento)).format(FORMATO_FECHA_ESTANDAR);
     formulario.fechaNacimiento = fechaNacimiento;
 
@@ -78,7 +78,7 @@ export class UsuarioService {
   }
 
   editar$(item: any): Observable<ApiResponse> {
-    let formulario: DTOUsuarioCrearEditarRequest = item;
+    let formulario: DTOPsicologoCrearEditarRequest = item;
     const fechaNacimiento = moment(new Date(formulario.fechaNacimiento)).format(FORMATO_FECHA_ESTANDAR);
     formulario.fechaNacimiento = fechaNacimiento;
 

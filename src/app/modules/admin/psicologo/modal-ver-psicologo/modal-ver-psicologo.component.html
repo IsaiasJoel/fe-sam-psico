@@ -1,7 +1,7 @@
 <div class="p-4 flex flex-col gap-4">
     <!-- Cabecera -->
     <div>
-        <div class="border-b-2 font-medium text-lg pb-2">Ver usuario</div>
+        <div class="border-b-2 font-medium text-lg pb-2">Ver Psicologo</div>
     </div>
 
     <!-- Cuerpo -->
@@ -9,59 +9,59 @@
         <div class="grid grid-cols-3 gap-3">
             <div class="col-span-3">
                 <div class="texto-label-azul">Correo</div>
-                <div>{{this.usuario.correo}}</div>
+                <div>{{this.psicologo.correo}}</div>
             </div>
             <div class="col-span-2">
                 <div class="texto-label-azul">Nombres</div>
-                <div>{{this.usuario | usuarioNombresCompletos}}</div>
+                <div>{{this.psicologo | psicologoNombresCompletos}}</div>
             </div>
             <div class="col-span-1">
                 <div class="texto-label-azul">DNI</div>
-                <div>{{this.usuario.dni}}</div>
+                <div>{{this.psicologo.dni}}</div>
             </div>
             <div>
                 <div class="texto-label-azul">Fecha de nacimiento</div>
-                <div>{{this.usuario.fechaNacimiento}}</div>
+                <div>{{this.psicologo.fechaNacimiento}}</div>
             </div>
             <div>
                 <div class="texto-label-azul">Sexo</div>
-                <div>{{this.usuario.sexo}}</div>
+                <div>{{this.psicologo.sexo}}</div>
             </div>
             <div>
                 <div class="texto-label-azul">Celular</div>
-                <div>{{this.usuario.celular}}</div>
+                <div>{{this.psicologo.celular}}</div>
             </div>
             <div>
                 <div class="texto-label-azul">Nacionalidad</div>
-                <div>{{this.usuario.nacionalidad}}</div>
+                <div>{{this.psicologo.nacionalidad}}</div>
             </div>
             <div>
                 <div class="texto-label-azul">Carrera</div>
-                <div>{{this.usuario.carrera}}</div>
+                <div>{{this.psicologo.carrera}}</div>
             </div>
             <div>
                 <div class="texto-label-azul">Especialidad</div>
-                <div>{{this.usuario.especialidad}}</div>
+                <div>{{this.psicologo.especialidad}}</div>
             </div>
             <div>
                 <div class="texto-label-azul">Universidad</div>
-                <div>{{this.usuario.universidad}}</div>
+                <div>{{this.psicologo.universidad}}</div>
             </div>
             <div>
                 <div class="texto-label-azul">Año de egreso</div>
-                <div>{{this.usuario.anioEgreso}}</div>
+                <div>{{this.psicologo.anioEgreso}}</div>
             </div>
             <div>
                 <div class="texto-label-azul">Es colegiado</div>
-                <div>{{this.usuario.colegiado ? 'SI' : 'NO'}}</div>
+                <div>{{this.psicologo.colegiado ? 'SI' : 'NO'}}</div>
             </div>
             <div>
                 <div class="texto-label-azul">Número de colegiatura</div>
-                <div>{{this.usuario.colegiado ? this.usuario.numeroColegiatura : 'No tiene'}}</div>
+                <div>{{this.psicologo.colegiado ? this.psicologo.numeroColegiatura : 'No tiene'}}</div>
             </div>
             <div class="col-span-3">
                 <div class="texto-label-azul">Resumen profesional</div>
-                <div>{{this.usuario.resumenProfesional}}</div>
+                <div>{{this.psicologo.resumenProfesional}}</div>
             </div>
         </div>
     </mat-dialog-content>

@@ -1,7 +1,7 @@
 import { Component, ViewChild } from '@angular/core';
 import { NgForm, UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { UsuarioService } from '../../admin/usuario/usuario.service';
+import { PsicologoService } from '../../admin/psicologo/psicologo.service';
 import { MenuService } from '../../admin/menu/menu.service';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { HttpErrorResponse } from '@angular/common/http';
@@ -25,7 +25,7 @@ export class IniciarSesionComponent {
     private _formBuilder: UntypedFormBuilder,
     private _router: Router,
     private _authService: AuthService,
-    private _usuarioService: UsuarioService,
+    private _psicologoService: PsicologoService,
     private _toastrCustomService: ToastrCustomService,
     private _menuService: MenuService
   ) { }
@@ -72,16 +72,16 @@ export class IniciarSesionComponent {
     /** Devuelve el token que envía el servidor */
     try {
       //Obtener el token 
-      const correo: string = await lastValueFrom(this._authService.iniciarSesion$(this.signInForm.value));
+      // const correo: string = await lastValueFrom(this._authService.iniciarSesion$(this.signInForm.value));
 
       //Buscar al usuario por su username
-      const respuestaUsuario: ApiResponse = await lastValueFrom(this._usuarioService.buscarUsuarioPorCorreo$(correo));
-      this._usuarioService.usuarioEnSesion = respuestaUsuario.data;
+      // const respuestaPsicologo: ApiResponse = await lastValueFrom(this._psicologoService.buscarPsicologoPorCorreo$(correo));
+      // this._psicologoService.usuarioEnSesion = respuestaPsicologo.data;
 
       // Guardar la lista de menues en el SesionStorage
-      this._menuService.guardarListaMenuesDesdeListaRoles(respuestaUsuario.data.roles);
+      // this._menuService.guardarListaMenuesDesdeListaRoles(respuestaPsicologo.data.roles);
 
-      this.estaCargando = false;
+      // this.estaCargando = false;
       this._router.navigate(['./dashboard']);
     } catch (error) {
       this.mensajeError = (error as HttpErrorResponse).error?.message?.ERROR;

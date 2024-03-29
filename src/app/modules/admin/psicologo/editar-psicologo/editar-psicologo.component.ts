@@ -1,40 +1,77 @@
 import { Component } from '@angular/core';
-import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { NACIONALIDADES, OPCIONES_SEXO } from 'src/app/shared/data/shared.data';
 import { OpcionesComboSexo } from 'src/app/shared/models/shared.models';
-import { UsuarioService } from '../usuario.service';
+import { PsicologoService } from '../psicologo.service';
 import { ToastrService } from 'ngx-toastr';
+import { FORMATO_FECHA_DMY, TEXTO_CONSULTA_EXITOSA } from 'src/app/core/utils/constants.utils';
 import { lastValueFrom } from 'rxjs';
-import { TEXTO_CONSULTA_EXITOSA } from 'src/app/core/utils/constants.utils';
-import { Router } from '@angular/router';
+import { DTOPsicologoEncontrado } from '../psicologo.models';
+import { ApiResponse } from 'src/app/core/models/api-response.interface';
+import { SweetAlertService } from 'src/app/core/modals/sweet-alert.service';
+import * as moment from 'moment';
+import { ActivatedRoute, Router } from '@angular/router';
+import { VER_USUARIO_ENCONTRADO } from '../modal-ver-psicologo/modal-ver-psicologo.mock';
 
 @Component({
-  selector: 'app-crear-usuario',
-  templateUrl: './crear-usuario.component.html'
+  selector: 'app-editar-psicologo',
+  templateUrl: './editar-psicologo.component.html'
 })
-export class CrearUsuarioComponent {
+export class EditarPsicologoComponent {
   comboSexo: OpcionesComboSexo[] = OPCIONES_SEXO;
   comboNacionalidad: string[] = NACIONALIDADES;
 
-  form: FormGroup;
+  form: UntypedFormGroup;
   estaCargando: boolean = false;
+  estaCargandoFormulario: boolean = false;
 
   constructor(
     private _formBuilder: FormBuilder,
-    private _usuarioService: UsuarioService,
+    private _psicologoService: PsicologoService,
     private _toastrService: ToastrService,
-    private _router: Router
+    private _sweetAlertService: SweetAlertService,
+    private _router: Router,
+    private _activateRoute: ActivatedRoute
   ) { }
 
   ngOnInit(): void {
-    this._crearFormulario();
+    this._crearYCargarFormulario();
   }
 
   // -----------------------------------------------------------------------------------------------------
   // @ Métodos privados
   // -----------------------------------------------------------------------------------------------------
+  private _crearYCargarFormulario() {
+    this._crearFormulario();
+    this._cargarDatosAlFormulario();
+  }
+
+  private async _cargarDatosAlFormulario() {
+    this.estaCargandoFormulario = true;
+    const id: number = Number.parseInt(this._activateRoute.snapshot.paramMap.get('id'));
+
+    try {
+      // const http$ = this._psicologoService.buscarPsicologoPorId$(id);
+      // const respuestaServidor: ApiResponse = await lastValueFrom(http$);
+
+      let psicologo: DTOPsicologoEncontrado = VER_USUARIO_ENCONTRADO;
+
+      //Formatear y setear la fecha
+      psicologo.fechaNacimiento = moment(psicologo.fechaNacimiento).format(FORMATO_FECHA_DMY)
+
+      this.form.patchValue(psicologo);
+
+
+    } catch (error) {
+      const mensaje: string = error.error.message.ERROR;
+      this._sweetAlertService.mostrarMensaje('Error', mensaje, 'error');
+    }
+    this.estaCargandoFormulario = false;
+  }
+
   private _crearFormulario() {
     this.form = this._formBuilder.group({
+      id: [null, [Validators.required]],
       correo: [null, [Validators.required, Validators.email]],
       apPaterno: [null, [Validators.required]],
       apMaterno: [null, [Validators.required]],
@@ -60,6 +97,7 @@ export class CrearUsuarioComponent {
   // -----------------------------------------------------------------------------------------------------
   async procesarSolicitud() {
     this.estaCargando = true;
+    console.log(this.form);
 
     if (this.form.invalid) {
       this.estaCargando = false;
@@ -67,10 +105,10 @@ export class CrearUsuarioComponent {
     }
 
     try {
-      const http$ = this._usuarioService.crear$(this.form.value);
+      const http$ = this._psicologoService.editar$(this.form.value);
       await lastValueFrom(http$);
       this._toastrService.success(TEXTO_CONSULTA_EXITOSA);
-      this._router.navigate(['/usuarios/']);
+      this._router.navigate(['/psicologos/']);
     } catch (error) {
       this._toastrService.error(error.message.ERROR);
     } finally {
@@ -82,14 +120,13 @@ export class CrearUsuarioComponent {
     this.form.get('numeroColegiatura').setValue('');
   }
 
-  regresarAListar() {
-    this._router.navigate(['/usuarios/']);
-  }
-
   get esColegiado(): boolean {
     return this.form.get('colegiado').value;
   }
 
+  irAPantallaListar() {
+    this._router.navigate(['/psicologos/']);
+  }
 
   // -----------------------------------------------------------------------------------------------------
   // @ Variables de control de errores en campos obligatorios
@@ -123,4 +160,5 @@ export class CrearUsuarioComponent {
     const control: AbstractControl = this.form.get('fechaNacimiento');
     return control.hasError('required') && control.touched;
   }
+
 }

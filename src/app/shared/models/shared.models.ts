@@ -27,3 +27,16 @@ export interface DTOBuscarUbigeo {
     provincia: string;
     distrito: string;
 }
+
+export interface DTOArchivo {
+    codigo: string;
+    uuid:string;
+    nombre: string;
+    rutaBase?: string;
+    // tipoArchivo?: TIPO_ARCHIVO;
+    extension?: string;
+    tamanioMb?: number;
+    base64?: string;
+    // estado?: string;
+    eliminado?: boolean; //Se usa en la operación de editar documento para indicar si será eliminado de la bd o no
+}

@@ -63,15 +63,15 @@ export class AuthService {
           // Set the authenticated flag to true
           this._authenticated = true;
 
-          //del token obtener el correo del usuario
+          //del token obtener el correo del psicologo
           const helper = new JwtHelperService();
           const decodedToken = helper.decodeToken(this.accessToken);
 
-          //guardar el correo del usuario
-          let correoUsuario: string = decodedToken.sub;
+          //guardar el correo del psicologo
+          let correoPsicologo: string = decodedToken.sub;
 
           // Return a new observable with the response
-          return of(correoUsuario);
+          return of(correoPsicologo);
         })
       );
   }

@@ -1,6 +1,6 @@
-import { DTOUsuarioEncontrado } from "../usuario.models";
+import { DTOPsicologoEncontrado } from "../psicologo.models";
 
-export const VER_USUARIO_ENCONTRADO: DTOUsuarioEncontrado = {
+export const VER_USUARIO_ENCONTRADO: DTOPsicologoEncontrado = {
     id: 1,
     apPaterno: 'Domínguez',
     apMaterno: 'Montalbán',

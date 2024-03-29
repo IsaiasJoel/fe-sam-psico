@@ -3,11 +3,11 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
-  selector: 'app-modal-usuario-horario-atencion',
-  templateUrl: './modal-usuario-horario-atencion.component.html'
+  selector: 'app-modal-psicologo-horario-atencion',
+  templateUrl: './modal-psicologo-horario-atencion.component.html'
 })
-export class ModalUsuarioHorarioAtencionComponent {
-  usuario: any;
+export class ModalPsicologoHorarioAtencionComponent {
+  psicologo: any;
   form: FormGroup;
 
   //===========================================================
@@ -15,7 +15,7 @@ export class ModalUsuarioHorarioAtencionComponent {
   //===========================================================
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: { pId: number },
-    public matRef: MatDialogRef<ModalUsuarioHorarioAtencionComponent>,
+    public matRef: MatDialogRef<ModalPsicologoHorarioAtencionComponent>,
     private _formBuilder: FormBuilder
   ) { }
 
@@ -28,9 +28,9 @@ export class ModalUsuarioHorarioAtencionComponent {
   // Métodos privados
   //===========================================================
   private async _obtenerDatos() {
-    // const http$ = this._usuarioService.buscarUsuarioPorId$(this.data.pId);
+    // const http$ = this._psicologoService.buscarPsicologoPorId$(this.data.pId);
     // const respuestaServidor: ApiResponse = await lastValueFrom(http$);
-    // this.usuario = respuestaServidor.data;
+    // this.psicologo = respuestaServidor.data;
   }
 
   //===========================================================

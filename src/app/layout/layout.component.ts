@@ -2,16 +2,15 @@ import { ChangeDetectorRef, Component, ViewChild } from '@angular/core';
 import { MediaMatcher } from '@angular/cdk/layout';
 import { MatSidenav } from '@angular/material/sidenav';
 import { DTOMenuNavegacion } from '../modules/admin/menu/menu.model';
-// import { DTOUsuarioEnSesion } from '../modules/admin/usuario/usuario.model';
-import { UsuarioService } from '../modules/admin/usuario/usuario.service';
 import { AuthService } from '../core/services/auth.service';
 import { MockNavigationMenues } from '../core/mock/navigation.mock';
+import { PsicologoService } from '../modules/admin/psicologo/psicologo.service';
 
 
 @Component({
   selector: 'app-layout',
   templateUrl: './layout.component.html',
-  styleUrls:['./layout.component.scss']
+  styleUrls: ['./layout.component.scss']
 })
 export class LayoutComponent {
   @ViewChild('snav') nav: MatSidenav;
@@ -27,7 +26,7 @@ export class LayoutComponent {
 
   constructor(
     private _authService: AuthService,
-    private _usuarioService: UsuarioService,
+    private _psicologoService: PsicologoService,
     changeDetectorRef: ChangeDetectorRef,
     media: MediaMatcher
   ) {
@@ -52,7 +51,7 @@ export class LayoutComponent {
   // }
 
   private _inicializarVariables(): void {
-    this.nombresUsuario = this._usuarioService.nombresCortos;
+    this.nombresUsuario = this._psicologoService.nombresCortos;
   }
 
   cerrarSesion() {

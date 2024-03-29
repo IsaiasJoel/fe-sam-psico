@@ -1,0 +1,140 @@
+<div class="p-4 flex flex-col h-full">
+    <!-- Header -->
+    <div class="">
+        <div class="flex gap-2 items-center justify-between">
+            <div class="font-medium text-4xl mb-2">Registro de atención</div>
+            <a class="flex items-center" routerLink="../">
+                <mat-icon svgIcon="pan-left"></mat-icon>
+                <span>Regresar</span>
+            </a>
+            <!-- <mat-icon (click)="irAPantallaCrear()" class="icon-size-md hover:cursor-pointer icon-turquesa"
+                [svgIcon]="'plus-circle'" matTooltip="Registrar atención"></mat-icon> -->
+        </div>
+        <hr>
+    </div>
+
+    <!-- Contenido -->
+    <div class="flex flex-col mt-4 bg-white ">
+        <div class="grid grid-cols-6 gap-4 border p-4 shadow-lg">
+            <div class="flex gap-1">
+                <mat-icon svgIcon="account"></mat-icon>
+                <div>
+                    <div class="font-medium">Psicólogo</div>
+                    <div>Luis Anthony Nevado Sanchez</div>
+                </div>
+            </div>
+            <div class="flex gap-1">
+                <mat-icon svgIcon="account-heart"></mat-icon>
+                <div>
+                    <div class="font-medium">Paciente</div>
+                    <div>Isaías Joel Domínguez Montalbán</div>
+                </div>
+            </div>
+            <div class="flex gap-1">
+                <mat-icon svgIcon="clipboard-text-clock"></mat-icon>
+                <div>
+                    <div class="font-medium">Fecha de consulta</div>
+                    <div>18 de marzo de 2024</div>
+                </div>
+            </div>
+            <div class="flex gap-1">
+                <mat-icon svgIcon="clock-outline"></mat-icon>
+                <div>
+                    <div class="font-medium">Hora consulta</div>
+                    <div>10:30 am</div>
+                </div>
+            </div>
+            <div class="flex gap-1">
+                <mat-icon svgIcon="folder-pound-outline"></mat-icon>
+                <div>
+                    <div class="font-medium">Número de atención: </div>
+                    <div>1</div>
+                </div>
+            </div>
+            <div class="flex gap-1">
+                <mat-icon svgIcon="folder-pound"></mat-icon>
+                <div>
+                    <div class="font-medium">Atenciones restantes: </div>
+                    <div>4</div>
+                </div>
+            </div>
+            <div class="flex gap-1 col-span-2">
+                <mat-icon svgIcon="alert"></mat-icon>
+                <div class="w-full">
+                    <div class="font-medium">Códigos de alerta: </div>
+                    <mat-form-field class="w-full">
+                        <mat-select multiple [(ngModel)]="codigosDeAlertaSeleccionados">
+                            <mat-option *ngFor="let codigo of codigosDeAlerta"
+                                [value]="codigo">{{codigo.nombre}}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+            </div>
+            <div class="flex gap-2 mt-2 col-span-4">
+                <mat-chip *ngFor="let item of codigosDeAlertaSeleccionados">
+                    {{item.nombre}}
+                </mat-chip>
+            </div>
+        </div>
+
+        <!-- Body -->
+        <div class="mt-4 flex flex-col gap-2 p-4">
+            <div>
+                <div>Observación de conducta</div>
+                <mat-form-field class="w-full">
+                    <textarea matInput name="" id="" cols="30" rows="3"></textarea>
+                </mat-form-field>
+            </div>
+
+            <div>
+                <div>Registro de cita</div>
+                <mat-form-field class="w-full">
+                    <textarea matInput name="" id="" cols="30" rows="3"></textarea>
+                </mat-form-field>
+            </div>
+
+            <div>
+                <div>Conclusiones</div>
+                <mat-form-field class="w-full">
+                    <textarea matInput name="" id="" cols="30" rows="3"></textarea>
+                </mat-form-field>
+            </div>
+
+            <div>
+                <div>Recomendaciones</div>
+                <mat-form-field class="w-full">
+                    <textarea matInput name="" id="" cols="30" rows="3"></textarea>
+                </mat-form-field>
+            </div>
+
+            <div>
+                <!-- (click)="abrirSelectorDeArchivos()" -->
+                <!-- (change)="procesarAchivo(fileInput.files)" -->
+                <button mat-raised-button class="mt-2">
+                    <mat-icon svgIcon="upload"></mat-icon>
+                    <div>Subir archivo</div>
+                    <input id="file-input" class="absolute h-0 w-0 opacity-0 invisible pointer-events-none" type="file"
+                        [multiple]="false" [accept]="" #fileInput>
+                </button>
+
+            </div>
+
+            <div class="grid grid-cols-6 gap-4">
+                <div *ngFor="let archivo of archivos" class="shadow-lg border flex flex-col items-center cursor-pointer">
+                    <img src="../../../../../assets/images/icono-pdf.webp" alt="" style="width: 10em;">
+                    <div>{{archivo.nombre}}</div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="flex gap-2 self-end mt-4">
+            <button mat-flat-button>
+                Cancelar
+            </button>
+            <button mat-flat-button color="primary">
+                Guardar
+            </button>
+        </div>
+    </div>
+</div>

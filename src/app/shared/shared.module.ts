@@ -1,21 +1,21 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { UsuarioNombresCompletosPipe } from './pipes/usuario-nombres-completos.pipe';
-import { UsuarioEdadPipe } from './pipes/usuario-edad.pipe';
+import { PsicologoNombresCompletosPipe } from './pipes/psicologo-nombres-completos.pipe';
+import { EdadPipe } from './pipes/psicologo-edad.pipe';
 
 
 
 @NgModule({
   declarations: [
-    UsuarioNombresCompletosPipe,
-    UsuarioEdadPipe,
+    PsicologoNombresCompletosPipe,
+    EdadPipe,
   ],
   imports: [
     CommonModule
   ],
   exports: [
-    UsuarioNombresCompletosPipe,
-    UsuarioEdadPipe,
+    PsicologoNombresCompletosPipe,
+    EdadPipe,
   ]
 })
 export class SharedModule { }

@@ -1,25 +1,25 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { DTOUsuarioEncontrado } from '../usuario.models';
-import { UsuarioService } from '../usuario.service';
+import { DTOPsicologoEncontrado } from '../psicologo.models';
+import { PsicologoService } from '../psicologo.service';
 import { ApiResponse } from 'src/app/core/models/api-response.interface';
 import { lastValueFrom } from 'rxjs';
-import { VER_USUARIO_ENCONTRADO } from './modal-ver-usuario.mock';
+import { VER_USUARIO_ENCONTRADO } from './modal-ver-psicologo.mock';
 
 @Component({
-  selector: 'app-modal-ver-usuario',
-  templateUrl: './modal-ver-usuario.component.html'
+  selector: 'app-modal-ver-psicologo',
+  templateUrl: './modal-ver-psicologo.component.html'
 })
-export class ModalVerUsuarioComponent implements OnInit {
-  usuario: DTOUsuarioEncontrado;
+export class ModalVerPsicologoComponent implements OnInit {
+  psicologo: DTOPsicologoEncontrado;
 
   //===========================================================
   // Ciclo de vida
   //===========================================================
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: { pId: number },
-    public matRef: MatDialogRef<ModalVerUsuarioComponent>,
-    private _usuarioService: UsuarioService
+    public matRef: MatDialogRef<ModalVerPsicologoComponent>,
+    private _psicologoService: PsicologoService
   ) { }
 
   ngOnInit(): void {
@@ -35,10 +35,10 @@ export class ModalVerUsuarioComponent implements OnInit {
   // Métodos privados
   //===========================================================
   private async _obtenerDatos() {
-    // const http$ = this._usuarioService.buscarUsuarioPorId$(this.data.pId);
+    // const http$ = this._psicologoService.buscarPsicologoPorId$(this.data.pId);
     // const respuestaServidor: ApiResponse = await lastValueFrom(http$);
-    // this.usuario = respuestaServidor.data;
+    // this.psicologo = respuestaServidor.data;
 
-    this.usuario = VER_USUARIO_ENCONTRADO;
+    this.psicologo = VER_USUARIO_ENCONTRADO;
   }
 }

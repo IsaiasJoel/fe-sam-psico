@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { DTOServicioListar } from '../../servicio/servicio.model';
+import { MatCalendarCellClassFunction } from '@angular/material/datepicker';
 
 @Component({
   selector: 'regitrar-atencion',
@@ -35,6 +36,18 @@ export class RegitrarAtencionComponent implements OnInit {
     { id: 3, nombre: 'Ambiente 3' }
   ];
 
+  dateClass: MatCalendarCellClassFunction<Date> = (cellDate, view) => {
+    // Only highligh dates inside the month view.
+    if (view === 'month') {
+      const date = cellDate.getDate();
+
+      // Highlight the 1st and 20th day of each month.
+      return date === 1 || date === 20 ? 'example-custom-date-class' : '';
+    }
+
+    return '';
+  };
+
   //==================================================
   // Ciclo de vida
   //==================================================
@@ -54,6 +67,7 @@ export class RegitrarAtencionComponent implements OnInit {
       dniPaciente: [],
       servicio: [],
       proyecto: [],
+      organizacionRefiere: [],
       motivoConsulta: [],
       modalidad: [],
       horarioDisponibilidad: [],

@@ -4,16 +4,16 @@ import { MatDialog } from '@angular/material/dialog';
 import { ModalAtencionesCanceladasComponent } from './modal-atenciones-canceladas/modal-atenciones-canceladas.component';
 
 @Component({
-  selector: 'casos-asignados-por-usuario',
-  templateUrl: './casos-asignados-por-usuario.component.html'
+  selector: 'casos-asignados-por-psicologo',
+  templateUrl: './casos-asignados-por-psicologo.component.html'
 })
-export class CasosAsignadosPorUsuarioComponent {
+export class CasosAsignadosPorPsicologoComponent {
   //=========================================================
   //Variables
   //=========================================================
   casosAsignados: any = {
-    idUsuario: 1,
-    usuario: 'Marjorie Horna',
+    idPsicologo: 1,
+    psicologo: 'Marjorie Horna',
     estadistica: {
       proceso: 3,
       culminados: 10,

@@ -2,30 +2,26 @@ import { Component, ViewChild } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
-import { ApiResponse } from 'src/app/core/models/api-response.interface';
-import { Observable, lastValueFrom, map, switchMap } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
-import { DTOUsuarioListar } from './usuario.models';
-import { UsuarioService } from './usuario.service';
+import { DTOPsicologoListar } from './psicologo.models';
+import { PsicologoService } from './psicologo.service';
 import { MatDialog } from '@angular/material/dialog';
-import { TEXTO_CONSULTA_EXITOSA, TEXTO_CONSULTA_FALLO } from 'src/app/core/utils/constants.utils';
 import { SweetAlertService } from 'src/app/core/modals/sweet-alert.service';
-import { HttpErrorResponse } from '@angular/common/http';
 import { Router } from '@angular/router';
-import { ModalVerUsuarioComponent } from './modal-ver-usuario/modal-ver-usuario.component';
-import { ModalUsuarioHorarioAtencionComponent } from './modal-usuario-horario-atencion/modal-usuario-horario-atencion.component';
-import { USUARIOS } from './usuario.mock';
+import { ModalVerPsicologoComponent } from './modal-ver-psicologo/modal-ver-psicologo.component';
+import { ModalPsicologoHorarioAtencionComponent } from './modal-psicologo-horario-atencion/modal-psicologo-horario-atencion.component';
+import { USUARIOS } from './psicologo.mock';
 
 @Component({
-  selector: 'usuario',
-  templateUrl: './usuario.component.html'
+  selector: 'psicologo',
+  templateUrl: './psicologo.component.html'
 })
-export class UsuarioComponent {
+export class PsicologoComponent {
   @ViewChild(MatPaginator) _paginator: MatPaginator;
   @ViewChild(MatSort) _sort: MatSort;
 
-  columnas: string[] = ['nombresApellidos', 'dni', 'carrera', 'especialidad', 'casosAsignados', 'horario', 'estado', 'editar', 'eliminar'];
-  dataSource: MatTableDataSource<DTOUsuarioListar>;
+  columnas: string[] = ['nombresApellidos', 'dni', 'carrera', 'especialidad', 'casosAsignados', 'horario', 'estado', 'editar'/*, 'eliminar'*/];
+  dataSource: MatTableDataSource<DTOPsicologoListar>;
   estaCargando: boolean = false;
 
   filtroDni: string;
@@ -39,7 +35,7 @@ export class UsuarioComponent {
   // Ciclo de vida
   //===================================================
   constructor(
-    private _usuarioService: UsuarioService,
+    private _psicologoService: PsicologoService,
     private _matDialog: MatDialog,
     private _toastr: ToastrService,
     private _sweetAlertService: SweetAlertService,
@@ -139,56 +135,56 @@ export class UsuarioComponent {
     this._listar();
   }
 
-  async deshabilitar(idUsuario: string) {
-    const ref = await this._sweetAlertService.preguntarSiNo('¿Desea deshabilitar al usuario?');
+  async deshabilitar(idPsicologo: string) {
+    const ref = await this._sweetAlertService.preguntarSiNo('¿Desea deshabilitar al psicologo?');
     if (!ref.isConfirmed) return;
 
     // try {
-    //   const http$ = this._usuarioService.habilitar$(idUsuario, 'deshabilitar');
+    //   const http$ = this._usuarioService.habilitar$(idPsicologo, 'deshabilitar');
     //   await lastValueFrom(http$);
     //   this._listar();
-    //   this._toastr.success('El usuario fue deshabilitado');
+    //   this._toastr.success('El psicologo fue deshabilitado');
     // } catch (error) {
     //   const mensaje = (error as HttpErrorResponse).error.message.ERROR;
-    //   this._sweetAlertService.mostrarMensaje('No se pudo deshabilitar al usuario', mensaje, 'error');
+    //   this._sweetAlertService.mostrarMensaje('No se pudo deshabilitar al psicologo', mensaje, 'error');
     // }
   }
 
-  async habilitar(idUsuario: string) {
-    const ref = await this._sweetAlertService.preguntarSiNo('¿Desea habilitar al usuario?');
+  async habilitar(idPsicologo: string) {
+    const ref = await this._sweetAlertService.preguntarSiNo('¿Desea habilitar al psicologo?');
     if (!ref.isConfirmed) return;
 
     // try {
-    //   const http$ = this._usuarioService.habilitar$(idUsuario, 'habilitar');
+    //   const http$ = this._usuarioService.habilitar$(idPsicologo, 'habilitar');
     //   await lastValueFrom(http$);
     //   this._listar();
-    //   this._toastr.success('El usuario fue habilitado');
+    //   this._toastr.success('El psicologo fue habilitado');
     // } catch (error) {
     //   const mensaje = (error as HttpErrorResponse).error.message.ERROR;
-    //   this._sweetAlertService.mostrarMensaje('No se pudo habilitar al usuario', mensaje, 'error');
+    //   this._sweetAlertService.mostrarMensaje('No se pudo habilitar al psicologo', mensaje, 'error');
     // }
   }
 
   irAPantallaCrear() {
-    this._router.navigate(['/usuarios/crear']);
+    this._router.navigate(['/psicologos/crear']);
   }
 
   irAPantallaEditar(id: string) {
-    this._router.navigate(['/usuarios/', id]);
+    this._router.navigate(['/psicologos/', id]);
   }
 
   irAPantallaVerCasosAsignados(id: number) {
-    this._router.navigate(['/usuarios/', id, 'casos-asignados']);
+    this._router.navigate(['/psicologos/', id, 'casos-asignados']);
   }
 
   //=====================================
   // Modales
   //=====================================
-  abrirModalVerUsuario(id: number) {
-    this._matDialog.open(ModalVerUsuarioComponent, { data: { pId: id } });
+  abrirModalVerPsicologo(id: number) {
+    this._matDialog.open(ModalVerPsicologoComponent, { data: { pId: id } });
   }
 
   abrirModalHorario(id: number) {
-    this._matDialog.open(ModalUsuarioHorarioAtencionComponent, { data: { pId: id } });
+    this._matDialog.open(ModalPsicologoHorarioAtencionComponent, { data: { pId: id } });
   }
 }

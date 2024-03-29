@@ -6,7 +6,7 @@ export type EstadoAtencionType = 'En proceso' | 'Culminado';
 //========================================
 // INTERFACES
 //========================================
-export interface DTOUsuarioListar {
+export interface DTOPsicologoListar {
     id: number;
     apPaterno: string;
     apMaterno: string;
@@ -19,7 +19,7 @@ export interface DTOUsuarioListar {
     habilitado: boolean;
 }
 
-export interface DTOUsuarioEnSesion {
+export interface DTOPsicologoEnSesion {
     id: string;
     apPaterno: string;
     apMaterno: string;
@@ -27,7 +27,7 @@ export interface DTOUsuarioEnSesion {
     roles: any[];
 }
 
-export interface DTOUsuarioCrearEditarRequest {
+export interface DTOPsicologoCrearEditarRequest {
     id: number;
     apPaterno: string;
     apMaterno: string;
@@ -49,7 +49,7 @@ export interface DTOUsuarioCrearEditarRequest {
     contrasenia: string;
 }
 
-export interface DTOUsuarioEncontrado {
+export interface DTOPsicologoEncontrado {
     id: number;
     apPaterno: string;
     apMaterno: string;
@@ -70,8 +70,8 @@ export interface DTOUsuarioEncontrado {
     correo: string;
 }
 
-export interface DTOCasoAsignadoPorUsuario {
-    idUsuario: number;
+export interface DTOCasoAsignadoPorPsicologo {
+    idPsicologo: number;
     usuario: string; //Nombres completos del voluntarios
     estadistica: {
         proceso: number;

@@ -2,9 +2,9 @@ import { Pipe, PipeTransform } from '@angular/core';
 import * as moment from 'moment';
 
 @Pipe({
-  name: 'usuarioEdad'
+  name: 'edad'
 })
-export class UsuarioEdadPipe implements PipeTransform {
+export class EdadPipe implements PipeTransform {
 
   transform(fechaNacimiento: string): string {
     const fechaActual = moment(new Date());
