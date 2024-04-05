@@ -15,12 +15,12 @@
             <mat-icon svgIcon="menu-down" class="icon-size-md text-slate-700"></mat-icon>
         </button>
         <mat-menu #menu="matMenu">
-            <button mat-menu-item [routerLink]="'./cambiar-contrasenia'">
+            <!-- <button mat-menu-item [routerLink]="'./cambiar-contrasenia'">
                 <div class="flex items-center gap-2">
                     <mat-icon svgIcon="restore"></mat-icon>
                     <div class="text-sm">Cambiar contraseña</div>
                 </div>
-            </button>
+            </button> -->
             <button mat-menu-item (click)="cerrarSesion()">
                 <div class="flex items-center gap-2">
                     <mat-icon svgIcon="logout"></mat-icon>
@@ -54,15 +54,15 @@
 
                     <!-- Skip the hidden items -->
                     <!-- (item.hidden && !item.hidden(item)) ||  -->
-                    <ng-container *ngIf="!item.hidden">
+                    <ng-container *ngIf="!item.estaOculto">
 
                         <!-- Basic -->
-                        <ng-container *ngIf="item.type === 'basico'">
+                        <ng-container *ngIf="item.tipo === 'basico'">
                             <basic-navigation [item]="item"></basic-navigation>
                         </ng-container>
 
                         <!-- Collapsable -->
-                        <ng-container *ngIf="item.type === 'colapsable'">
+                        <ng-container *ngIf="item.tipo === 'colapsable'">
                             <collapsable-navigation [item]="item"></collapsable-navigation>
                         </ng-container>
                     </ng-container>

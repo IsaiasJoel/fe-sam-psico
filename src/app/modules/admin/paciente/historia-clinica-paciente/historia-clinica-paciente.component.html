@@ -2,26 +2,26 @@
     <!-- Header -->
     <div class="flex items-center justify-between w-full">
         <div class="flex gap-2 flex-col mb-2">
-            <div class="font-medium text-4xl">{{historia.paciente}}</div>
+            <div class="font-medium text-4xl">{{historia.paciente.nombresCompletos}}</div>
             <div class="text-lg flex text-opacity-80 text-gray-700">
                 <div class="flex gap-2 border-r border-gray-400 px-2" matTooltip="Sexo">
                     <mat-icon svgIcon="gender-male-female"></mat-icon>
-                    <div>{{historia.sexo}}</div>
+                    <div>{{historia.paciente.sexo}}</div>
                 </div>
 
                 <div class="flex gap-2 border-r border-gray-400 px-2" matTooltip="Edad">
                     <mat-icon svgIcon="cake-variant"></mat-icon>
-                    <div>{{historia.edad}}</div>
+                    <div>{{historia.paciente.edad}}</div>
                 </div>
 
                 <div class="flex gap-2 border-r border-gray-400 px-2" matTooltip="Nacionalidad">
                     <mat-icon svgIcon="earth"></mat-icon>
-                    <div>{{historia.nacionalidad}}</div>
+                    <div>{{historia.paciente.nacionalidad}}</div>
                 </div>
 
                 <div class="flex gap-2 px-2" matTooltip="Psicólogo">
                     <mat-icon svgIcon="account-heart"></mat-icon>
-                    <div>Psi. {{historia.psicologo}}</div>
+                    <div>Psi. {{historia.psicologo.nombresCompletos}}</div>
                 </div>
             </div>
         </div>
@@ -30,21 +30,49 @@
             <span>Regresar</span>
         </a>
     </div>
+    <div class="bg-white flex flex-col gap-4 shadow-lg p-4 mb-4">
+        <div>
+            <div class="texto-label-azul">Código de alerta</div>
+            <div class="flex gap-2 col-span-4">
+                <mat-chip *ngFor="let item of historia.paciente.codigosAlerta">
+                    {{item.nombre}}
+                </mat-chip>
+            </div>
+        </div>
+
+        <div>
+            <div class="texto-label-azul">Aspectro presuntivo</div>
+            <div>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laudantium impedit exercitationem qui
+                placeat
+                est, adipisci repellat quos voluptatum optio nam eligendi fuga, eum eos nihil cum perspiciatis ab
+                explicabo quasi?
+            </div>
+        </div>
+
+        <div>
+            <div class="texto-label-azul">CIE</div>
+            <div class="flex gap-2 col-span-4">
+                <mat-chip *ngFor="let item of historia.paciente.cie" [matTooltip]="item.descripcion">
+                    {{item.codigo}}
+                </mat-chip>
+            </div>
+        </div>
+    </div>
     <hr>
 
     <!-- Body -->
     <div class="mt-2 flex flex-col gap-4">
         <div class="flex items-center justify-between">
             <div class="flex gap-2">
-                <button class="p-2 rounded-xl text-green-800 bg-green-100 flex items-center gap-1"
+                <button class="px-2 rounded-xl text-green-800 bg-green-100 flex items-center gap-1"
                     matTooltip="Atenciones realizadas">
                     <mat-icon svgIcon="check"></mat-icon>
-                    {{historia.atenciones.length}} Realizadas
+                    {{historia.atenciones.length}} atenciones realizadas
                 </button>
-                <button class="p-2 rounded-xl text-red-800 bg-red-100 flex items-center gap-1"
+                <button class="px-2 rounded-xl text-red-800 bg-red-100 flex items-center gap-1"
                     matTooltip="Atenciones canceladas">
                     <mat-icon svgIcon="cancel"></mat-icon>
-                    {{historia.atencionesCanceladas}} Canceladas
+                    {{historia.numAtencionesCanceladas}} atenciones canceladas
                 </button>
             </div>
 
@@ -83,7 +111,26 @@
                 </div>
             </div>
 
-            <div>{{atencion.notas}}</div>
+            <div class="flex flex-col gap-4">
+                <div>
+                    <div class="texto-label-azul">Observación de conducta</div>
+                    <div>{{atencion.informe.observacionConducta}}</div>
+                </div>
+                <div>
+                    <div class="texto-label-azul">Análisis de intervención</div>
+                    <div>{{atencion.informe.analisisIntervencion}}</div>
+                </div>
+                <div>
+                    <div class="texto-label-azul">Conclusiones</div>
+                    <div>{{atencion.informe.conclusiones}}</div>
+                </div>
+                <div>
+                    <div class="texto-label-azul">Recomendaciones</div>
+                    <div>{{atencion.informe.recomendaciones}}</div>
+                </div>
+            </div>
+
+
             <div class="flex gap-4">
                 <div *ngFor="let archivo of atencion.archivosAdjuntos" class="flex">
                     <div class="flex flex-col items-center w-24 p-3 rounded-md hover:shadow-xl hover:cursor-pointer">

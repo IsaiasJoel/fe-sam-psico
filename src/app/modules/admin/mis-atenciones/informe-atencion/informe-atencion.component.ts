@@ -1,6 +1,5 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { DTOCodigoAlerta } from '../mis-atenciones.models';
-import { DTOArchivo } from 'src/app/shared/models/shared.models';
+import { CodigoAlerta, DTOArchivo } from 'src/app/shared/models/shared.models';
 
 @Component({
   selector: 'informe-atencion',
@@ -8,15 +7,15 @@ import { DTOArchivo } from 'src/app/shared/models/shared.models';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class InformeAtencionComponent {
-  codigosDeAlertaSeleccionados: DTOCodigoAlerta[] = [];
+  codigosDeAlertaSeleccionados: CodigoAlerta[] = [];
   archivos: DTOArchivo[] = [
-    { codigo: '1', uuid: '', nombre: 'Archivo 1' },
-    { codigo: '2', uuid: '', nombre: 'Archivo 2' },
-    { codigo: '3', uuid: '', nombre: 'Archivo 3' },
-    { codigo: '4', uuid: '', nombre: 'Archivo 4' }
+    { id: '1', uuid: '', nombre: 'Archivo 1' },
+    { id: '2', uuid: '', nombre: 'Archivo 2' },
+    { id: '3', uuid: '', nombre: 'Archivo 3' },
+    { id: '4', uuid: '', nombre: 'Archivo 4' }
   ];
 
-  codigosDeAlerta: DTOCodigoAlerta[] = [
+  codigosDeAlerta: CodigoAlerta[] = [
     { codigo: '01', nombre: 'Suicidio' },
     { codigo: '02', nombre: 'Violación sexual' },
     { codigo: '03', nombre: 'Diversidad sexual' },

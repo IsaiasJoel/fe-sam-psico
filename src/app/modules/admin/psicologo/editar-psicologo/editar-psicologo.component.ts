@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { AbstractControl, FormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { NACIONALIDADES, OPCIONES_SEXO } from 'src/app/shared/data/shared.data';
 import { OpcionesComboSexo } from 'src/app/shared/models/shared.models';
@@ -15,7 +15,8 @@ import { VER_USUARIO_ENCONTRADO } from '../modal-ver-psicologo/modal-ver-psicolo
 
 @Component({
   selector: 'app-editar-psicologo',
-  templateUrl: './editar-psicologo.component.html'
+  templateUrl: './editar-psicologo.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class EditarPsicologoComponent {
   comboSexo: OpcionesComboSexo[] = OPCIONES_SEXO;

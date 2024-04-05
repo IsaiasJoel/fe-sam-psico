@@ -18,3 +18,8 @@ export interface DTOAmbienteListar {
     descripcion: string;
     habilitado: boolean;
 }
+
+export interface DTOAmbienteCombo {
+    id: number;
+    nombre: string;
+}

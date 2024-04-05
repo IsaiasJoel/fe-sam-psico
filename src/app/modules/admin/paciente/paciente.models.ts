@@ -1,3 +1,7 @@
+import { Cie, CodigoAlerta } from "src/app/shared/models/shared.models";
+import { DTOPsicologoCombo } from "../psicologo/psicologo.models";
+import { DTOAtencionHistoriaItem } from "../atencion/atencion.models";
+
 export interface DTOPacienteCrearEditarRequest {
     id: number;
 
@@ -84,4 +88,22 @@ export interface DTOPacienteListar {
     dni: string;
     sexo: string;
     numeroContacto: string;
+}
+
+export interface DTOPacienteHistoriaItem {
+    id: number;
+    nombresCompletos: string;
+    aspectroPresuntivo: string;
+    sexo: string;
+    edad: number;
+    nacionalidad: string;
+    cie: Cie[];
+    codigosAlerta: CodigoAlerta[];
+}
+
+export interface DTOPacienteHistoria {
+    paciente: DTOPacienteHistoriaItem;
+    psicologo: DTOPsicologoCombo;
+    atenciones: DTOAtencionHistoriaItem[];
+    numAtencionesCanceladas: number
 }

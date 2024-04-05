@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { PacienteService } from '../paciente.service';
 import { ToastrService } from 'ngx-toastr';
@@ -17,7 +17,8 @@ import { SweetAlertService } from 'src/app/core/modals/sweet-alert.service';
 
 @Component({
   selector: 'app-editar-paciente',
-  templateUrl: './editar-paciente.component.html'
+  templateUrl: './editar-paciente.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class EditarPacienteComponent {
   comboSexo: OpcionesComboSexo[] = OPCIONES_SEXO;

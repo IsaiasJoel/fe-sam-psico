@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, ElementRef, Inject, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, Inject, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { ServiciosService } from '../servicios.service';
@@ -8,7 +8,8 @@ import { convertirFileABase64 } from 'src/app/utils/files.utils';
 
 @Component({
   selector: 'app-modal-editar-servicio',
-  templateUrl: './modal-editar-servicio.component.html'
+  templateUrl: './modal-editar-servicio.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ModalEditarServicioComponent {
   @ViewChild('fileInput') private _fileInput: ElementRef;

@@ -2,6 +2,9 @@ import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { DTOServicioListar } from '../../servicio/servicio.model';
 import { MatCalendarCellClassFunction } from '@angular/material/datepicker';
+import { Proyecto } from 'src/app/shared/models/shared.models';
+import { DTOPsicologoCombo } from '../../psicologo/psicologo.models';
+import { DTOAmbienteCombo } from '../../ambiente/ambiente.model';
 
 @Component({
   selector: 'regitrar-atencion',
@@ -36,19 +39,19 @@ export class RegitrarAtencionComponent implements OnInit {
       imagen: 'https://cdn.pixabay.com/photo/2019/04/30/15/42/psychology-4165142_960_720.jpg'
     }
   ];
-  proyectos: any[] = [
+  proyectos: Proyecto[] = [
     { id: 1, nombre: 'Centro de escucha' },
     { id: 2, nombre: 'Contigo' },
     { id: 3, nombre: 'Despegue adolescente' }
   ];
-  psicologos: any[] = [
-    { id: 1, nombre: 'Luis Nevado' },
-    { id: 2, nombre: 'Marjorie Horna' },
-    { id: 3, nombre: 'Fiorella Chanta' },
-    { id: 4, nombre: 'Betsabeth Cabrera' },
-    { id: 5, nombre: 'Elisa Nevado' }
+  psicologos: DTOPsicologoCombo[] = [
+    { id: 1, nombresCompletos: 'Luis Nevado' },
+    { id: 2, nombresCompletos: 'Marjorie Horna' },
+    { id: 3, nombresCompletos: 'Fiorella Chanta' },
+    { id: 4, nombresCompletos: 'Betsabeth Cabrera' },
+    { id: 5, nombresCompletos: 'Elisa Nevado' }
   ];
-  ambientes: any[] = [
+  ambientes: DTOAmbienteCombo[] = [
     { id: 1, nombre: 'Ambiente 1' },
     { id: 2, nombre: 'Ambiente 2' },
     { id: 3, nombre: 'Ambiente 3' }

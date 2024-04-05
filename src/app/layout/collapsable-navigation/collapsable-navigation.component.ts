@@ -268,14 +268,14 @@ export class CollapsableNavigationComponent {
    * @private
    */
   private _hasActiveChild(item: DTOMenuNavegacion, currentUrl: string): boolean {
-    const children = item.children;
+    const children = item.hijos;
 
     if (!children) {
       return false;
     }
 
     for (const child of children) {
-      if (child.children) {
+      if (child.hijos) {
         if (this._hasActiveChild(child, currentUrl)) {
           return true;
         }

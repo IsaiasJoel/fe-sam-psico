@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { AmbienteService } from './ambiente.service';
 import { ToastrService } from 'ngx-toastr';
 import { SweetAlertService } from 'src/app/core/modals/sweet-alert.service';
@@ -11,7 +11,8 @@ import { ModalEditarAmbienteComponent } from './modal-editar-ambiente/modal-edit
 
 @Component({
   selector: 'app-ambiente',
-  templateUrl: './ambiente.component.html'
+  templateUrl: './ambiente.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AmbienteComponent {
   ambientes: DTOAmbienteListar[] = [

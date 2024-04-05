@@ -1,12 +1,14 @@
-import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, Component, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
+import { DTOAtencionListar } from './atencion.models';
 
 @Component({
   selector: 'app-atencion',
   templateUrl: './atencion.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AtencionComponent implements OnInit, AfterViewInit {
   //================================================
@@ -16,7 +18,7 @@ export class AtencionComponent implements OnInit, AfterViewInit {
   @ViewChild(MatSort) _sort: MatSort;
 
   columnas: string[] = ['paciente', 'psicologx', 'fechaHoraAtencion', 'ambiente', 'estado', 'cancelarAtencion'];
-  dataSource: MatTableDataSource<any>;
+  dataSource: MatTableDataSource<DTOAtencionListar>;
 
   pagination = { numeroPagina: 0, tamanioPagina: 10, tamanioTotal: 0, index: 0 };
   pageableOptions = [10, 25, 100];
@@ -42,14 +44,12 @@ export class AtencionComponent implements OnInit, AfterViewInit {
     // this._suscribirseAlPaginator();
     this._obtenerData();
     this.dataSource = new MatTableDataSource([
-      { paciente: 'Paciente 1', psicologx: 'Psic. 2', fechaHoraAtencion: 'Lunes 3 de abril del 2023', ambiente: 'Sala 1', estado: 'Atendida' },
-      { paciente: 'Paciente 2', psicologx: 'Psic. 2', fechaHoraAtencion: 'Lunes 10 de abril del 2023', ambiente: 'Sala 1', estado: 'En espera' },
-      { paciente: 'Paciente 3', psicologx: 'Psic. 2', fechaHoraAtencion: 'Lunes 17 de abril del 2023', ambiente: 'Sala 1', estado: 'Cancelada' },
-      { paciente: 'Paciente 4', psicologx: 'Psic. 2', fechaHoraAtencion: 'Lunes 24 de abril del 2023', ambiente: 'Sala 1', estado: 'Atendida' }
+      { id: 1, paciente: 'Paciente 1', psicologo: 'Psic. 2', fechaHora: 'Lunes 3 de abril del 2023', ambiente: 'Sala 1', estado: 'Atendida' },
+      { id: 2, paciente: 'Paciente 2', psicologo: 'Psic. 2', fechaHora: 'Lunes 10 de abril del 2023', ambiente: 'Sala 1', estado: 'En espera' },
+      { id: 3, paciente: 'Paciente 3', psicologo: 'Psic. 2', fechaHora: 'Lunes 17 de abril del 2023', ambiente: 'Sala 1', estado: 'Cancelada' },
+      { id: 4, paciente: 'Paciente 4', psicologo: 'Psic. 2', fechaHora: 'Lunes 24 de abril del 2023', ambiente: 'Sala 1', estado: 'Atendida' }
     ]);
   }
-
-
 
   //================================================
   // Métodos públicos

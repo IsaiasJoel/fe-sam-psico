@@ -1,5 +1,8 @@
 //========================================
 // TYPES
+
+import { Cie, CodigoAlerta } from "src/app/shared/models/shared.models";
+
 //========================================
 export type EstadoAtencionType = 'En proceso' | 'Culminado';
 
@@ -19,35 +22,35 @@ export interface DTOPsicologoListar {
     habilitado: boolean;
 }
 
-export interface DTOPsicologoEnSesion {
-    id: string;
-    apPaterno: string;
-    apMaterno: string;
-    nombres: string;
-    roles: any[];
-}
+// export interface DTOPsicologoEnSesion {
+//     id: string;
+//     apPaterno: string;
+//     apMaterno: string;
+//     nombres: string;
+//     roles: any[];
+// }
 
-export interface DTOPsicologoCrearEditarRequest {
-    id: number;
-    apPaterno: string;
-    apMaterno: string;
-    nombres: string;
-    dni: string;
-    fechaNacimiento: string;
-    sexo: string;
-    celular: string;
-    nacionalidad: string;
-    carrera: string;
-    especialidad: string;
-    universidad: string;
-    anioEgreso: string;
-    colegiado: boolean;
-    numeroColegiatura: string;
-    resumenProfesional: string;
-    habilitado: boolean;
-    correo: string;
-    contrasenia: string;
-}
+// export interface DTOPsicologoCrearEditarRequest {
+//     id: number;
+//     apPaterno: string;
+//     apMaterno: string;
+//     nombres: string;
+//     dni: string;
+//     fechaNacimiento: string;
+//     sexo: string;
+//     celular: string;
+//     nacionalidad: string;
+//     carrera: string;
+//     especialidad: string;
+//     universidad: string;
+//     anioEgreso: string;
+//     colegiado: boolean;
+//     numeroColegiatura: string;
+//     resumenProfesional: string;
+//     habilitado: boolean;
+//     correo: string;
+//     contrasenia: string;
+// }
 
 export interface DTOPsicologoEncontrado {
     id: number;
@@ -99,4 +102,34 @@ export interface DTOAtencionCasoAsignado {
     hora: string,
     mes: string,
     ambiente: string
+}
+
+export interface DTOPsicologoCombo {
+    id: number;
+    nombresCompletos: string;
+}
+
+export interface DTOPsicologoCasoAsignado {
+    idPsicologo: number;
+    psicologo: string;
+    estadistica: DTOPsicologoCasoAsignadoEstadistica;
+    casos: DTOPsicologoCasoAsignadoCaso[];
+}
+
+export interface DTOPsicologoCasoAsignadoEstadistica {
+    proceso: number;
+    culminados: number;
+    totalAsignados: number;
+}
+
+export interface DTOPsicologoCasoAsignadoCaso {
+    estado: string;
+    idPaciente: number;
+    paciente: string;
+    edad: number;
+    nacionalidad: string;
+    motivoConsulta: string;
+    aspectroPresuntivo: string;
+    cie: Cie[];
+    codigosAlerta: CodigoAlerta[];
 }

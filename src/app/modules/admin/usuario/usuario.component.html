@@ -1,0 +1,108 @@
+<div class="flex flex-col h-full w-full items-start p-10 gap-8 bg-slate-200">
+    <!-- titulo -->
+    <div class="text-4xl font-bold">Usuarios</div>
+
+    <!-- Main -->
+    <div class="flex flex-col w-full h-full bg-white p-4 shadow-xl border">
+
+        <!-- Buscador -->
+        <div
+            class="mt-2 rounded-md bg-white md:flex md:flex-col md:gap-4 xl:w-full xl:flex xl:flex-row xl:justify-between xl:items-center xl:gap-8">
+            <div class="flex w-full gap-2">
+                <div class="basis-4/5">
+                    <div class="texto-label-azul">Apellidos y nombres</div>
+                    <mat-form-field class="w-full">
+                        <input matInput (keypress)="filtrar($event)" [(ngModel)]="filtroApellidosNombres">
+                    </mat-form-field>
+                </div>
+
+                <div class="basis-1/5">
+                    <div class="texto-label-azul">Estado</div>
+                    <mat-form-field class="w-full">
+                        <mat-select [(ngModel)]="filtroEstado">
+                            <mat-option value="X">Seleccione</mat-option>
+                            <mat-option value="A">Activo</mat-option>
+                            <mat-option value="I">Inactivo</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+
+            </div>
+            <div class="flex flex-col gap-4 mr-2">
+                <button mat-raised-button color="primary" (click)="clickFiltrar()">Buscar</button>
+                <button mat-raised-button (click)="limpiarCampos()">Limpiar</button>
+            </div>
+        </div>
+
+        <!-- Contenido principal -->
+        <div class="mt-4">
+            <button mat-raised-button class="mb-2" style="background-color: green; color: white;"
+                (click)="abrirModalCrearUsuario()">Agregar</button>
+            <div class="mat-elevation-z8">
+                <table mat-table [dataSource]="dataSource" matSort>
+                    <!-- estado -->
+                    <ng-container matColumnDef="estado">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Estado </th>
+                        <td mat-cell *matCellDef="let row">
+                            <mat-icon *ngIf="row.activo" svgIcon="thumb-up" class="icono-verde-activo"
+                                matTooltip="Activo"></mat-icon>
+                            <mat-icon *ngIf="!row.activo" svgIcon="thumb-down" matTooltip="Inactivo"></mat-icon>
+                        </td>
+                    </ng-container>
+
+                    <!-- nombre -->
+                    <ng-container matColumnDef="apellidosNombres">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Apellidos y nombres </th>
+                        <td mat-cell *matCellDef="let row"> {{row.nombresCompletos}} </td>
+                    </ng-container>
+
+                    <!-- editar -->
+                    <ng-container matColumnDef="editar">
+                        <th mat-header-cell *matHeaderCellDef></th>
+                        <td mat-cell *matCellDef="let row">
+                            <button mat-raised-button class="bg-amarillo" matTooltip="Editar"
+                                (click)="abrirModalEditarUsuario(row.id)">
+                                <mat-icon svgIcon="pencil" style="margin: 0 !important;"></mat-icon>
+                            </button>
+                        </td>
+                    </ng-container>
+
+                    <!-- resetContrasenia -->
+                    <ng-container matColumnDef="resetContrasenia">
+                        <th mat-header-cell *matHeaderCellDef></th>
+                        <td mat-cell *matCellDef="let row">
+                            <button mat-raised-button class="bg-gris" matTooltip="Reestablecer contraseña"
+                                (click)="resetearContrasenia(row.id)">
+                                <mat-icon svgIcon="lock-reset" style="margin: 0 !important;"></mat-icon>
+                            </button>
+                        </td>
+                    </ng-container>
+
+                    <!-- roles -->
+                    <ng-container matColumnDef="roles">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header></th>
+                        <td mat-cell *matCellDef="let row">
+                            <button mat-stroked-button class="flex items-center"
+                                (click)="abrirModalVerMenuesPorUsuario(row.id,row.nombresCompletos)">
+                                <mat-icon svgIcon="shield-account"></mat-icon>
+                                <div>Roles</div>
+                            </button>
+                        </td>
+                    </ng-container>
+
+                    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+                    <!-- Row shown when there is no matching data. -->
+                    <tr class="mat-row" *matNoDataRow>
+                        <td class="mat-cell" colspan="4">No hay contenido</td>
+                    </tr>
+                </table>
+
+                <mat-paginator [length]="pagination.tamanioTotal" [pageSize]="pagination.tamanioPagina"
+                    [pageSizeOptions]="pageableOptions" [showFirstLastButtons]="true">
+                </mat-paginator>
+            </div>
+        </div>
+    </div>
+</div>

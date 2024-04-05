@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NACIONALIDADES, OPCIONES_SEXO } from 'src/app/shared/data/shared.data';
 import { OpcionesComboSexo } from 'src/app/shared/models/shared.models';
@@ -10,7 +10,8 @@ import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-crear-psicologo',
-  templateUrl: './crear-psicologo.component.html'
+  templateUrl: './crear-psicologo.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CrearPsicologoComponent {
   comboSexo: OpcionesComboSexo[] = OPCIONES_SEXO;

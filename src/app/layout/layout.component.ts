@@ -51,7 +51,7 @@ export class LayoutComponent {
   // }
 
   private _inicializarVariables(): void {
-    this.nombresUsuario = this._psicologoService.nombresCortos;
+    this.nombresUsuario = 'this._psicologoService.nombresCortos';
   }
 
   cerrarSesion() {

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { ApexOptions } from 'ng-apexcharts';
 import { Subject } from 'rxjs';
@@ -9,7 +9,8 @@ import { configPuntos, configTorta } from './dashboard.config';
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
-  styleUrls: ['./dashboard.component.scss']
+  styleUrls: ['./dashboard.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class DashboardComponent {
   chartCasosAtendidos: ApexOptions | any = {};

@@ -1,17 +1,19 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { ModalAtencionesCanceladasComponent } from './modal-atenciones-canceladas/modal-atenciones-canceladas.component';
+import { DTOPsicologoCasoAsignado } from '../psicologo.models';
 
 @Component({
   selector: 'casos-asignados-por-psicologo',
-  templateUrl: './casos-asignados-por-psicologo.component.html'
+  templateUrl: './casos-asignados-por-psicologo.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CasosAsignadosPorPsicologoComponent {
   //=========================================================
   //Variables
   //=========================================================
-  casosAsignados: any = {
+  casosAsignados: DTOPsicologoCasoAsignado = {
     idPsicologo: 1,
     psicologo: 'Marjorie Horna',
     estadistica: {
@@ -27,13 +29,14 @@ export class CasosAsignadosPorPsicologoComponent {
         edad: 24,
         nacionalidad: 'PERU',
         motivoConsulta: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book',
-        diagnostico: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book',
-        atencionesEfectivas: 3,
-        atencionesCanceladas: 2,
-        proximasAtenciones: [
-          { dia: 'Sabado 17', hora: '10:00 am', mes: 'Febrero', ambiente: 'Consultorio 2' },
-          { dia: 'Sabado 24', hora: '10:00 am', mes: 'Febrero', ambiente: 'Consultorio 2' },
-          { dia: 'Sabado 02', hora: '10:00 am', mes: 'Marzo', ambiente: 'Consultorio 2' },
+        aspectroPresuntivo: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book',
+        cie: [
+          { codigo: 'A', descripcion: 'CIE-A' },
+          { codigo: 'B', descripcion: 'CIE-B' }
+        ],
+        codigosAlerta: [
+          { codigo: 'A', nombre: 'ALERTA-A' },
+          { codigo: 'B', nombre: 'ALERTA-B' }
         ]
       },
       {
@@ -43,11 +46,14 @@ export class CasosAsignadosPorPsicologoComponent {
         edad: 28,
         nacionalidad: 'VENEZUELA',
         motivoConsulta: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book',
-        diagnostico: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book',
-        atencionesEfectivas: 1,
-        atencionesCanceladas: 0,
-        proximasAtenciones: [
-          { dia: 'Lunes 12', hora: '10:00 am', mes: 'Febrero', ambiente: 'Consultorio 2' },
+        aspectroPresuntivo: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book',
+        cie: [
+          { codigo: 'A', descripcion: 'CIE-A' },
+          { codigo: 'B', descripcion: 'CIE-B' }
+        ],
+        codigosAlerta: [
+          { codigo: 'A', nombre: 'ALERTA-A' },
+          { codigo: 'B', nombre: 'ALERTA-B' }
         ]
       },
       {
@@ -57,10 +63,15 @@ export class CasosAsignadosPorPsicologoComponent {
         edad: 24,
         nacionalidad: 'PERU',
         motivoConsulta: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book',
-        diagnostico: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book',
-        atencionesEfectivas: 2,
-        atencionesCanceladas: 0,
-        proximasAtenciones: []
+        aspectroPresuntivo: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book',
+        cie: [
+          { codigo: 'A', descripcion: 'CIE-A' },
+          { codigo: 'B', descripcion: 'CIE-B' }
+        ],
+        codigosAlerta: [
+          { codigo: 'A', nombre: 'ALERTA-A' },
+          { codigo: 'B', nombre: 'ALERTA-B' }
+        ]
       },
       {
         estado: 'En proceso',
@@ -69,13 +80,14 @@ export class CasosAsignadosPorPsicologoComponent {
         edad: 28,
         nacionalidad: 'PERU',
         motivoConsulta: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book',
-        diagnostico: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book',
-        atencionesEfectivas: 5,
-        atencionesCanceladas: 0,
-        proximasAtenciones: [
-          { dia: 'Miércoles 14', hora: '10:00 am', mes: 'Febrero', ambiente: 'Consultorio 2' },
-          { dia: 'Miércoles 21', hora: '10:00 am', mes: 'Febrero', ambiente: 'Consultorio 2' },
-          { dia: 'Miércoles 28', hora: '10:00 am', mes: 'Febrero', ambiente: 'Consultorio 2' },
+        aspectroPresuntivo: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book',
+        cie: [
+          { codigo: 'A', descripcion: 'CIE-A' },
+          { codigo: 'B', descripcion: 'CIE-B' }
+        ],
+        codigosAlerta: [
+          { codigo: 'A', nombre: 'ALERTA-A' },
+          { codigo: 'B', nombre: 'ALERTA-B' }
         ]
       }
     ]
@@ -96,11 +108,11 @@ export class CasosAsignadosPorPsicologoComponent {
   //=========================================================
   //Métodos públicos
   //=========================================================
-  verAtencionesCanceladas(idPaciente: number) {
-    this._matDialog.open(ModalAtencionesCanceladasComponent, { data: { pPacienteId: idPaciente } });
-  }
+  // verAtencionesCanceladas(idPaciente: number) {
+  //   this._matDialog.open(ModalAtencionesCanceladasComponent, { data: { pPacienteId: idPaciente } });
+  // }
 
-  irAPantallaHistoriaClinica(idPaciente: number) {
-    this._router.navigate(['pacientes/historias/',idPaciente]);
-  }
+  // irAPantallaHistoriaClinica(idPaciente: number) {
+  //   this._router.navigate(['pacientes/historias/',idPaciente]);
+  // }
 }

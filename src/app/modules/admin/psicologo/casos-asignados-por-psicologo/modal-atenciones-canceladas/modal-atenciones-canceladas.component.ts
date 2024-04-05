@@ -1,9 +1,10 @@
-import { Component, Inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 
 @Component({
   selector: 'modal-atenciones-canceladas',
-  templateUrl: './modal-atenciones-canceladas.component.html'
+  templateUrl: './modal-atenciones-canceladas.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ModalAtencionesCanceladasComponent {
 

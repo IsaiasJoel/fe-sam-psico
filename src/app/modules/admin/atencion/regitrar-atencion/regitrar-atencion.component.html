@@ -169,7 +169,7 @@
                             <mat-select formControlName="psicologo">
                                 <mat-option value="Seleccionar">Seleccionar</mat-option>
                                 <mat-option [value]="psicologo" *ngFor="let psicologo of psicologos">
-                                    <div>{{psicologo.nombre}}</div>
+                                    <div>{{psicologo.nombresCompletos}}</div>
                                 </mat-option>
                             </mat-select>
                         </mat-form-field>

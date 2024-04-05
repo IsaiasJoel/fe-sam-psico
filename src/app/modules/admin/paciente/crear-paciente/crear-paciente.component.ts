@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { PacienteService } from '../paciente.service';
 import { ToastrService } from 'ngx-toastr';
@@ -14,7 +14,8 @@ import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-crear-paciente',
-  templateUrl: './crear-paciente.component.html'
+  templateUrl: './crear-paciente.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CrearPacienteComponent {
   comboSexo: OpcionesComboSexo[] = OPCIONES_SEXO;

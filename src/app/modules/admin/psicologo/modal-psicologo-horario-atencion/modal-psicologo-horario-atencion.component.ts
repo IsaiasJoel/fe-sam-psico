@@ -1,10 +1,11 @@
-import { Component, Inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-modal-psicologo-horario-atencion',
-  templateUrl: './modal-psicologo-horario-atencion.component.html'
+  templateUrl: './modal-psicologo-horario-atencion.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ModalPsicologoHorarioAtencionComponent {
   psicologo: any;
@@ -21,7 +22,7 @@ export class ModalPsicologoHorarioAtencionComponent {
 
   ngOnInit(): void {
     this._obtenerDatos();
-    this._crearFormulario();    
+    this._crearFormulario();
   }
 
   //===========================================================

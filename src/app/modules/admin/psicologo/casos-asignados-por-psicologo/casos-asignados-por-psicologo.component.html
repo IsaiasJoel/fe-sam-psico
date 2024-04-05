@@ -77,13 +77,29 @@
                                 <div>{{caso.motivoConsulta}}</div>
                             </div>
                             <div>
-                                <div class="text-blue-500 font-medium">Diagnóstico</div>
-                                <div>{{caso.diagnostico}}</div>
+                                <div class="text-blue-500 font-medium">Códigos de alerta</div>
+                                <div class="flex gap-2 col-span-4">
+                                    <mat-chip *ngFor="let item of caso.codigosAlerta">
+                                        {{item.nombre}}
+                                    </mat-chip>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="text-blue-500 font-medium">Aspectro presuntivo</div>
+                                <div>{{caso.aspectroPresuntivo}}</div>
+                            </div>
+                            <div>
+                                <div class="text-blue-500 font-medium">CIE</div>
+                                <div class="flex gap-2 col-span-4">
+                                    <mat-chip *ngFor="let item of caso.cie" [matTooltip]="item.descripcion">
+                                        {{item.codigo}}
+                                    </mat-chip>
+                                </div>
                             </div>
                         </div>
                     </div>
                     <div class="p-4 grid grid-cols-10">
-                        <div class="col-span-2">
+                        <!-- <div class="col-span-2">
                             <div class="flex items-center" matTooltip="Ver atenciones efectivas"
                                 matTooltipPosition="above">
                                 <mat-icon svgIcon="check" class="icono-verde-activo"></mat-icon>
@@ -98,8 +114,8 @@
                                 <div *ngIf="caso.atencionesCanceladas==0">Atenciones canceladas:
                                     {{caso.atencionesCanceladas}}</div>
                             </div>
-                        </div>
-                        <div class="col-span-8">
+                        </div> -->
+                        <!-- <div class="col-span-8">
                             <div class="flex items-center gap-2">
                                 <mat-icon svgIcon="account-clock" class=""></mat-icon>
                                 <div>Próximas atenciones: </div>
@@ -111,7 +127,7 @@
                                 </ng-container>
                                 <div *ngIf="caso.proximasAtenciones.length == 0">No tiene</div>
                             </div>
-                        </div>
+                        </div> -->
                     </div>
                 </div>
             </ng-container>

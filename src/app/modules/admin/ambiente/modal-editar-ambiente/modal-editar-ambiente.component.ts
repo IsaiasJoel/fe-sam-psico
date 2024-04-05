@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, ElementRef, Inject, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, Inject, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { lastValueFrom } from 'rxjs';
@@ -8,7 +8,8 @@ import { convertirFileABase64 } from 'src/app/utils/files.utils';
 
 @Component({
   selector: 'app-modal-editar-ambiente',
-  templateUrl: './modal-editar-ambiente.component.html'
+  templateUrl: './modal-editar-ambiente.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ModalEditarAmbienteComponent {
   @ViewChild('fileInput') private _fileInput: ElementRef;

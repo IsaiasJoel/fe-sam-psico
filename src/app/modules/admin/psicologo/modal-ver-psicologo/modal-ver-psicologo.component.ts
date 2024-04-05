@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { DTOPsicologoEncontrado } from '../psicologo.models';
 import { PsicologoService } from '../psicologo.service';
@@ -8,7 +8,8 @@ import { VER_USUARIO_ENCONTRADO } from './modal-ver-psicologo.mock';
 
 @Component({
   selector: 'app-modal-ver-psicologo',
-  templateUrl: './modal-ver-psicologo.component.html'
+  templateUrl: './modal-ver-psicologo.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ModalVerPsicologoComponent implements OnInit {
   psicologo: DTOPsicologoEncontrado;

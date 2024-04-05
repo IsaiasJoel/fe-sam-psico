@@ -69,15 +69,15 @@ export const appRoutes: Route[] = [
         //     initialData: InitialDataResolver
         // },
         children: [
-            { path: 'inicio', loadChildren: () => import('../app/modules/admin/inicio/inicio.module').then(m => m.InicioModule) },
             { path: 'dashboard', loadChildren: () => import('../app/modules/admin/dashboard/dashboard.module').then(m => m.DashboardModule) },
             { path: 'pacientes', loadChildren: () => import('../app/modules/admin/paciente/paciente.module').then(m => m.PacienteModule) },
             { path: 'psicologos', loadChildren: () => import('./modules/admin/psicologo/psicologo.module').then(m => m.PsicologoModule) },
             { path: 'atenciones', loadChildren: () => import('../app/modules/admin/atencion/atencion.module').then(m => m.AtencionModule) },
             { path: 'mis-atenciones', loadChildren: () => import('./modules/admin/mis-atenciones/mis-atenciones.module').then(m => m.MisAtencionesModule) },
             { path: 'servicios', loadChildren: () => import('../app/modules/admin/servicio/servicio.module').then(m => m.ServicioModule) },
-            { path: 'administracion', loadChildren: () => import('../app/modules/admin/administracion/administracion.module').then(m => m.AdministracionModule) },
             { path: 'ambientes', loadChildren: () => import('../app/modules/admin/ambiente/ambiente.module').then(m => m.AmbienteModule) },
+            { path: 'usuarios', loadChildren: () => import('../app/modules/admin/usuario/usuario.module').then(m => m.UsuarioModule) },
+            { path: 'roles', loadChildren: () => import('../app/modules/admin/rol/rol.module').then(m => m.RolModule) },
         ]
     }
 ];

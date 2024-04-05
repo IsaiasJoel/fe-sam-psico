@@ -1,6 +1,6 @@
 export interface DTOServicioCrearEditarRequest {
     id: number;
-    descripcion: string;
+    nombre: string;
     costo: number;
     habilitado: boolean;
 }

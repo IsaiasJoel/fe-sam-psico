@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ViewChild } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
@@ -10,11 +10,11 @@ import { SweetAlertService } from 'src/app/core/modals/sweet-alert.service';
 import { Router } from '@angular/router';
 import { ModalVerPsicologoComponent } from './modal-ver-psicologo/modal-ver-psicologo.component';
 import { ModalPsicologoHorarioAtencionComponent } from './modal-psicologo-horario-atencion/modal-psicologo-horario-atencion.component';
-import { USUARIOS } from './psicologo.mock';
 
 @Component({
   selector: 'psicologo',
-  templateUrl: './psicologo.component.html'
+  templateUrl: './psicologo.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class PsicologoComponent {
   @ViewChild(MatPaginator) _paginator: MatPaginator;
@@ -42,7 +42,32 @@ export class PsicologoComponent {
     private _router: Router
   ) {
     // Assign the data to the data source for the table to render
-    this.dataSource = new MatTableDataSource([]);
+    this.dataSource = new MatTableDataSource([
+      {
+        id: 1, dni: '12345678', apPaterno: 'Dominguez', apMaterno: 'Montalbán', nombres: 'Isaías Joel', fechaNacimiento: '2 de agosto de 1999', carrera: 'Ing de sistemas',
+        especialidad: 'Programación', casosAsignados: 0, habilitado: true
+      },
+      {
+        id: 2, dni: '87654321', apPaterno: 'Nevado', apMaterno: 'Sánchez', nombres: 'Luis', fechaNacimiento: '3 de enero de 1995', carrera: 'Psicología',
+        especialidad: 'Traumas', casosAsignados: 2, habilitado: true
+      },
+      {
+        id: 3, dni: '272818299', apPaterno: 'Chanta', apMaterno: 'Melendez', nombres: 'Fiorella', fechaNacimiento: '8 de octubre de 1998', carrera: 'Psicología',
+        especialidad: 'Organizacional', casosAsignados: 2, habilitado: true
+      },
+      {
+        id: 4, dni: '62771829', apPaterno: 'Horna', apMaterno: 'Chiscul', nombres: 'Marjorie', fechaNacimiento: '18 de marzo de 1995', carrera: 'Psicología',
+        especialidad: 'Clínica', casosAsignados: 2, habilitado: true
+      },
+      {
+        id: 5, dni: '617728192', apPaterno: 'Cabrera', apMaterno: 'Alvear', nombres: 'Betsabeth', fechaNacimiento: '15 de septiembre de 1995', carrera: 'Ing de sistemas',
+        especialidad: 'Programación', casosAsignados: 2, habilitado: true
+      },
+      {
+        id: 6, dni: '152729381', apPaterno: 'Peña', apMaterno: 'Flores', nombres: 'Antony', fechaNacimiento: '9 de septiembre de 1996', carrera: 'Psicología',
+        especialidad: 'Poblaciones vulnerables', casosAsignados: 1, habilitado: true
+      }
+    ]);
   }
 
   ngOnInit(): void {
@@ -60,7 +85,6 @@ export class PsicologoComponent {
   //=====================================
   private async _listar() {
     // this.estaCargando = true;
-    this.dataSource = new MatTableDataSource(USUARIOS);
 
     //TODO: 
     // try {

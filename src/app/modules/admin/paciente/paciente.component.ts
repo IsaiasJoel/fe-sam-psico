@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
@@ -15,7 +15,8 @@ import { DTOPacienteListar } from './paciente.models';
 
 @Component({
   selector: 'app-paciente',
-  templateUrl: './paciente.component.html'
+  templateUrl: './paciente.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class PacienteComponent {
   @ViewChild(MatPaginator) _paginator: MatPaginator;

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { ServiciosService } from './servicios.service';
 import { Observable, lastValueFrom } from 'rxjs';
@@ -14,7 +14,8 @@ import { DTOServicioListar } from './servicio.model';
 
 @Component({
   selector: 'app-servicio',
-  templateUrl: './servicio.component.html'
+  templateUrl: './servicio.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ServicioComponent implements OnInit {
   servicios: DTOServicioListar[] = [
