@@ -1,13 +1,12 @@
-import { Component, ViewChild } from '@angular/core';
-import { NgForm, UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
+import { Component } from '@angular/core';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { PsicologoService } from '../../admin/psicologo/psicologo.service';
 import { MenuService } from '../../admin/menu/menu.service';
 import { AuthService } from 'src/app/core/services/auth.service';
-import { HttpErrorResponse } from '@angular/common/http';
 import { lastValueFrom } from 'rxjs';
 import { ApiResponse } from 'src/app/core/models/api-response.interface';
 import { ToastrCustomService } from 'src/app/core/modals/toastr-custom.service';
+import { UsuarioService } from '../../admin/usuario/usuario.service';
 
 @Component({
   selector: 'iniciar-sesion',
@@ -25,7 +24,7 @@ export class IniciarSesionComponent {
     private _formBuilder: UntypedFormBuilder,
     private _router: Router,
     private _authService: AuthService,
-    private _psicologoService: PsicologoService,
+    private _usuarioService: UsuarioService,
     private _toastrCustomService: ToastrCustomService,
     private _menuService: MenuService
   ) { }
@@ -35,7 +34,6 @@ export class IniciarSesionComponent {
   // -----------------------------------------------------------------------------------------------------
   ngOnInit(): void {
     this._crearFormulario();
-    this._mostrarMensajeSesionExpirada();
   }
 
   // -----------------------------------------------------------------------------------------------------
@@ -43,15 +41,9 @@ export class IniciarSesionComponent {
   // -----------------------------------------------------------------------------------------------------
   private _crearFormulario() {
     this.signInForm = this._formBuilder.group({
-      usuario: ['lnevado@nicmaish.org', [Validators.required]],
-      contrasenia: ['lnevado', Validators.required]
+      usuario: [null, [Validators.required]],
+      contrasenia: [null, Validators.required]
     });
-  }
-
-  private _mostrarMensajeSesionExpirada(): void {
-    if (!this._authService.tokenVencido) {
-      this._toastrCustomService.mostrar('Por favor ingrese nuevamente', 'Su sesión expiró', 'Warning');
-    }
   }
 
   // -----------------------------------------------------------------------------------------------------
@@ -67,26 +59,16 @@ export class IniciarSesionComponent {
       return;
     }
 
-    this.signInForm.disable();
-
     /** Devuelve el token que envía el servidor */
-    try {
-      //Obtener el token 
-      // const correo: string = await lastValueFrom(this._authService.iniciarSesion$(this.signInForm.value));
+    //Obtener el token 
+    const usuario: string = await lastValueFrom(this._authService.iniciarSesion$(this.signInForm.value));
 
-      //Buscar al usuario por su username
-      // const respuestaPsicologo: ApiResponse = await lastValueFrom(this._psicologoService.buscarPsicologoPorCorreo$(correo));
-      // this._psicologoService.usuarioEnSesion = respuestaPsicologo.data;
+    //Buscar al usuario por su username
+    const respServidor: ApiResponse = await lastValueFrom(this._usuarioService.buscarUsuarioPorUsername$(usuario));
+    this._usuarioService.usuarioActual = respServidor.data;
 
-      // Guardar la lista de menues en el SesionStorage
-      // this._menuService.guardarListaMenuesDesdeListaRoles(respuestaPsicologo.data.roles);
-
-      // this.estaCargando = false;
-      this._router.navigate(['./dashboard']);
-    } catch (error) {
-      this.mensajeError = (error as HttpErrorResponse).error?.message?.ERROR;
-      this.signInForm.enable();
-      this.estaCargando = false;
-    }
+    // Guardar la lista de menues en el SesionStorage
+    this._menuService.menues = respServidor.data?.menues;
+    this._router.navigate(['./dashboard']);
   }
 }

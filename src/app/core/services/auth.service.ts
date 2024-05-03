@@ -31,7 +31,7 @@ export class AuthService {
   }
 
   get accessToken(): string {
-    return sessionStorage.getItem(environment.TOKEN_NAME)!;
+    return sessionStorage.getItem(environment.TOKEN_NAME);
   }
 
   /**Authenticated */
@@ -68,10 +68,10 @@ export class AuthService {
           const decodedToken = helper.decodeToken(this.accessToken);
 
           //guardar el correo del psicologo
-          let correoPsicologo: string = decodedToken.sub;
+          let usuario: string = decodedToken.sub;
 
           // Return a new observable with the response
-          return of(correoPsicologo);
+          return of(usuario);
         })
       );
   }

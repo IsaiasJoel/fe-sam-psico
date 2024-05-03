@@ -56,7 +56,7 @@ export class UsuarioService {
   // @ Http methods
   // -----------------------------------------------------------------------------------------------------
   buscarUsuarioPorUsername$(username: string) {
-    let currentUrl = `${this._url}/buscarPorUsername/${username}`;
+    let currentUrl = `${this._url}/usernames/${username}`;
     return this._http.get<any>(currentUrl);
   }
 
