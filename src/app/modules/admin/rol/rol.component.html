@@ -115,19 +115,21 @@
                                 <div *ngFor="let hijo of padre.hijos" class="ml-4 flex flex-col">
                                     <div class="flex items-center">
                                         <mat-checkbox *ngIf="hijo.tipo == 'basico'" color="primary"
+                                            (click)="agregarAListaParaEnviar(hijo.codigo,hijo.codigoPadre)"
                                             [checked]="hijo.tienePermiso">
                                         </mat-checkbox>
                                         <div class="">{{hijo.nombre}}</div>
-                                        <!-- (click)="agregarAListaParaEnviar(hijo.menuCodigo,hijo.menuCodigoPadre)" -->
+
                                     </div>
 
                                     <ng-container *ngIf="hijo.hijos.length > 0">
                                         <div class="ml-4 flex items-center -mb-2" *ngFor="let nieto of hijo.hijos">
                                             <mat-checkbox *ngIf="nieto.tipo == 'basico'" color="primary"
+                                                (click)="agregarAListaParaEnviar(nieto.codigo,nieto.codigoPadre)"
                                                 [checked]="nieto.tienePermiso">
                                             </mat-checkbox>
                                             <div class="">{{nieto.nombre}}</div>
-                                            <!-- (click)="agregarAListaParaEnviar(nieto.menuCodigo,nieto.menuCodigoPadre)" -->
+
                                         </div>
                                     </ng-container>
                                 </div>

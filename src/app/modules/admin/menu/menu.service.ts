@@ -1,9 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment.dev';
-import { DTOMenuMatchPorCodigoRol, DTOMenuNavegacion, DTOMenuRolGuardarRequest } from './menu.model';
-import { Observable, ReplaySubject } from 'rxjs';
-import { ApiResponse } from 'src/app/core/models/api-response.interface';
+import { DTOMenuMatchPorCodigoRol, DTOMenuNavegacion } from './menu.model';
+import { Observable, ReplaySubject, tap } from 'rxjs';
+import { RolMenuService } from '../rol/rol-menu.service';
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +13,8 @@ export class MenuService {
   private _menues: ReplaySubject<DTOMenuNavegacion[]> = new ReplaySubject<DTOMenuNavegacion[]>(1);
 
   constructor(
-    private _http: HttpClient
+    private _http: HttpClient,
+    private _rolMenuService: RolMenuService
   ) { }
 
   //=====================================================================
@@ -39,7 +40,9 @@ export class MenuService {
 
   listarPorRol$(idRol?: number) {
     let urlActual: string = `${this.url}/roles/${idRol ?? 0}`;
-    return this._http.get<DTOMenuMatchPorCodigoRol[]>(urlActual);
+    return this._http.get<DTOMenuMatchPorCodigoRol[]>(urlActual).pipe(tap(lista => {
+      this._rolMenuService.listaDesdeServidor = lista;
+    }));
   }
 
   // listarMenuesDeSuperusuario$(): Observable<ApiResponse> {

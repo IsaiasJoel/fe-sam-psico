@@ -19,6 +19,7 @@ export interface DTORolRequestCrearEditar {
     id: number;
     nombre: string;
     habilitado: boolean;
+    menues: string[];
 }
 
 export interface DTOMenuRolGuardarRequest {

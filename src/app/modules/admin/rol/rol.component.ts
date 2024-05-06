@@ -35,7 +35,7 @@ export class RolComponent {
     private _rolMenuService: RolMenuService
   ) { }
 
-  ngOnInit(): void {
+  ngOnInit() {
     this._crearFormulario();
     this._obtenerRoles();
     this._suscribirseALosMenues();
@@ -48,6 +48,8 @@ export class RolComponent {
     this._rolMenuService.menues$
       .subscribe((data: string[]) => {
         this.form.patchValue({ menues: data });
+        console.log('Se suscribió a los menues');
+        this._changeDetector.markForCheck();
       });
   }
 
@@ -68,11 +70,14 @@ export class RolComponent {
       id: [null, []],
       nombre: [null, [Validators.required]],
       habilitado: [true, []],
-      menues: []
+      menues: [[], []]
     });
   }
 
   private async _crear() {
+    if (this.form.get('habilitado').value == null) {
+      this.form.get('habilitado').setValue(true);
+    }
     const http$ = this._rolService.crear$(this.form.value);
     await lastValueFrom(http$);
   }
