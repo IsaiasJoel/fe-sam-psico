@@ -1,12 +1,12 @@
-import { ChangeDetectionStrategy, Component, ViewChild } from '@angular/core';
-import { MatPaginator } from '@angular/material/paginator';
-import { MatSort } from '@angular/material/sort';
-import { MatTableDataSource } from '@angular/material/table';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component } from '@angular/core';
 import { RolService } from './rol.service';
-import { MatDialog } from '@angular/material/dialog';
-import { lastValueFrom, map, switchMap } from 'rxjs';
-import { ApiResponse } from 'src/app/core/models/api-response.interface';
+import { forkJoin, lastValueFrom } from 'rxjs';
 import { DTORolListar } from './rol.model';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { SweetAlertService } from 'src/app/core/modals/sweet-alert.service';
+import { MenuService } from '../menu/menu.service';
+import { DTOMenuMatchPorCodigoRol } from '../menu/menu.model';
+import { RolMenuService } from './rol-menu.service';
 
 @Component({
   selector: 'app-rol',
@@ -14,75 +14,72 @@ import { DTORolListar } from './rol.model';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class RolComponent {
-  displayedColumns: string[] = ['nombre', 'menues', 'editar'];
-  dataSource: MatTableDataSource<DTORolListar>;
+  //=====================================
+  // Variables
+  //=====================================
+  filtroNombre: string;
+  roles: DTORolListar[] = [];
+  accion: 'crear' | 'editar' | 'ninguno' = 'ninguno';
+  form: FormGroup;
+  menuesPorRol: DTOMenuMatchPorCodigoRol[] = [];
 
-  // FILTROS
-  filtroNombre: string = '';
-  // FIN FILTROS
-
-  // Pagination
-  pagination = { numeroPagina: 0, tamanioPagina: 10, tamanioTotal: 0, index: 0 };
-  pageableOptions = [10, 25, 100];
-  //
-
-  @ViewChild(MatPaginator) _paginator: MatPaginator;
-  @ViewChild(MatSort) _sort: MatSort;
-
+  //=====================================
+  // Ciclo de vida
+  //=====================================
   constructor(
     private _rolService: RolService,
-    private _dialog: MatDialog
-  ) {
-    // Assign the data to the data source for the table to render
-    this.dataSource = new MatTableDataSource([
-      { id: 1, nombre: 'ADMINISTRADOR' }
-    ]);
-  }
+    private _changeDetector: ChangeDetectorRef,
+    private _formBuilder: FormBuilder,
+    private _sweetAlertService: SweetAlertService,
+    private _menuService: MenuService,
+    private _rolMenuService: RolMenuService
+  ) { }
 
   ngOnInit(): void {
-  }
-
-  ngAfterViewInit() {
-    //debe estar aquí porque en este punto ya cargó el MatPaginator, de lo contrario es undefined
-    this._suscribirseAlPaginator();
+    this._crearFormulario();
     this._obtenerRoles();
+    this._suscribirseALosMenues();
   }
 
   //=====================================
   // Métodos privados
   //=====================================
+  private _suscribirseALosMenues() {
+    this._rolMenuService.menues$
+      .subscribe((data: string[]) => {
+        this.form.patchValue({ menues: data });
+      });
+  }
+
   private async _obtenerRoles() {
-    const http$ = this._rolService.listar$(this._paginator?.pageIndex, this._paginator?.pageSize);
-    const respuestaServidor: ApiResponse = await lastValueFrom(http$);
-    this._cargarDatosDelServidorAlDatasource(respuestaServidor.data);
+    const http$ = this._rolService.listar$(this.filtroNombre);
+    this.roles = await lastValueFrom(http$);
+    this._changeDetector.markForCheck();
   }
 
-  /**almacenar la respuesta del servidor en variables locales*/
-  private _cargarDatosDelServidorAlDatasource(data: any): void {
-    //setear data source
-    this.dataSource = null;
-    this.dataSource = new MatTableDataSource(data.content)
-    this.dataSource.sort = this._sort;
-
-    //actualizar paginación
-    this.pagination.tamanioTotal = data.totalElements;
-    this.pagination.tamanioPagina = data.size;
-    this.pagination.index = data.number;
+  private async _obtenerMenuesPorRol(idRol?: number) {
+    const http$ = this._menuService.listarPorRol$(idRol);
+    this.menuesPorRol = await lastValueFrom(http$);
+    this._changeDetector.markForCheck();
   }
 
-  private _suscribirseAlPaginator() {
-    if (this._paginator != undefined && this._paginator != null) {
-      // Obtener nuevamente los resultados si la paginación cambia de alguna manera
-      this._paginator.page.pipe(
-        switchMap((event) => {
-          this.pagination.tamanioTotal = event.length;
-          return this._rolService.listar$(this._paginator?.pageIndex, this._paginator?.pageSize);
-        }),
-        map((respuestaServidor) => {
-          this._cargarDatosDelServidorAlDatasource(respuestaServidor.data);
-        })
-      ).subscribe();
-    }
+  private _crearFormulario() {
+    this.form = this._formBuilder.group({
+      id: [null, []],
+      nombre: [null, [Validators.required]],
+      habilitado: [true, []],
+      menues: []
+    });
+  }
+
+  private async _crear() {
+    const http$ = this._rolService.crear$(this.form.value);
+    await lastValueFrom(http$);
+  }
+
+  private async _editar() {
+    const http$ = this._rolService.editar$(this.form.value);
+    await lastValueFrom(http$);
   }
 
   //=====================================
@@ -90,64 +87,47 @@ export class RolComponent {
   //=====================================
   filtrar(event: KeyboardEvent) {
     if (event.key != 'Enter') return;
-    this.buscar();
-    if (this.dataSource.paginator) {
-      this.dataSource.paginator.firstPage();
-    }
-
+    this._obtenerRoles();
   }
 
-  async buscar() {
-    const http$ = this._rolService.listar$(this._paginator?.pageIndex, this._paginator?.pageSize, this.filtroNombre);
-    const respuestaServidor: ApiResponse = await lastValueFrom(http$);
-    this._cargarDatosDelServidorAlDatasource(respuestaServidor.data);
-  }
-
-  limpiarCampos() {
-    this.filtroNombre = '';
-    this.buscar();
-  }
-
-  abrirModalVerMenuesPorRol(pIdRol: string, pNombreRol: string) {
-    const ref = this._dialog.open(null,
-      {
-        width: '40%',
-        // height: '100%',
-        data: {
-          idRol: pIdRol,
-          nombreRol: pNombreRol
+  async procesarSolicitud() {
+    this._sweetAlertService.preguntarSiNo('¿Desea agregar un nuevo rol?')
+      .then(respuesta => {
+        if (respuesta.isConfirmed) {
+          (this.accion == 'crear') ? this._crear() : this._editar();
+          this._obtenerRoles();
+          this.accion = 'ninguno';
         }
       });
-
-    ref.afterClosed().subscribe(respuestaModal => {
-      if (respuestaModal == 'OK') {
-      }
-    })
   }
 
-  abrirModalEditarRol(pIdRol: string) {
-    const ref = this._dialog.open(null,
-      {
-        data: {
-          idRol: pIdRol
-        }
-      });
+  async ver(id: number) {
+    this.accion = 'editar';
+    const httpRol$ = this._rolService.ver$(id);
+    const httpMenuesPorRol$ = this._menuService.listarPorRol$(id);
 
-    ref.afterClosed().subscribe(respuestaModal => {
-      if (respuestaModal == 'OK') {
-        this.buscar();
-      }
+    forkJoin({
+      rol: httpRol$, menuesPorRol: httpMenuesPorRol$
+    }).subscribe(data => {
+      this.form.patchValue(data.rol);
+      this.menuesPorRol = data.menuesPorRol;
+      this._changeDetector.markForCheck();
     });
   }
 
-  abrirModalCrearRol() {
-    const ref = this._dialog.open(null);
-
-    ref.afterClosed().subscribe(respuestaModal => {
-      if (respuestaModal == 'OK') {
-        this.buscar();
-      }
-    });
+  async crear() {
+    this.accion = 'crear';
+    this.form.reset();
+    this._obtenerMenuesPorRol();
   }
 
+  cancelar() {
+    this.accion = 'ninguno';
+    this.form.reset();
+    this.menuesPorRol = [];
+  }
+
+  agregarAListaParaEnviar(codigo: string, codigoPadre: string) {
+    this._rolMenuService.menues = { codigo, codigoPadre };
+  }
 }

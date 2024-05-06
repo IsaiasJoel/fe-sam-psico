@@ -7,15 +7,6 @@
 }
 
 a {
-    cursor: pointer;
-    // background-color: red;
-    padding: 4px;
-    margin-left: 3px;
-    margin-bottom: 4px;
-    margin-top: 4px;
-    border-radius: 10px;
-    padding: 8px 8px;
-    
     &:hover {
         background-color: rgba(37, 150, 190, 0.4);
         color: white;
@@ -23,10 +14,6 @@ a {
 }
 
 .fuse-vertical-navigation-item-active {
-    // padding-top: 4px;
-    // padding-bottom: 4px;
-    // background-color: rgba(232, 232, 232, 0.155);
     background-color: rgba(37, 150, 190, 1);
-    color:white;
-    // border-radius: 10px;
+    color: white;
 }

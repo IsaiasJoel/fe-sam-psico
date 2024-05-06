@@ -24,28 +24,28 @@ export class AmbienteService {
   //=====================================================================
   // Métodos HTTP
   //=====================================================================
-  buscarPorId$(id: number): Observable<ApiResponse> {
+  listarTodos$(): Observable<ApiResponse> {
+    let currentUrl = `${this._url}/`;
+    return this._http.get<any>(currentUrl);
+  }
+
+  listarCombo$(): Observable<ApiResponse> {
+    let currentUrl = `${this._url}/combo`;
+    return this._http.get<any>(currentUrl);
+  }
+
+  agregar$(item: DTOAmbienteCrearEditarRequest): Observable<ApiResponse> {
+    let currentUrl = `${this._url}/`;
+    return this._http.post<any>(currentUrl, { item });
+  }
+
+  verParaEditar$(id: number): Observable<ApiResponse> {
     let currentUrl = `${this._url}/${id}`;
     return this._http.get<any>(currentUrl);
   }
 
-  listar$(): Observable<ApiResponse> {
-    let currentUrl = `${this._url}/`;
-    return this._http.get<any>(currentUrl);
-  }
-
-  crear$(item: DTOAmbienteCrearEditarRequest): Observable<ApiResponse> {
-    let currentUrl = `${this._url}/`;
-    return this._http.post<any>(currentUrl, item);
-  }
-
   editar$(item: DTOAmbienteCrearEditarRequest): Observable<ApiResponse> {
-    let currentUrl = `${this._url}/${item.id}`;
-    return this._http.put<any>(currentUrl, item);
-  }
-
-  habilitar$(idServicio: string, tipo: 'habilitar' | 'deshabilitar'): Observable<ApiResponse> {
-    let currentUrl = `${this._url}/habilitar/${idServicio}/?tipo=${tipo}`;
-    return this._http.put<any>(currentUrl, null);
+    let currentUrl = `${this._url}/`;
+    return this._http.put<any>(currentUrl, { item });
   }
 }

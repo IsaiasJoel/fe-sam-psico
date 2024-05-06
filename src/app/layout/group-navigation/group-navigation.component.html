@@ -1,0 +1,30 @@
+<!-- Item wrapper -->
+<div class="mx-2 border-b border-b-slate-200 shadow-sm">
+    <!-- Icon -->
+    <ng-container *ngIf="item.icono">
+        <mat-icon [svgIcon]="item.icono"></mat-icon>
+    </ng-container>
+
+    <!-- Title & Subtitle -->
+    <div class="font-semibold font-sans text-sky-800" style="padding-bottom: 1px;">{{item.nombre}}</div>
+</div>
+
+<ng-container *ngFor="let item of item.hijos; trackBy: trackByFn">
+    <!-- Skip the hidden items -->
+    <ng-container *ngIf="!item.estaOculto">
+        <!-- Basic -->
+        <ng-container *ngIf="item.tipo === 'basico'">
+            <basic-navigation [item]="item"></basic-navigation>
+        </ng-container>
+
+        <!-- Collapsable -->
+        <ng-container *ngIf="item.tipo === 'colapsable'">
+            <collapsable-navigation [item]="item"></collapsable-navigation>
+        </ng-container>
+
+        <!-- Group -->
+        <ng-container *ngIf="item.tipo === 'grupo'">
+            <group-navigation [item]="item"></group-navigation>
+        </ng-container>
+    </ng-container>
+</ng-container>

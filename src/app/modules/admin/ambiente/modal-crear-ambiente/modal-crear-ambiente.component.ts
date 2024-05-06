@@ -52,7 +52,7 @@ export class ModalCrearAmbienteComponent {
       return;
     }
 
-    const http$ = this._ambienteService.crear$(this.form.value);
+    const http$ = this._ambienteService.agregar$(this.form.value);
     await lastValueFrom(http$);
     this.matRef.close('OK');
   }

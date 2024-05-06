@@ -12,3 +12,9 @@ export interface DTOServicioListar {
     imagen: string;
     habilitado: boolean;
 }
+
+export interface DTOServicioCombo {
+    id: number;
+    nombre: string;
+    costo: number;
+}

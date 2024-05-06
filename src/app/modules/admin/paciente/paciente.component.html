@@ -33,7 +33,7 @@
                 <mat-form-field class="w-full">
                     <mat-select [(ngModel)]="filtroNacionalidad" (valueChange)="cambiarFiltroNacionalidad($event)">
                         <mat-option value="xxx">Seleccione</mat-option>
-                        <mat-option [value]="item" *ngFor="let item of nacionalidades">{{item}}</mat-option>
+                        <mat-option [value]="item" *ngFor="let item of nacionalidades">{{item.nombre}}</mat-option>
                     </mat-select>
                 </mat-form-field>
             </div>
@@ -41,17 +41,17 @@
             <div class="col-span-1">
                 <div class="text-label">Estado</div>
                 <mat-form-field class="w-full">
-                    <mat-select [(ngModel)]="filtroEstado" (valueChange)="cambiarFiltroEstado($event)">
-                        <mat-option value="xxx">Seleccione</mat-option>
-                        <mat-option [value]="true">Activo</mat-option>
-                        <mat-option [value]="false">Inactivo</mat-option>
+                    <mat-select [(ngModel)]="filtroEstado">
+                        <mat-option value="Seleccione">Seleccione</mat-option>
+                        <mat-option value="A">Activo</mat-option>
+                        <mat-option value="I">Inactivo</mat-option>
                     </mat-select>
                 </mat-form-field>
             </div>
 
             <!-- Botón -->
             <div class="col-span-1 w-full self-center">
-                <button class="w-full bg-azul" [disabled]="estaCargando" mat-raised-button (click)="clickFiltrar()">
+                <button class="w-full bg-azul" mat-raised-button (click)="clickFiltrar()">
                     <div class="text-white flex gap-2">
                         <span class="">Buscar</span>
                         <mat-icon svgIcon="magnify"></mat-icon>
@@ -148,8 +148,8 @@
 
             </table>
 
-            <mat-paginator [ngClass]="{'pointer-events-none': estaCargando}" [length]="pagination.tamanioTotal"
-                [pageSize]="pagination.tamanioPagina" [pageSizeOptions]="pageableOptions" [showFirstLastButtons]="true">
+            <mat-paginator [length]="pagination.tamanioTotal" [pageSize]="pagination.tamanioPagina"
+                [pageSizeOptions]="pageableOptions" [showFirstLastButtons]="true">
             </mat-paginator>
 
         </div>

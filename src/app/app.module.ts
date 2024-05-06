@@ -17,6 +17,10 @@ import { BasicNavigationComponent } from './layout/basic-navigation/basic-naviga
 import { CollapsableNavigationComponent } from './layout/collapsable-navigation/collapsable-navigation.component';
 import { NgxMaskModule } from 'ngx-mask';
 import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
+import { MAT_DIALOG_DEFAULT_OPTIONS } from '@angular/material/dialog';
+import { SharedModule } from './shared/shared.module';
+import { LoaderInterceptor } from './shared/components/loader/loader.interceptor';
+import { GroupNavigationComponent } from './layout/group-navigation/group-navigation.component';
 
 export function tokenGetter() {
   return sessionStorage.getItem(environment.TOKEN_NAME);
@@ -27,7 +31,8 @@ export function tokenGetter() {
     AppComponent,
     LayoutComponent,
     BasicNavigationComponent,
-    CollapsableNavigationComponent
+    CollapsableNavigationComponent,
+    GroupNavigationComponent
   ],
   imports: [
     BrowserModule,
@@ -48,10 +53,19 @@ export function tokenGetter() {
     }),
 
     NgxMaskModule.forRoot(),
+    SharedModule
   ],
   providers: [
+    // Interceptores
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: LoaderInterceptor, multi: true },
+
+    // Mat Dialog
+    { provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: { disableClose: true } },
+
+    //Mat input
     { provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: { appearance: 'outline' } }
+
   ],
   bootstrap: [AppComponent]
 })

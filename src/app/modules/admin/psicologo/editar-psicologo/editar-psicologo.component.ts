@@ -1,13 +1,12 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { AbstractControl, FormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
-import { NACIONALIDADES, OPCIONES_SEXO } from 'src/app/shared/data/shared.data';
+import { OPCIONES_SEXO } from 'src/app/shared/data/shared.data';
 import { OpcionesComboSexo } from 'src/app/shared/models/shared.models';
 import { PsicologoService } from '../psicologo.service';
 import { ToastrService } from 'ngx-toastr';
 import { FORMATO_FECHA_DMY, TEXTO_CONSULTA_EXITOSA } from 'src/app/core/utils/constants.utils';
 import { lastValueFrom } from 'rxjs';
 import { DTOPsicologoEncontrado } from '../psicologo.models';
-import { ApiResponse } from 'src/app/core/models/api-response.interface';
 import { SweetAlertService } from 'src/app/core/modals/sweet-alert.service';
 import * as moment from 'moment';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -20,7 +19,7 @@ import { VER_USUARIO_ENCONTRADO } from '../modal-ver-psicologo/modal-ver-psicolo
 })
 export class EditarPsicologoComponent {
   comboSexo: OpcionesComboSexo[] = OPCIONES_SEXO;
-  comboNacionalidad: string[] = NACIONALIDADES;
+  comboNacionalidad: string[] = [];
 
   form: UntypedFormGroup;
   estaCargando: boolean = false;

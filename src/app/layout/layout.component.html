@@ -1,3 +1,6 @@
+<!-- Se pone z-index=2000 porque el z-index del mat-dialog es 1000 -->
+<loader class="w-full h-full" *ngIf="isLoading | async" style="position: absolute;z-index: 2000 !important;"></loader>
+
 <div class="example-container" [class.example-is-mobile]="mobileQuery.matches">
     <!-- Header -->
     <mat-toolbar class="example-toolbar z-50">
@@ -8,26 +11,27 @@
         </div>
 
         <!-- Titulo header -->
-        <div class="text-lg text-white font-medium w-full text-center">SAM - NicMaish</div>
+        <div class="text-lg text-white font-medium w-full text-center">SAM - NICMAISH</div>
 
         <!-- border p-4 -->
-        <button mat-button [matMenuTriggerFor]="menu">
-            <mat-icon svgIcon="menu-down" class="icon-size-md text-slate-700"></mat-icon>
-        </button>
-        <mat-menu #menu="matMenu">
-            <!-- <button mat-menu-item [routerLink]="'./cambiar-contrasenia'">
-                <div class="flex items-center gap-2">
-                    <mat-icon svgIcon="restore"></mat-icon>
-                    <div class="text-sm">Cambiar contraseña</div>
-                </div>
-            </button> -->
-            <button mat-menu-item (click)="cerrarSesion()">
-                <div class="flex items-center gap-2">
-                    <mat-icon svgIcon="logout"></mat-icon>
-                    <div class="text-sm">Cerrar sesión </div>
-                </div>
-            </button>
-        </mat-menu>
+        <div class="flex gap-2">
+            <div>
+                <button mat-button [matMenuTriggerFor]="menu">
+                    <div class="flex items-center justify-center gap-2">
+                        <span class="font-medium text-white uppercase text-sm">Luis Nevado Sanchez</span>
+                        <mat-icon svgIcon="menu-down" class="icon-size-md text-slate-700"></mat-icon>
+                    </div>
+                </button>
+                <mat-menu #menu="matMenu">
+                    <button mat-menu-item (click)="cerrarSesion()">
+                        <div class="flex items-center gap-2">
+                            <mat-icon svgIcon="logout"></mat-icon>
+                            <div class="text-sm">Cerrar sesión </div>
+                        </div>
+                    </button>
+                </mat-menu>
+            </div>
+        </div>
     </mat-toolbar>
 
     <!-- Sidebar -->
@@ -36,26 +40,9 @@
             fixedTopGap="56" [opened]="mobileQuery.matches ? 'false' : 'true'">
 
             <!-- Content header -->
-            <div class="flex flex-col items-center justify-center px-10 pt-4">
-                <img src="../../assets/images/avatar.webp" class="w-24 h-24 rounded-full mb-2">
-                <div class="flex flex-col items-center justify-center">
-                    <!-- <div class="font-medium">{{nombresUsuario}}</div>
-                    <div class="font-thin text-xs">{{generarCadenaRoles()}}</div> -->
-
-                    <div class="font-medium">Luis Nevado Sanchez</div>
-                    <div class="font-thin text-xs">Administrador</div>
-                </div>
-            </div>
-
-            <hr class="m-4">
-
             <mat-nav-list>
                 <ng-container *ngFor="let item of navigation">
-
-                    <!-- Skip the hidden items -->
-                    <!-- (item.hidden && !item.hidden(item)) ||  -->
                     <ng-container *ngIf="!item.estaOculto">
-
                         <!-- Basic -->
                         <ng-container *ngIf="item.tipo === 'basico'">
                             <basic-navigation [item]="item"></basic-navigation>
@@ -64,6 +51,11 @@
                         <!-- Collapsable -->
                         <ng-container *ngIf="item.tipo === 'colapsable'">
                             <collapsable-navigation [item]="item"></collapsable-navigation>
+                        </ng-container>
+
+                        <!-- Collapsable -->
+                        <ng-container *ngIf="item.tipo === 'grupo'">
+                            <group-navigation [item]="item"></group-navigation>
                         </ng-container>
                     </ng-container>
                 </ng-container>
@@ -75,9 +67,4 @@
             <router-outlet></router-outlet>
         </mat-sidenav-content>
     </mat-sidenav-container>
-
-    <!-- Footer -->
-    <!-- <div class="w-full flex p-4 border-y-slate-300 shadow-top sticky bottom-0 z-50">
-        <div class="text-color-primario font-bold">SATCH</div>&nbsp;© Todos los derechos reservados
-    </div> -->
 </div>

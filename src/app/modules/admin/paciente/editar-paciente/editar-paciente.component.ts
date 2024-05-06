@@ -8,7 +8,7 @@ import { StepperOrientation } from '@angular/cdk/stepper';
 import { BreakpointObserver } from '@angular/cdk/layout';
 import { UbigeoService } from 'src/app/shared/services/ubigeo.service';
 import { ApiResponse } from 'src/app/core/models/api-response.interface';
-import { NACIONALIDADES, OPCIONES_SEXO, SERVICIOS_BASICOS, TEXTO_SELECCIONE } from 'src/app/shared/data/shared.data';
+import { OPCIONES_SEXO, SERVICIOS_BASICOS, TEXTO_SELECCIONE } from 'src/app/shared/data/shared.data';
 import { OpcionesComboSexo } from 'src/app/shared/models/shared.models';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DTOPacienteEncontrado } from '../paciente.models';
@@ -22,7 +22,7 @@ import { SweetAlertService } from 'src/app/core/modals/sweet-alert.service';
 })
 export class EditarPacienteComponent {
   comboSexo: OpcionesComboSexo[] = OPCIONES_SEXO;
-  comboNacionalidad: string[] = NACIONALIDADES;
+  comboNacionalidad: string[] = [];
   comboServiciosBasicos: string[] = SERVICIOS_BASICOS;
 
   estaCargando: boolean = false;
@@ -117,7 +117,7 @@ export class EditarPacienteComponent {
   private async _cargarDepartamentos() {
     try {
       this.estaCargando = true;
-      const http$ = this._ubigeoService.listarDepartamentos$();
+      const http$ = this._ubigeoService.departamentos$();
       const respuestaServidor: ApiResponse = await lastValueFrom(http$);
       this.departamentos = respuestaServidor.data;
     } catch (error) {
@@ -219,18 +219,18 @@ export class EditarPacienteComponent {
     this.personalForm.get('distrito').setValue(this.textoSeleccione);
     this.distritos = [];
 
-    const http$ = this._ubigeoService.listarProvinciaPorDepartamento$(departamentoSeleccionado);
-    const respuestaServidor: ApiResponse = await lastValueFrom(http$);
-    this.provincias = respuestaServidor.data;
+    // const http$ = this._ubigeoService.provinciasPorDepartamento$(departamentoSeleccionado);
+    // const respuestaServidor: ApiResponse = await lastValueFrom(http$);
+    // this.provincias = respuestaServidor.data;
   }
 
   async listarDistritoPorProvincia$(provinciaSeleccionada: any) {
     this.personalForm.get('distrito').setValue(this.textoSeleccione);
     this.distritos = [];
 
-    const http$ = this._ubigeoService.listarDistritoPorProvincia$(provinciaSeleccionada);
-    const respuestaServidor = await lastValueFrom(http$);
-    this.distritos = respuestaServidor.data;
+    // const http$ = this._ubigeoService.distritoPorProvincia$(provinciaSeleccionada);
+    // const respuestaServidor = await lastValueFrom(http$);
+    // this.distritos = respuestaServidor.data;
   }
 
   irAPantallaListar() {

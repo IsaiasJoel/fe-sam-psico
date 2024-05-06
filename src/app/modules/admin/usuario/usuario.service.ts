@@ -45,7 +45,7 @@ export class UsuarioService {
   get usuarioNombresCompletos(): string {
     let usuario: DTOUsuarioSesion = {} as DTOUsuarioSesion;
     this.usuarioActual$.subscribe(x => usuario = x);
-    return `${usuario?.apellidoPaterno} ${usuario?.apellidoMaterno} ${usuario?.nombres}`;
+    return `${usuario?.apPaterno} ${usuario?.apMaterno} ${usuario?.nombres}`;
   }
 
   constructor(

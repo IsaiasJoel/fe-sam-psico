@@ -44,9 +44,7 @@ export class PacienteService {
     return this._http.get<ApiResponse>(urlActual);
   }
 
-  crear$(personalForm: any, socioeconomicoForm: any, familiarForm: any): Observable<ApiResponse> {
-    let item: DTOPacienteCrearEditarRequest = Object.assign(personalForm, socioeconomicoForm, familiarForm);
-    item.serviciosBasicos = item.serviciosBasicos.toString();
+  crear$(item: DTOPacienteCrearEditarRequest): Observable<ApiResponse> {
     const fechaNacimiento = moment(new Date(item.fechaNacimiento)).format(FORMATO_FECHA_ESTANDAR);
     item.fechaNacimiento = fechaNacimiento;
     let urlActual: string = `${this._url}/`;

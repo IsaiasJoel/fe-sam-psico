@@ -2,7 +2,7 @@ export interface DTOMenuNavegacion {
     id?: number;
     nombre?: string;
     orden?: number;
-    tipo: 'basico' | 'colapsable';
+    tipo: 'basico' | 'colapsable' | 'grupo';
     idPadre?: number;
     icono?: string;
     url?: string;
@@ -10,13 +10,14 @@ export interface DTOMenuNavegacion {
     hijos?: DTOMenuNavegacion[];
 }
 
-export interface DTOMenuMatchPorIdRol {
-    idMenu: string;
-    idMenuPadre: string;
-    menuNombre: string;
-    menuOrden: number;
-    rolTieneMenu: string;
-    menuesHijos: DTOMenuMatchPorIdRol[];
+export interface DTOMenuMatchPorCodigoRol {
+    codigo: string;
+    codigoPadre: string;
+    nombre: string;
+    tipo: string;
+    orden: number;
+    tienePermiso: boolean;
+    hijos: DTOMenuMatchPorCodigoRol[];
 }
 
 export interface DTOMenuRolGuardarRequest {

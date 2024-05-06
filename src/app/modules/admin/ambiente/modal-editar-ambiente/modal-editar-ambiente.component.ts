@@ -36,7 +36,7 @@ export class ModalEditarAmbienteComponent {
   private async _inicializarDatos() {
     this._iniciarFormulario();
 
-    const http$ = this._ambienteService.buscarPorId$(this.data.pId);
+    const http$ = this._ambienteService.verParaEditar$(this.data.pId);
     const respuestaServidor: ApiResponse = await lastValueFrom(http$);
     this.form.patchValue(respuestaServidor.data);
   }

@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment.dev';
-import { DTOMenuNavegacion, DTOMenuRolGuardarRequest } from './menu.model';
+import { DTOMenuMatchPorCodigoRol, DTOMenuNavegacion, DTOMenuRolGuardarRequest } from './menu.model';
 import { Observable, ReplaySubject } from 'rxjs';
 import { ApiResponse } from 'src/app/core/models/api-response.interface';
 
@@ -27,30 +27,35 @@ export class MenuService {
     this._menues.next(menues);
   }
 
-  listar$(numeroPagina: number, tamanioPagina: number, codigo?: string, nombre?: string, estado?: string, tipo?: string, visible?: string): Observable<ApiResponse> {
-    let urlActual: string = `${this.url}/page?numeroPagina=${numeroPagina}&tamanioPagina=${tamanioPagina}`;
-    if (codigo) urlActual += `&codigo=${codigo}`;
-    if (nombre) urlActual += `&nombre=${nombre}`;
-    if (estado && estado !== 'seleccione') urlActual += `&estado=${estado}`;
-    if (tipo && tipo !== 'seleccione') urlActual += `&tipo=${tipo}`;
-    if (visible && visible !== 'seleccione') urlActual += `&visible=${visible}`;
-    return this._http.get<ApiResponse>(urlActual);
+  // listar$(numeroPagina: number, tamanioPagina: number, codigo?: string, nombre?: string, estado?: string, tipo?: string, visible?: string): Observable<ApiResponse> {
+  //   let urlActual: string = `${this.url}/page?numeroPagina=${numeroPagina}&tamanioPagina=${tamanioPagina}`;
+  //   if (codigo) urlActual += `&codigo=${codigo}`;
+  //   if (nombre) urlActual += `&nombre=${nombre}`;
+  //   if (estado && estado !== 'seleccione') urlActual += `&estado=${estado}`;
+  //   if (tipo && tipo !== 'seleccione') urlActual += `&tipo=${tipo}`;
+  //   if (visible && visible !== 'seleccione') urlActual += `&visible=${visible}`;
+  //   return this._http.get<ApiResponse>(urlActual);
+  // }
+
+  listarPorRol$(idRol?: number) {
+    let urlActual: string = `${this.url}/roles/${idRol ?? 0}`;
+    return this._http.get<DTOMenuMatchPorCodigoRol[]>(urlActual);
   }
 
-  listarMenuesDeSuperusuario$(): Observable<ApiResponse> {
-    let urlActual: string = `${this.url}/superusuario`;
-    return this._http.get<ApiResponse>(urlActual);
-  }
+  // listarMenuesDeSuperusuario$(): Observable<ApiResponse> {
+  //   let urlActual: string = `${this.url}/superusuario`;
+  //   return this._http.get<ApiResponse>(urlActual);
+  // }
 
-  verPermisosDeMenuesPorIdRol$(idRol: string) {
-    let urlActual: string = `${this.url}/${idRol}`;
-    return this._http.get<ApiResponse>(urlActual);
-  }
+  // verPermisosDeMenuesPorIdRol$(idRol: string) {
+  //   let urlActual: string = `${this.url}/${idRol}`;
+  //   return this._http.get<ApiResponse>(urlActual);
+  // }
 
-  guardar$(objeto: DTOMenuRolGuardarRequest): Observable<ApiResponse> {
-    let urlActual: string = `${this.url}/`;
-    return this._http.post<ApiResponse>(urlActual, objeto);
-  }
+  // guardar$(objeto: DTOMenuRolGuardarRequest): Observable<ApiResponse> {
+  //   let urlActual: string = `${this.url}/`;
+  //   return this._http.post<ApiResponse>(urlActual, objeto);
+  // }
 
   // crear$(item: DTOMenuVer): Observable<ApiResponse> {
   //   let urlActual: string = `${this.url}/crear`;
@@ -86,10 +91,10 @@ export class MenuService {
   //===========================================
   // Validaciones en el servidor
   //===========================================
-  validarOperacionGuardar$(objeto: DTOMenuRolGuardarRequest): Observable<ApiResponse> {
-    let urlActual: string = `${this.url}/validar`;
-    return this._http.post<ApiResponse>(urlActual, objeto);
-  }
+  // validarOperacionGuardar$(objeto: DTOMenuRolGuardarRequest): Observable<ApiResponse> {
+  //   let urlActual: string = `${this.url}/validar`;
+  //   return this._http.post<ApiResponse>(urlActual, objeto);
+  // }
 
   // obtenerHijosPorCodigoPadre(codigoPadre: string): DTOMenuNavegacion[] {
   //   const menues: DTOMenuNavegacion[] = MENUES_MEMORIA.concat(MENUES_ADMINISTRADOS_MEMORIA);

@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { NACIONALIDADES, OPCIONES_SEXO } from 'src/app/shared/data/shared.data';
+import { OPCIONES_SEXO } from 'src/app/shared/data/shared.data';
 import { OpcionesComboSexo } from 'src/app/shared/models/shared.models';
 import { PsicologoService } from '../psicologo.service';
 import { ToastrService } from 'ngx-toastr';
@@ -15,7 +15,7 @@ import { Router } from '@angular/router';
 })
 export class CrearPsicologoComponent {
   comboSexo: OpcionesComboSexo[] = OPCIONES_SEXO;
-  comboNacionalidad: string[] = NACIONALIDADES;
+  comboNacionalidad: string[] = [];
 
   form: FormGroup;
   estaCargando: boolean = false;

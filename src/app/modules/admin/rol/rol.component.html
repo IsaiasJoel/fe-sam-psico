@@ -1,76 +1,141 @@
-<div class="flex flex-col h-full w-full items-start p-10 gap-8 bg-slate-200">
+<div class="flex flex-col h-full w-full bg-slate-200 overflow-hidden">
     <!-- titulo -->
-    <div class="text-4xl font-bold">Roles</div>
+    <div class="bg-white w-full px-3 py-6 flex items-center justify-between max-h-16">
+        <div class="font-sans text-lg text-slate-600 flex gap-3">
+            <span>Gestión interna</span>
+            <span>></span>
+            <span class="font-medium">Roles</span>
+        </div>
+        <div class="flex gap-2 items-center justify-center" *ngIf="accion != 'ninguno'">
+            <button mat-raised-button (click)="cancelar()">Cancelar</button>
+            <button mat-raised-button style="background-color: green; color: white;"
+                (click)="procesarSolicitud()">Guardar</button>
+        </div>
+    </div>
 
     <!-- Main -->
-    <div class="flex flex-col w-full h-full bg-white p-4">
-
-        <!-- Buscador w-full flex justify-between items-center gap-8 mb-4 -->
-        <div
-            class="mt-2 rounded-md bg-white md:flex md:flex-col md:gap-4 xl:w-full xl:flex xl:flex-row xl:justify-between xl:items-center xl:gap-8">
-            <div class="w-full">
-                <div>
-                    <div class="texto-label-azul">Nombre</div>
-                    <mat-form-field class="w-full">
-                        <input matInput (keyup)="filtrar($event)" [(ngModel)]="filtroNombre">
-                    </mat-form-field>
-                </div>
+    <div class="grid grid-cols-4 w-full h-full px-8 py-4 mt-3 gap-4">
+        <!-- Lista -->
+        <div class="flex flex-col justify-between border-r pr-8 border-r-slate-400 col-span-1 h-full">
+            <!-- Buscador -->
+            <div>
+                <mat-form-field class="w-full">
+                    <input matInput (keyup)="filtrar($event)" [(ngModel)]="filtroNombre"
+                        placeholder="Buscar por nombre">
+                    <mat-icon matPrefix svgIcon="magnify"></mat-icon>
+                </mat-form-field>
             </div>
-            <div class="flex flex-col gap-4 mr-2">
-                <button mat-raised-button color="primary" (click)="buscar()">Buscar</button>
-                <button mat-raised-button (click)="limpiarCampos()">Limpiar</button>
+            <!-- Lista completa -->
+            <div class="mt-4 h-full overflow-auto flex flex-col gap-2">
+                <ng-container *ngIf="roles.length>0; else nocontent">
+                    <div *ngFor="let rol of roles" class="bg-white p-3 rounded-lg cursor-pointer shadow-md"
+                        (click)="ver(rol.id)">
+                        {{rol.nombre}}</div>
+                </ng-container>
+                <ng-template #nocontent>
+                    <div class="p-4">¡La lista está vacía!</div>
+                </ng-template>
             </div>
+            <button mat-raised-button *ngIf="accion == 'ninguno'" class="mt-8 mb-2"
+                style="background-color: green; color: white;" (click)="crear()">Crear nuevo rol</button>
         </div>
 
+        <!-- Detalle -->
+        <div class="col-span-3">
+            <!-- Crear -->
+            <ng-container *ngIf="accion === 'crear'">
+                <form [formGroup]="form" class="grid grid-cols-3 gap-4 h-full">
+                    <div class="flex flex-col justify-between h-full  bg-white rounded-lg col-span-1 p-4">
+                        <div class="font-medium text-2xl font-sans">Crear nuevo rol</div>
+                        <div class="mt-4 h-full">
+                            <!-- Nombre -->
+                            <div>
+                                <div>Nombre</div>
+                                <mat-form-field class="w-full">
+                                    <input matInput formControlName="nombre">
+                                </mat-form-field>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex flex-col h-full  bg-white rounded-lg col-span-1 p-4">
+                        <div class="font-medium text-2xl font-sans">Asignar permisos</div>
+                        <div class="h-full mt-4">
+                            <ng-container *ngFor="let padre of menuesPorRol; let i = index">
+                                <div class="font-medium">{{padre.nombre}}</div>
+                                <div *ngFor="let hijo of padre.hijos" class="ml-4 flex flex-col">
+                                    <div class="flex items-center">
+                                        <mat-checkbox *ngIf="hijo.tipo == 'basico'" color="primary"
+                                            (click)="agregarAListaParaEnviar(hijo.codigo,hijo.codigoPadre)"
+                                            [checked]="hijo.tienePermiso">
+                                        </mat-checkbox>
+                                        <div class="">{{hijo.nombre}}</div>
+                                    </div>
 
-        <!-- Contenido principal -->
-        <div>
-            <button mat-raised-button class="mt-8 mb-2" style="background-color: green; color: white;"
-                (click)="abrirModalCrearRol()">Agregar</button>
-            <div class="mat-elevation-z8">
-                <table mat-table [dataSource]="dataSource" matSort>
-                    <!-- editar -->
-                    <ng-container matColumnDef="editar">
-                        <th mat-header-cell *matHeaderCellDef></th>
-                        <td mat-cell *matCellDef="let row">
-                            <button mat-raised-button class="boton-amarillo" (click)="abrirModalEditarRol(row.codigo)"
-                                matTooltip="Editar">
-                                <mat-icon svgIcon="pencil" style="margin: 0 !important;"></mat-icon>
-                            </button>
-                        </td>
-                    </ng-container>
+                                    <ng-container *ngIf="hijo.hijos.length > 0">
+                                        <div class="ml-4 flex items-center -mb-2" *ngFor="let nieto of hijo.hijos">
+                                            <mat-checkbox *ngIf="nieto.tipo == 'basico'" color="primary"
+                                                (click)="agregarAListaParaEnviar(nieto.codigo,nieto.codigoPadre)"
+                                                [checked]="nieto.tienePermiso">
+                                            </mat-checkbox>
+                                            <div class="">{{nieto.nombre}}</div>
+                                        </div>
+                                    </ng-container>
+                                </div>
+                            </ng-container>
+                        </div>
+                    </div>
+                </form>
+            </ng-container>
 
-                    <!-- nombre -->
-                    <ng-container matColumnDef="nombre">
-                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Nombre </th>
-                        <td mat-cell *matCellDef="let row"> {{row.nombre}} </td>
-                    </ng-container>
+            <ng-container *ngIf="accion === 'editar'">
+                <form [formGroup]="form" class="grid grid-cols-3 gap-4 h-full">
+                    <div class="flex flex-col justify-between h-full bg-white rounded-lg col-span-1 p-4">
+                        <div class="font-medium text-2xl font-sans">Editar rol</div>
+                        <div class="mt-4 h-full flex flex-col gap-4">
+                            <!-- Nombre -->
+                            <div>
+                                <div>Nombre</div>
+                                <mat-form-field class="w-full">
+                                    <input matInput formControlName="nombre">
+                                </mat-form-field>
+                            </div>
 
-                    <!-- menues -->
-                    <ng-container matColumnDef="menues">
-                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Menues </th>
-                        <td mat-cell *matCellDef="let row">
-                            <button mat-stroked-button class="flex items-center"
-                                (click)="abrirModalVerMenuesPorRol(row.codigo, row.nombre)">
-                                <mat-icon svgIcon="order-bool-descending-variant"></mat-icon>
-                                <div>Permisos</div>
-                            </button>
-                        </td>
-                    </ng-container>
+                            <!-- habilitado -->
+                            <div>
+                                <div>Habilitado</div>
+                                <mat-slide-toggle formControlName="habilitado"></mat-slide-toggle>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex flex-col h-full  bg-white rounded-lg col-span-1 p-4">
+                        <div class="font-medium text-2xl font-sans">Asignar permisos</div>
+                        <div class="h-full mt-4">
+                            <ng-container *ngFor="let padre of menuesPorRol; let i = index">
+                                <div class="font-medium">{{padre.nombre}}</div>
+                                <div *ngFor="let hijo of padre.hijos" class="ml-4 flex flex-col">
+                                    <div class="flex items-center">
+                                        <mat-checkbox *ngIf="hijo.tipo == 'basico'" color="primary"
+                                            [checked]="hijo.tienePermiso">
+                                        </mat-checkbox>
+                                        <div class="">{{hijo.nombre}}</div>
+                                        <!-- (click)="agregarAListaParaEnviar(hijo.menuCodigo,hijo.menuCodigoPadre)" -->
+                                    </div>
 
-                    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-                    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-
-                    <!-- Row shown when there is no matching data. -->
-                    <tr class="mat-row" *matNoDataRow>
-                        <td class="mat-cell" colspan="4">No se encontraron resultados</td>
-                    </tr>
-                </table>
-
-                <mat-paginator [length]="pagination.tamanioTotal" [pageSize]="pagination.tamanioPagina"
-                    [pageSizeOptions]="pageableOptions" [showFirstLastButtons]="true">
-                </mat-paginator>
-            </div>
+                                    <ng-container *ngIf="hijo.hijos.length > 0">
+                                        <div class="ml-4 flex items-center -mb-2" *ngFor="let nieto of hijo.hijos">
+                                            <mat-checkbox *ngIf="nieto.tipo == 'basico'" color="primary"
+                                                [checked]="nieto.tienePermiso">
+                                            </mat-checkbox>
+                                            <div class="">{{nieto.nombre}}</div>
+                                            <!-- (click)="agregarAListaParaEnviar(nieto.menuCodigo,nieto.menuCodigoPadre)" -->
+                                        </div>
+                                    </ng-container>
+                                </div>
+                            </ng-container>
+                        </div>
+                    </div>
+                </form>
+            </ng-container>
         </div>
     </div>
 </div>

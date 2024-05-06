@@ -21,7 +21,8 @@
                     <mat-icon svgIcon="pencil"></mat-icon>
                 </div>
             </div>
-            <img class="w-24 h-30 object-cover" [src]="servicio.imagen" alt="Card cover image">
+            <img *ngIf="servicio.imagen" class="w-24 h-30 object-cover" [src]="servicio.imagen" alt="Card cover image">
+            <img *ngIf="!servicio.imagen" class="w-24 h-30 object-cover aspect-square" src="assets/images/imagen-no-disponible.webp" alt="Card cover image">
         </div>
     </div>
 </div>

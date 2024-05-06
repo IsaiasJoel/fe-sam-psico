@@ -5,7 +5,7 @@ import { DTOMenuNavegacion } from '../modules/admin/menu/menu.model';
 import { AuthService } from '../core/services/auth.service';
 import { MockNavigationMenues } from '../core/mock/navigation.mock';
 import { PsicologoService } from '../modules/admin/psicologo/psicologo.service';
-
+import { Observable, of } from 'rxjs';
 
 @Component({
   selector: 'app-layout',
@@ -13,6 +13,7 @@ import { PsicologoService } from '../modules/admin/psicologo/psicologo.service';
   styleUrls: ['./layout.component.scss']
 })
 export class LayoutComponent {
+  isLoading: Observable<boolean> = of(false);
   @ViewChild('snav') nav: MatSidenav;
   navigation: DTOMenuNavegacion[] = MockNavigationMenues;
   // navigation: NavigationItem[] = JSON.parse(sessionStorage.getItem('MENUES'));

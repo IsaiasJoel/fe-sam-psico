@@ -39,6 +39,12 @@ export interface DTOArchivo {
     eliminado?: boolean; //Se usa en la operación de editar documento para indicar si será eliminado de la bd o no
 }
 
+export interface Pais {
+    id: number;
+    iso: string;
+    nombre: string;
+}
+
 //=============================================
 // Atencion
 //=============================================
