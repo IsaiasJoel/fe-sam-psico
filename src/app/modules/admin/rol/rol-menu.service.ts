@@ -46,11 +46,7 @@ export class RolMenuService implements OnInit {
   /** Retorna un boolean sobre si el menú está o no seleccionado */
   private _menuEstaSeleccionado(menuCodigo: string): boolean {
     const indexEncontrado: number = this._buscarIndexPorMenuCodigo(menuCodigo);
-
-    if (indexEncontrado == -1) {
-      return false;
-    }
-    return this._listaParaEnviar[indexEncontrado] == undefined;
+    return indexEncontrado != -1;
   }
 
 
@@ -103,13 +99,13 @@ export class RolMenuService implements OnInit {
     this._eliminarItem(menuCodigo);
     const codigosPadres: string[] = this._buscarCodigosPadresSegunCodigoParaQuitar(menuCodigoPadre); //buscar codigosPadres
     codigosPadres.forEach(codigo => this._eliminarItem(codigo)); //quitar codigo encontrados
+    this._actualizarValor();
   }
 
   /**Eliminar un item a la "listaParaEnviar" */
   private _eliminarItem(menuCodigo: string) {
     const index: number = this._buscarIndexPorMenuCodigo(menuCodigo);
     this._listaParaEnviar.splice(index, 1);
-    this._actualizarValor();
   }
 
 
@@ -178,7 +174,4 @@ export class RolMenuService implements OnInit {
       this._agregarItemsSeleccionadosAListaParaEnviar(item.hijos);
     });
   }
-
-
-
 }

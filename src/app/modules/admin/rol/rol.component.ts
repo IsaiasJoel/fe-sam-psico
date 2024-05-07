@@ -48,7 +48,7 @@ export class RolComponent {
     this._rolMenuService.menues$
       .subscribe((data: string[]) => {
         this.form.patchValue({ menues: data });
-        console.log('Se suscribió a los menues');
+        console.log('menues -> ', this.form.get('menues').value);
         this._changeDetector.markForCheck();
       });
   }
@@ -96,11 +96,11 @@ export class RolComponent {
   }
 
   async procesarSolicitud() {
-    this._sweetAlertService.preguntarSiNo('¿Desea agregar un nuevo rol?')
-      .then(respuesta => {
+     this._sweetAlertService.preguntarSiNo('¿Desea agregar un nuevo rol?')
+      .then(async respuesta => {
         if (respuesta.isConfirmed) {
-          (this.accion == 'crear') ? this._crear() : this._editar();
-          this._obtenerRoles();
+          (this.accion == 'crear') ? await this._crear() : await this._editar();
+          await this._obtenerRoles();
           this.accion = 'ninguno';
         }
       });

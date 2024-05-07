@@ -22,10 +22,10 @@ export interface DTORolRequestCrearEditar {
     menues: string[];
 }
 
-export interface DTOMenuRolGuardarRequest {
-    rolCodigo: string;
-    menuesCodigos: string[]; //lista de codigos de menues
-}
+// export interface DTOMenuRolGuardarRequest {
+//     rolCodigo: string;
+//     menuesCodigos: string[]; //lista de codigos de menues
+// }
 
 // export interface DTOUsuarioRolGuardarRequest {
 //     idUsuario: string;
