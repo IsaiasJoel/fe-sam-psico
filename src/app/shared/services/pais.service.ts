@@ -1,8 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { ApiResponse } from 'src/app/core/models/api-response.interface';
 import { environment } from 'src/environments/environment.dev';
+import { Pais } from '../models/shared.models';
 
 @Injectable({
   providedIn: 'root'
@@ -19,8 +19,8 @@ export class PaisService {
   // -----------------------------------------------------------------------------------------------------
   // @ Public methods
   // -----------------------------------------------------------------------------------------------------
-  paises$(): Observable<ApiResponse> {
+  paises$(): Observable<Pais[]> {
     let currentUrl = `${this._url}/`;
-    return this.http.get<any>(currentUrl);
+    return this.http.get<Pais[]>(currentUrl);
   }
 }
