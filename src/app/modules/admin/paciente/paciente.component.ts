@@ -68,8 +68,7 @@ export class PacienteComponent {
 
   private async _obtenerPaises() {
     const http$ = this._paisService.paises$();
-    const respServidor: ApiResponse = await lastValueFrom(http$);
-    this.nacionalidades = respServidor.data;
+    this.nacionalidades = await lastValueFrom(http$);
     this.filtroNacionalidad = this.nacionalidades.find(pais => pais.iso == 'PE');
     this._changeDetectorRef.markForCheck();
   }

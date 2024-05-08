@@ -62,8 +62,7 @@ export class CrearPacienteComponent {
 
   private async _cargarPaises() {
     const http$ = this._paisService.paises$();
-    const respServidor: ApiResponse = await lastValueFrom(http$);
-    this.comboNacionalidad = respServidor.data;
+    this.comboNacionalidad = await lastValueFrom(http$);
     this.form.patchValue({
       nacionalidad: this.comboNacionalidad.find(pais => pais.iso == 'PE')
     });

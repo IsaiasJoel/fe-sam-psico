@@ -29,10 +29,13 @@
             <!-- Lista completa -->
             <div class="mt-4 h-full overflow-auto flex flex-col gap-2">
                 <ng-container *ngIf="usuarios.length>0; else nocontent">
-                    <div *ngFor="let usuario of usuarios" class="bg-white p-3 rounded-lg cursor-pointer shadow-md"
-                        (click)="ver(usuario.id)">
-                        <div class="font-medium text-base">{{usuario.nombresCompletos}}</div>
-                        <div class="text-slate-600">{{usuario.tipo}}</div>
+                    <div *ngFor="let usuario of usuarios" class="bg-white p-3 rounded-lg cursor-pointer shadow-md">
+                        <button (click)="ver(usuario.id)">
+                            <div class="flex flex-col items-start">
+                                <div class="font-medium text-base">{{usuario.nombresCompletos}}</div>
+                                <div class="text-slate-600">{{usuario.tipo}}</div>
+                            </div>
+                        </button>
                     </div>
                 </ng-container>
                 <ng-template #nocontent>
@@ -52,84 +55,91 @@
                         class="flex flex-col justify-between w-full h-full bg-white rounded-lg col-span-1 p-4 overflow-auto">
                         <div class="font-medium text-2xl font-sans">{{accion == 'editar' ? 'Editar' : 'Crear'}} usuario
                         </div>
-                        <div class="mt-4 h-full grid grid-cols-3 gap-x-4">
-                            <div>
-                                <div>Nombres</div>
-                                <mat-form-field class="w-full">
-                                    <input matInput formControlName="nombre">
-                                </mat-form-field>
-                            </div>
-                            <div>
-                                <div>Ap paterno</div>
-                                <mat-form-field class="w-full">
-                                    <input matInput formControlName="nombre">
-                                </mat-form-field>
-                            </div>
-                            <div>
-                                <div>Ap materno</div>
-                                <mat-form-field class="w-full">
-                                    <input matInput formControlName="nombre">
-                                </mat-form-field>
-                            </div>
-                            <div>
-                                <div>Pais</div>
-                                <mat-form-field class="w-full">
-                                    <mat-select formControlName="pais" name="food">
-                                        <ng-container *ngFor="let pais of paises">
-                                            <mat-option [value]="pais">{{pais.nombre}}</mat-option>
-                                        </ng-container>
-                                    </mat-select>
-                                </mat-form-field>
-                            </div>
-                            <div>
-                                <div>Fec Nacimiento</div>
-                                <mat-form-field class="w-full">
-                                    <input matInput formControlName="nombre">
-                                </mat-form-field>
-                            </div>
-                            <div>
-                                <div>DNI</div>
-                                <mat-form-field class="w-full">
-                                    <input matInput formControlName="nombre">
-                                </mat-form-field>
-                            </div>
-                            <div>
-                                <div>Username</div>
-                                <mat-form-field class="w-full">
-                                    <input matInput formControlName="nombre">
-                                </mat-form-field>
-                            </div>
-                            <div>
-                                <div>Sexo</div>
-                                <mat-form-field class="w-full">
-                                    <input matInput formControlName="nombre">
-                                </mat-form-field>
-                            </div>
-                            <div>
-                                <div>Celular</div>
-                                <mat-form-field class="w-full">
-                                    <input matInput formControlName="nombre">
-                                </mat-form-field>
-                            </div>
-                            <div>
-                                <div>Carrera</div>
-                                <mat-form-field class="w-full">
-                                    <input matInput formControlName="nombre">
-                                </mat-form-field>
-                            </div>
-                            <div>
-                                <div>Tipo</div>
-                                <mat-form-field class="w-full">
-                                    <input matInput formControlName="nombre">
-                                </mat-form-field>
+                        <div class="mt-4 h-full flex flex-col gap-4">
+                            <div class="grid grid-cols-4 gap-4">
+                                <div>
+                                    <div>DNI</div>
+                                    <mat-form-field class="w-full">
+                                        <input matInput formControlName="nombre">
+                                    </mat-form-field>
+                                </div>
+                                <div>
+                                    <div>Nombres</div>
+                                    <mat-form-field class="w-full">
+                                        <input matInput formControlName="nombre">
+                                    </mat-form-field>
+                                </div>
+                                <div>
+                                    <div>Ap paterno</div>
+                                    <mat-form-field class="w-full">
+                                        <input matInput formControlName="nombre">
+                                    </mat-form-field>
+                                </div>
+                                <div>
+                                    <div>Ap materno</div>
+                                    <mat-form-field class="w-full">
+                                        <input matInput formControlName="nombre">
+                                    </mat-form-field>
+                                </div>
                             </div>
 
-                            <!-- habilitado -->
-                            <div>
-                                <div>Habilitado</div>
-                                <mat-slide-toggle formControlName="habilitado"></mat-slide-toggle>
+                            <div class="grid grid-cols-4 gap-4">
+                                <div>
+                                    <div>Fec Nacimiento</div>
+                                    <mat-form-field class="w-full">
+                                        <input matInput formControlName="nombre">
+                                    </mat-form-field>
+                                </div>
+                                <div>
+                                    <div>Sexo</div>
+                                    <mat-form-field class="w-full">
+                                        <input matInput formControlName="nombre">
+                                    </mat-form-field>
+                                </div>
+                                <div>
+                                    <div>Nacionalidad</div>
+                                    <mat-form-field class="w-full">
+                                        <mat-select formControlName="pais" name="food">
+                                            <ng-container *ngFor="let pais of paises">
+                                                <mat-option [value]="pais">{{pais.nombre}}</mat-option>
+                                            </ng-container>
+                                        </mat-select>
+                                    </mat-form-field>
+                                </div>
+                                <div>
+                                    <div>Celular</div>
+                                    <mat-form-field class="w-full">
+                                        <input matInput formControlName="nombre">
+                                    </mat-form-field>
+                                </div>
                             </div>
 
+                            <div class="grid grid-cols-4 gap-4">
+                                <div>
+                                    <div>Carrera profesional</div>
+                                    <mat-form-field class="w-full">
+                                        <input matInput formControlName="nombre">
+                                    </mat-form-field>
+                                </div>
+                                <div>
+                                    <div>Nombre de usuario</div>
+                                    <mat-form-field class="w-full">
+                                        <input matInput formControlName="nombre">
+                                    </mat-form-field>
+                                </div>
+                                <div>
+                                    <div>Tipo</div>
+                                    <mat-form-field class="w-full">
+                                        <input matInput formControlName="nombre">
+                                    </mat-form-field>
+                                </div>
+
+                                <!-- habilitado -->
+                                <div>
+                                    <div>Habilitado</div>
+                                    <mat-slide-toggle formControlName="habilitado"></mat-slide-toggle>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </form>

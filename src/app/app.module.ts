@@ -45,7 +45,7 @@ export function tokenGetter() {
     JwtModule.forRoot({
       config: {
         tokenGetter: tokenGetter,
-        allowedDomains: ['localhost:8080', 'sampsi.azurewebsites.net'],
+        allowedDomains: ['localhost:8080'],
         disallowedRoutes: [
           `http://${environment.HOST.substring(7)}/login/`
         ],
