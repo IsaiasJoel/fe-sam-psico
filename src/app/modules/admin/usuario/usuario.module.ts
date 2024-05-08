@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { UsuarioComponent } from './usuario.component';
 import { MaterialModule } from 'src/app/core/modules/material/material.module';
 import { Route, RouterModule } from '@angular/router';
+import { ReactiveFormsModule } from '@angular/forms';
 
 const routes: Route[] = [
   // { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
@@ -19,7 +20,8 @@ const routes: Route[] = [
   imports: [
     CommonModule,
     RouterModule.forChild(routes),
-    MaterialModule
+    MaterialModule,
+    ReactiveFormsModule
   ]
 })
 export class UsuarioModule { }

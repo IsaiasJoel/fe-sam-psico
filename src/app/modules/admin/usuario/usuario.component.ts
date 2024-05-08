@@ -1,13 +1,13 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ViewChild } from '@angular/core';
-import { MatPaginator } from '@angular/material/paginator';
-import { MatSort } from '@angular/material/sort';
-import { MatTableDataSource } from '@angular/material/table';
-import { lastValueFrom, map, switchMap } from 'rxjs';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component } from '@angular/core';
+import { lastValueFrom } from 'rxjs';
 import { ApiResponse } from 'src/app/core/models/api-response.interface';
 import { UsuarioService } from './usuario.service';
 import { MatDialog } from '@angular/material/dialog';
 import { SweetAlertService } from 'src/app/core/modals/sweet-alert.service';
 import { DTOUsuarioListar } from './usuario.models';
+import { FormBuilder, FormGroup } from '@angular/forms';
+import { Pais } from 'src/app/shared/models/shared.models';
+import { PaisService } from 'src/app/shared/services/pais.service';
 
 @Component({
   selector: 'usuario',
@@ -15,81 +15,87 @@ import { DTOUsuarioListar } from './usuario.models';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class UsuarioComponent {
-  displayedColumns: string[] = ['apellidosNombres', 'estado', 'roles', 'resetContrasenia', 'editar'];
-  dataSource: MatTableDataSource<DTOUsuarioListar>;
+  accion: 'crear' | 'editar' | 'ninguno' = 'crear';
+  filtroNombres: string = '';
+  form: FormGroup;
+  usuarios: DTOUsuarioListar[] = [
+    { id: 1, nombresCompletos: "Juan Pérez Domínguez", activo: true, tipo: "Administrador" },
+    { id: 2, nombresCompletos: "María López Montalbán", activo: false, tipo: "Usuario Regular" },
+    { id: 3, nombresCompletos: "Carlos García Piscoya", activo: true, tipo: "Usuario Regular" }
+  ];
+  roles: any[] = [];
+  paises: Pais[] = [];
 
-  // FILTROS
-  filtroEstado: string = 'X';
-  filtroApellidosNombres: string = '';
-  // FIN FILTROS
-
-  // Pagination
-  pagination = { numeroPagina: 0, tamanioPagina: 10, tamanioTotal: 0, index: 0 };
-  pageableOptions = [10, 25, 100];
-  //
-
-  @ViewChild(MatPaginator) _paginator: MatPaginator;
-  @ViewChild(MatSort) _sort: MatSort;
-
+  //==========================================================================
+  // Ciclo de vida
+  //==========================================================================
   constructor(
     private _usuarioService: UsuarioService,
     private _matDialog: MatDialog,
-    // private _toastr: ToastrService,
     private _sweetAlertService: SweetAlertService,
-    private _changeDetectionRef: ChangeDetectorRef
-  ) {
-    // Assign the data to the data source for the table to render
-    this.dataSource = new MatTableDataSource([
-      { id: 1, activo: true, nombresCompletos: 'Isaías Joel Domínguez Montalbán' }
-    ]);
-  }
+    private _changeDetectionRef: ChangeDetectorRef,
+    private _formBuilder: FormBuilder,
+    private _paisService: PaisService
+  ) { }
 
   ngOnInit(): void {
+    this._crearFormulario();
+    this._obtenerPaises()
   }
 
-  ngAfterViewInit() {
-    //debe estar aquí porque en este punto ya cargó el MatPaginator, de lo contrario es undefined
-    this._suscribirseAlPaginator();
-    this._listarUsuarios();
-  }
-
-  //=====================================
+  //==========================================================================
   // Métodos privados
-  //=====================================
+  //==========================================================================
   private async _listarUsuarios() {
-    const http$ = this._usuarioService.listarUsuariosPaginacion$(this._paginator?.pageIndex, this._paginator?.pageSize, this.filtroApellidosNombres, this.filtroEstado);
-    const respuestaServidor: ApiResponse = await lastValueFrom(http$);
-    this._cargarDatosDelServidorAlDatasource(respuestaServidor.data);
+    // const http$ = this._usuarioService.listarUsuariosPaginacion$(this._paginator?.pageIndex, this._paginator?.pageSize, this.filtroApellidosNombres, this.filtroEstado);
+    // const respuestaServidor: ApiResponse = await lastValueFrom(http$);
+    // this._cargarDatosDelServidorAlDatasource(respuestaServidor.data);
+    this._changeDetectionRef.markForCheck();
+  }
+
+  private _crearFormulario() {
+    this.form = this._formBuilder.group({
+      nombre: [],
+      pais: []
+    });
+  }
+
+  private async _obtenerPaises() {
+    const http$ = this._paisService.paises$();
+    this.paises = await lastValueFrom(http$);
+    this.form.patchValue({
+      pais: this.paises.find(pais => pais.iso == 'PE')
+    });
     this._changeDetectionRef.markForCheck();
   }
 
   /**almacenar la respuesta del servidor en variables locales*/
-  private _cargarDatosDelServidorAlDatasource(data: any): void {
-    //setear data source
-    this.dataSource = null;
-    this.dataSource = new MatTableDataSource(data.content)
-    this.dataSource.sort = this._sort;
+  // private _cargarDatosDelServidorAlDatasource(data: any): void {
+  //   //setear data source
+  //   this.dataSource = null;
+  //   this.dataSource = new MatTableDataSource(data.content)
+  //   this.dataSource.sort = this._sort;
 
-    //actualizar paginación
-    this.pagination.tamanioTotal = data.totalElements;
-    this.pagination.tamanioPagina = data.size;
-    this.pagination.index = data.number;
-  }
+  //   //actualizar paginación
+  //   this.pagination.tamanioTotal = data.totalElements;
+  //   this.pagination.tamanioPagina = data.size;
+  //   this.pagination.index = data.number;
+  // }
 
-  private _suscribirseAlPaginator() {
-    if (this._paginator != undefined && this._paginator != null) {
-      // Obtener nuevamente los resultados si la paginación cambia de alguna manera
-      this._paginator.page.pipe(
-        switchMap((event) => {
-          this.pagination.tamanioTotal = event.length;
-          return this._usuarioService.listarUsuariosPaginacion$(this._paginator?.pageIndex, this._paginator?.pageSize);
-        }),
-        map((respuestaServidor) => {
-          this._cargarDatosDelServidorAlDatasource(respuestaServidor.data);
-        })
-      ).subscribe();
-    }
-  }
+  // private _suscribirseAlPaginator() {
+  //   if (this._paginator != undefined && this._paginator != null) {
+  //     // Obtener nuevamente los resultados si la paginación cambia de alguna manera
+  //     this._paginator.page.pipe(
+  //       switchMap((event) => {
+  //         this.pagination.tamanioTotal = event.length;
+  //         return this._usuarioService.listarUsuariosPaginacion$(this._paginator?.pageIndex, this._paginator?.pageSize);
+  //       }),
+  //       map((respuestaServidor) => {
+  //         this._cargarDatosDelServidorAlDatasource(respuestaServidor.data);
+  //       })
+  //     ).subscribe();
+  //   }
+  // }
 
   // private _abrirSnackBar(mensaje: string): void {
   //   this._toastr.success('', mensaje);
@@ -109,27 +115,27 @@ export class UsuarioComponent {
   //   }
   // }
 
-  //=====================================
+  //==========================================================================
   // Métodos públicos
-  //=====================================
+  //==========================================================================
   filtrar(event: KeyboardEvent) {
     if (event.key != 'Enter') return;
     this._listarUsuarios();
-    if (!this.dataSource.paginator) return;
-    this.dataSource.paginator.firstPage();
+    // if (!this.dataSource.paginator) return;
+    // this.dataSource.paginator.firstPage();
   }
 
   clickFiltrar() {
     this._listarUsuarios();
   }
 
-  limpiarCampos() {
-    this.filtroEstado = 'X';
-    // this.filtroSuperusuario = 'X';
-    this.filtroApellidosNombres = '';
-    // this.filtroDni = '';
-    this.clickFiltrar();
-  }
+  // limpiarCampos() {
+  //   this.filtroEstado = 'X';
+  //   // this.filtroSuperusuario = 'X';
+  //   this.filtroApellidosNombres = '';
+  //   // this.filtroDni = '';
+  //   this.clickFiltrar();
+  // }
 
   async resetearContrasenia(codigoUsuario: string) {
     // this.estaCargandoBotonResetContrasenia = true;
@@ -203,4 +209,19 @@ export class UsuarioComponent {
   //   }
   // }
 
+  cancelar() {
+
+  }
+
+  procesarSolicitud() {
+
+  }
+
+  ver(id: number) {
+
+  }
+
+  crear() {
+
+  }
 }
