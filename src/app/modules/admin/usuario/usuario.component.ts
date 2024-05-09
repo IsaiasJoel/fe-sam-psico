@@ -5,10 +5,12 @@ import { UsuarioService } from './usuario.service';
 import { MatDialog } from '@angular/material/dialog';
 import { SweetAlertService } from 'src/app/core/modals/sweet-alert.service';
 import { DTOUsuarioListar } from './usuario.models';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DTOSexoCombo, Pais } from 'src/app/shared/models/shared.models';
 import { PaisService } from 'src/app/shared/services/pais.service';
 import { SexoService } from 'src/app/shared/services/sexo.service';
+import { RolService } from '../rol/rol.service';
+import { DTORolListar } from '../rol/rol.model';
 
 @Component({
   selector: 'usuario',
@@ -24,7 +26,7 @@ export class UsuarioComponent {
     { id: 2, nombresCompletos: "María López Montalbán", activo: false, tipo: "Usuario Regular" },
     { id: 3, nombresCompletos: "Carlos García Piscoya", activo: true, tipo: "Usuario Regular" }
   ];
-  roles: any[] = [];
+  roles: DTORolListar[] = [];
   paises: Pais[] = [];
   sexos: DTOSexoCombo[] = [];
 
@@ -38,13 +40,15 @@ export class UsuarioComponent {
     private _changeDetectionRef: ChangeDetectorRef,
     private _formBuilder: FormBuilder,
     private _paisService: PaisService,
-    private _sexoService: SexoService
+    private _sexoService: SexoService,
+    private _rolService: RolService
   ) { }
 
   ngOnInit(): void {
     this._crearFormulario();
     this._obtenerPaises();
     this._obtenerSexos();
+    this._obtenerRoles();
   }
 
   //==========================================================================
@@ -59,9 +63,27 @@ export class UsuarioComponent {
 
   private _crearFormulario() {
     this.form = this._formBuilder.group({
-      nombre: [],
-      pais: [],
-      sexo: []
+      // Usuario
+      dni: [null, [Validators.required]],
+      nombres: [null, [Validators.required]],
+      apPaterno: [null, [Validators.required]],
+      apMaterno: [null, [Validators.required]],
+      fecNacimiento: [null, [Validators.required]],
+      sexo: [null, []],
+      pais: [null, []],
+      celular: [null, []],
+      carreraProfesional: [null, [Validators.required]],
+      username: [null, [Validators.required]],
+      esPsicologo: [null, [Validators.required]],
+      habilitado: [null, [Validators.required]],
+
+      // Psicologo
+      universidad: [null, []],
+      anioEgreso: [null, []],
+      esColegiado: [null, []],
+      numColegiatura: [null, []],
+      especialidad: [null, []],
+      resumenProfesional: [null, []]
     });
   }
 
@@ -83,51 +105,11 @@ export class UsuarioComponent {
     this._changeDetectionRef.markForCheck();
   }
 
-  /**almacenar la respuesta del servidor en variables locales*/
-  // private _cargarDatosDelServidorAlDatasource(data: any): void {
-  //   //setear data source
-  //   this.dataSource = null;
-  //   this.dataSource = new MatTableDataSource(data.content)
-  //   this.dataSource.sort = this._sort;
-
-  //   //actualizar paginación
-  //   this.pagination.tamanioTotal = data.totalElements;
-  //   this.pagination.tamanioPagina = data.size;
-  //   this.pagination.index = data.number;
-  // }
-
-  // private _suscribirseAlPaginator() {
-  //   if (this._paginator != undefined && this._paginator != null) {
-  //     // Obtener nuevamente los resultados si la paginación cambia de alguna manera
-  //     this._paginator.page.pipe(
-  //       switchMap((event) => {
-  //         this.pagination.tamanioTotal = event.length;
-  //         return this._usuarioService.listarUsuariosPaginacion$(this._paginator?.pageIndex, this._paginator?.pageSize);
-  //       }),
-  //       map((respuestaServidor) => {
-  //         this._cargarDatosDelServidorAlDatasource(respuestaServidor.data);
-  //       })
-  //     ).subscribe();
-  //   }
-  // }
-
-  // private _abrirSnackBar(mensaje: string): void {
-  //   this._toastr.success('', mensaje);
-  // }
-
-  // private _procesarRespuestaServidor(respuesta: ApiResponse | HttpErrorResponse): void {
-  //   if (respuesta instanceof HttpErrorResponse) {
-  //     const mensaje: string = respuesta.error.message.ERROR;
-  //     this._sweetAlertService.mostrarMensaje('La autorización falló', mensaje, 'error');
-  //     return;
-  //   }
-
-  //   if (respuesta.successful) {
-  //     this._listarUsuarios();
-  //     this._abrirSnackBar('Autorización exitosa');
-  //     return;
-  //   }
-  // }
+  private async _obtenerRoles() {
+    const http$ = this._rolService.listar$();
+    this.roles = await lastValueFrom(http$);
+    this._changeDetectionRef.markForCheck();
+  }
 
   //==========================================================================
   // Métodos públicos
@@ -135,43 +117,22 @@ export class UsuarioComponent {
   filtrar(event: KeyboardEvent) {
     if (event.key != 'Enter') return;
     this._listarUsuarios();
-    // if (!this.dataSource.paginator) return;
-    // this.dataSource.paginator.firstPage();
   }
 
   clickFiltrar() {
     this._listarUsuarios();
   }
 
-  // limpiarCampos() {
-  //   this.filtroEstado = 'X';
-  //   // this.filtroSuperusuario = 'X';
-  //   this.filtroApellidosNombres = '';
-  //   // this.filtroDni = '';
-  //   this.clickFiltrar();
-  // }
-
   async resetearContrasenia(codigoUsuario: string) {
-    // this.estaCargandoBotonResetContrasenia = true;
     const ref = await this._sweetAlertService.preguntarSiNo('Esta accion reestablecerá la contraseña por defecto');
     if (!ref.isConfirmed) return;
-    // try {
     const respuestaServidor: ApiResponse = await lastValueFrom(this._usuarioService.resetContrasenia$(codigoUsuario));
     if (!respuestaServidor.successful) return;
-    // this._abrirSnackBar('Se reestableció la contrasenia');
-    // this.estaCargandoBotonResetContrasenia = false;
-    // } catch (error) {
-    //   // this.estaCargandoBotonResetContrasenia = false;
-    //   const mensaje = (error as HttpErrorResponse).error.message.ERROR;
-    //   this._sweetAlertService.mostrarMensaje('No se pudo reestablecer la contraseña', mensaje, 'error');
-    // }
   }
 
   abrirModalVerMenuesPorUsuario(pidUsuario: number, pNombresCompletos: string) {
     const ref = this._matDialog.open(null,
       {
-        // width: '40%',
-        // height: '100%',
         data: {
           codigoUsuario: pidUsuario,
           nombresUsuario: pNombresCompletos
@@ -211,17 +172,6 @@ export class UsuarioComponent {
       }
     });
   }
-
-  // async preguntarAutorizarReniec(dni: string, codigoUsuario: string): Promise<void> {
-  //   const ref = await this._sweetAlertService.preguntarSiNo('Dar acceso a RENIEC');
-  //   if (!ref.isConfirmed) return;
-  //   try {
-  //     const respuestaServidor: ApiResponse = await lastValueFrom(this._usuarioService.darAccesoAReniec$(dni, codigoUsuario));
-  //     this._procesarRespuestaServidor(respuestaServidor);
-  //   } catch (error) {
-  //     this._procesarRespuestaServidor(error);
-  //   }
-  // }
 
   cancelar() {
 

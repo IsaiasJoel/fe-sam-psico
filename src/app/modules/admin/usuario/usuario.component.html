@@ -1,4 +1,4 @@
-<div class="flex flex-col h-full w-full bg-slate-200">
+<div class="flex flex-col h-full w-full bg-slate-200 overflow-hidden">
     <!-- titulo -->
     <div class="bg-white w-full px-3 py-6 flex items-center justify-between max-h-16">
         <div class="font-sans text-lg text-slate-600 flex gap-3">
@@ -50,9 +50,10 @@
         <div class="col-span-4 w-full overflow-auto">
             <!-- Crear o Editar-->
             <ng-container *ngIf="accion === 'editar' || 'crear'">
-                <form [formGroup]="form" class="flex gap-4 h-full w-full">
-                    <div
-                        class="flex flex-col justify-between w-full h-full bg-white rounded-lg col-span-1 p-4 overflow-auto">
+                <form [formGroup]="form" class="flex flex-col gap-4 h-full w-full">
+
+                    <!-- Datos del usuario -->
+                    <div class="flex flex-col justify-between w-full h-full bg-white rounded-lg col-span-1 p-4">
                         <div class="font-medium text-2xl font-sans">{{accion == 'editar' ? 'Editar' : 'Crear'}} usuario
                         </div>
                         <div class="mt-4 h-full flex flex-col gap-4">
@@ -60,25 +61,25 @@
                                 <div>
                                     <div>DNI</div>
                                     <mat-form-field class="w-full">
-                                        <input matInput formControlName="nombre">
+                                        <input matInput formControlName="dni">
                                     </mat-form-field>
                                 </div>
                                 <div>
                                     <div>Nombres</div>
                                     <mat-form-field class="w-full">
-                                        <input matInput formControlName="nombre">
+                                        <input matInput formControlName="nombres">
                                     </mat-form-field>
                                 </div>
                                 <div>
                                     <div>Ap paterno</div>
                                     <mat-form-field class="w-full">
-                                        <input matInput formControlName="nombre">
+                                        <input matInput formControlName="apPaterno">
                                     </mat-form-field>
                                 </div>
                                 <div>
                                     <div>Ap materno</div>
                                     <mat-form-field class="w-full">
-                                        <input matInput formControlName="nombre">
+                                        <input matInput formControlName="apMaterno">
                                     </mat-form-field>
                                 </div>
                             </div>
@@ -87,7 +88,7 @@
                                 <div>
                                     <div>Fec Nacimiento</div>
                                     <mat-form-field class="w-full">
-                                        <input matInput formControlName="nombre">
+                                        <input matInput formControlName="fecNacimiento">
                                     </mat-form-field>
                                 </div>
                                 <div>
@@ -113,7 +114,7 @@
                                 <div>
                                     <div>Celular</div>
                                     <mat-form-field class="w-full">
-                                        <input matInput formControlName="nombre">
+                                        <input matInput formControlName="celular">
                                     </mat-form-field>
                                 </div>
                             </div>
@@ -122,26 +123,82 @@
                                 <div>
                                     <div>Carrera profesional</div>
                                     <mat-form-field class="w-full">
-                                        <input matInput formControlName="nombre">
+                                        <input matInput formControlName="carreraProfesional">
                                     </mat-form-field>
                                 </div>
                                 <div>
                                     <div>Nombre de usuario</div>
                                     <mat-form-field class="w-full">
-                                        <input matInput formControlName="nombre">
+                                        <input matInput formControlName="username">
                                     </mat-form-field>
                                 </div>
                                 <div>
-                                    <div>Tipo</div>
-                                    <mat-form-field class="w-full">
-                                        <input matInput formControlName="nombre">
-                                    </mat-form-field>
+                                    <div>¿Es Psicologx?</div>
+                                    <mat-checkbox formControlName="esPsicologo">{{form.get('esPsicologo').value == true
+                                        ? 'SI' : 'NO'}}</mat-checkbox>
                                 </div>
 
                                 <!-- habilitado -->
-                                <div>
-                                    <div>Habilitado</div>
+                                <div *ngIf="accion == 'editar'">
+                                    <div>Habilitado en el sistema</div>
                                     <mat-slide-toggle formControlName="habilitado"></mat-slide-toggle>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Roles -->
+                    <div class="flex flex-col justify-between w-full h-full bg-white rounded-lg col-span-1 p-4">
+                        <div class="font-medium text-2xl font-sans">Roles</div>
+                        <div class="mt-4 h-full flex flex-col">
+                            <ng-container *ngFor="let rol of roles">
+                                <mat-checkbox>{{rol.nombre}}</mat-checkbox>
+                            </ng-container>
+                        </div>
+                    </div>
+
+                    <!-- Datos del psicologo -->
+                    <div class="flex flex-col justify-between w-full h-full bg-white rounded-lg col-span-1 p-4">
+                        <div class="font-medium text-2xl font-sans">Datos del psicólogo</div>
+                        <div class="mt-4 h-full flex flex-col gap-4 mb-20">
+                            <div class="grid grid-cols-4 gap-4">
+                                <div>
+                                    <div>Universidad</div>
+                                    <mat-form-field class="w-full">
+                                        <input matInput formControlName="universidad">
+                                    </mat-form-field>
+                                </div>
+                                <div>
+                                    <div>Año de egreso</div>
+                                    <mat-form-field class="w-full">
+                                        <input matInput formControlName="anioEgreso">
+                                    </mat-form-field>
+                                </div>
+                                <div>
+                                    <div>¿Es colegiado?</div>
+                                    <mat-checkbox formControlName="esColegiado">{{form.get('esColegiado').value == true
+                                        ? 'SI' : 'NO'}}</mat-checkbox>
+                                </div>
+                                <div *ngIf="form.get('esColegiado').value == true">
+                                    <div>Número de colegiatura</div>
+                                    <mat-form-field class="w-full">
+                                        <input matInput formControlName="numColegiatura">
+                                    </mat-form-field>
+                                </div>
+                            </div>
+
+                            <div class="grid grid-cols-4 gap-4">
+                                <div>
+                                    <div>Especialidad</div>
+                                    <mat-form-field class="w-full">
+                                        <input matInput formControlName="especialidad">
+                                    </mat-form-field>
+                                </div>
+                                <div class="col-span-3">
+                                    <div>Resumen profesional</div>
+                                    <mat-form-field class="w-full">
+                                        <input matInput formControlName="resumenProfesional">
+                                    </mat-form-field>
                                 </div>
                             </div>
                         </div>
