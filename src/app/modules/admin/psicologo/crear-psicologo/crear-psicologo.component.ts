@@ -1,7 +1,5 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { OPCIONES_SEXO } from 'src/app/shared/data/shared.data';
-import { OpcionesComboSexo } from 'src/app/shared/models/shared.models';
 import { PsicologoService } from '../psicologo.service';
 import { ToastrService } from 'ngx-toastr';
 import { lastValueFrom } from 'rxjs';
@@ -14,7 +12,7 @@ import { Router } from '@angular/router';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CrearPsicologoComponent {
-  comboSexo: OpcionesComboSexo[] = OPCIONES_SEXO;
+  comboSexo: any[] = [];
   comboNacionalidad: string[] = [];
 
   form: FormGroup;
@@ -42,7 +40,7 @@ export class CrearPsicologoComponent {
       nombres: [null, [Validators.required]],
       dni: [null, [Validators.required]],
       fechaNacimiento: [null, [Validators.required]],
-      sexo: [OPCIONES_SEXO[1].nombre, [Validators.required]],
+      sexo: [/*OPCIONES_SEXO[1].nombre*/, [Validators.required]],
       celular: [null, []],
       nacionalidad: ['PERU', []],
       carrera: [null, []],

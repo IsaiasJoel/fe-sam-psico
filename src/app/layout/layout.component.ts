@@ -6,6 +6,7 @@ import { AuthService } from '../core/services/auth.service';
 import { MockNavigationMenues } from '../core/mock/navigation.mock';
 import { PsicologoService } from '../modules/admin/psicologo/psicologo.service';
 import { Observable, of } from 'rxjs';
+import { UsuarioService } from '../modules/admin/usuario/usuario.service';
 
 @Component({
   selector: 'app-layout',
@@ -21,53 +22,28 @@ export class LayoutComponent {
   nombresUsuario: string;
   mobileQuery: MediaQueryList;
 
-  // usuarioLogeado: DTOUsuarioEnSesion = JSON.parse(sessionStorage.getItem('USUARIO'));
-  // ingresaPorPrimeraVez: boolean = false;
   private _mobileQueryListener: () => void;
 
   constructor(
-    private _authService: AuthService,
-    private _psicologoService: PsicologoService,
     changeDetectorRef: ChangeDetectorRef,
-    media: MediaMatcher
+    media: MediaMatcher,
+    private _authService: AuthService,
+    private _usuarioService: UsuarioService,
   ) {
     this.mobileQuery = media.matchMedia('(max-width: 600px)');
     this._mobileQueryListener = () => changeDetectorRef.detectChanges();
     this.mobileQuery.addListener(this._mobileQueryListener);
-    // this._recibirParametroIngresaPorPrimeraVez();
   }
 
   ngOnInit(): void {
     this._inicializarVariables();
   }
 
-  ngOnDestroy(): void {
-    // this.mobileQuery.removeListener(this._mobileQueryListener);
-  }
-
-  // private _recibirParametroIngresaPorPrimeraVez(): void {
-  //   this._loginService.primeraVez$.subscribe((info: boolean) => {
-  //     // this.ingresaPorPrimeraVez = info;
-  //   });
-  // }
-
   private _inicializarVariables(): void {
-    this.nombresUsuario = 'this._psicologoService.nombresCortos';
+    this.nombresUsuario = this._usuarioService.usuarioNombresCompletos;
   }
 
   cerrarSesion() {
     this._authService.cerrarSesion();
   }
-
-  generarCadenaRoles(): string {
-    // const roles = this.usuarioLogeado.roles;
-    // let respuesta = roles.map(rol => rol.nombre).join(' | ');
-    // respuesta = respuesta.trim();
-    // if (respuesta.endsWith('|')) {
-    //   respuesta = respuesta.substring(0, respuesta.length - 1);
-    // }
-    // return respuesta;
-    return "ADMINISTRADOR";
-  }
-
 }

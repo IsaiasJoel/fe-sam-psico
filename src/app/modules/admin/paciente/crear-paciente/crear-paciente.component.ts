@@ -6,8 +6,8 @@ import { lastValueFrom } from 'rxjs';
 import { TEXTO_CONSULTA_EXITOSA } from 'src/app/core/utils/constants.utils';
 import { UbigeoService } from 'src/app/shared/services/ubigeo.service';
 import { ApiResponse } from 'src/app/core/models/api-response.interface';
-import { OPCIONES_SEXO, SERVICIOS_BASICOS, TEXTO_SELECCIONE } from 'src/app/shared/data/shared.data';
-import { OpcionesComboSexo, Pais } from 'src/app/shared/models/shared.models';
+import { SERVICIOS_BASICOS, TEXTO_SELECCIONE } from 'src/app/shared/data/shared.data';
+import { Pais } from 'src/app/shared/models/shared.models';
 import { Router } from '@angular/router';
 import { SweetAlertService } from 'src/app/core/modals/sweet-alert.service';
 import { PaisService } from 'src/app/shared/services/pais.service';
@@ -18,7 +18,7 @@ import { PaisService } from 'src/app/shared/services/pais.service';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CrearPacienteComponent {
-  comboSexo: OpcionesComboSexo[] = OPCIONES_SEXO;
+  comboSexo: any[] = [];
   comboNacionalidad: Pais[] = [];
   comboServiciosBasicos: string[] = SERVICIOS_BASICOS;
   departamentos: string[] = [];

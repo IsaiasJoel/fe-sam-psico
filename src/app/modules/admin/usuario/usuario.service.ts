@@ -35,17 +35,21 @@ export class UsuarioService {
   */
   get(): Observable<DTOUsuarioSesion> {
     // acá obtener del session storage
-    return of(JSON.parse(localStorage.getItem(USUARIO))).pipe(
+    return of(this.usuarioMemoria).pipe(
       tap((user) => {
         this._user.next(user);
       })
     );
   }
 
+  get usuarioMemoria(): DTOUsuarioSesion {
+    return JSON.parse(localStorage.getItem(USUARIO));
+  }
+
   get usuarioNombresCompletos(): string {
-    let usuario: DTOUsuarioSesion = {} as DTOUsuarioSesion;
-    this.usuarioActual$.subscribe(x => usuario = x);
-    return `${usuario?.apPaterno} ${usuario?.apMaterno} ${usuario?.nombres}`;
+    const usuario = this.usuarioMemoria;
+    const nombresCompletos: string = `${usuario?.apPaterno} ${usuario?.apMaterno} ${usuario?.nombres}`;
+    return nombresCompletos.trim() == '' ? usuario.username : nombresCompletos;
   }
 
   constructor(

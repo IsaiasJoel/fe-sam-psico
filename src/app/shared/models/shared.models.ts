@@ -3,9 +3,10 @@ export interface CriterioBusqueda {
     nombre: string;
 }
 
-export interface OpcionesComboSexo {
+export interface DTOSexoCombo {
     codigo: string;
     nombre: string;
+    habilitado:boolean
 }
 
 ////////////////////////////////////////////////

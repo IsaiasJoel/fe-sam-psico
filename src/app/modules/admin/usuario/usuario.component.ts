@@ -6,8 +6,9 @@ import { MatDialog } from '@angular/material/dialog';
 import { SweetAlertService } from 'src/app/core/modals/sweet-alert.service';
 import { DTOUsuarioListar } from './usuario.models';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { Pais } from 'src/app/shared/models/shared.models';
+import { DTOSexoCombo, Pais } from 'src/app/shared/models/shared.models';
 import { PaisService } from 'src/app/shared/services/pais.service';
+import { SexoService } from 'src/app/shared/services/sexo.service';
 
 @Component({
   selector: 'usuario',
@@ -25,6 +26,7 @@ export class UsuarioComponent {
   ];
   roles: any[] = [];
   paises: Pais[] = [];
+  sexos: DTOSexoCombo[] = [];
 
   //==========================================================================
   // Ciclo de vida
@@ -35,12 +37,14 @@ export class UsuarioComponent {
     private _sweetAlertService: SweetAlertService,
     private _changeDetectionRef: ChangeDetectorRef,
     private _formBuilder: FormBuilder,
-    private _paisService: PaisService
+    private _paisService: PaisService,
+    private _sexoService: SexoService
   ) { }
 
   ngOnInit(): void {
     this._crearFormulario();
-    this._obtenerPaises()
+    this._obtenerPaises();
+    this._obtenerSexos();
   }
 
   //==========================================================================
@@ -56,7 +60,8 @@ export class UsuarioComponent {
   private _crearFormulario() {
     this.form = this._formBuilder.group({
       nombre: [],
-      pais: []
+      pais: [],
+      sexo: []
     });
   }
 
@@ -65,6 +70,15 @@ export class UsuarioComponent {
     this.paises = await lastValueFrom(http$);
     this.form.patchValue({
       pais: this.paises.find(pais => pais.iso == 'PE')
+    });
+    this._changeDetectionRef.markForCheck();
+  }
+
+  private async _obtenerSexos() {
+    const http$ = this._sexoService.sexos$();
+    this.sexos = await lastValueFrom(http$);
+    this.form.patchValue({
+      sexo: this.sexos.find(x => x.codigo == 'SX09')
     });
     this._changeDetectionRef.markForCheck();
   }

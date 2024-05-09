@@ -8,8 +8,7 @@ import { StepperOrientation } from '@angular/cdk/stepper';
 import { BreakpointObserver } from '@angular/cdk/layout';
 import { UbigeoService } from 'src/app/shared/services/ubigeo.service';
 import { ApiResponse } from 'src/app/core/models/api-response.interface';
-import { OPCIONES_SEXO, SERVICIOS_BASICOS, TEXTO_SELECCIONE } from 'src/app/shared/data/shared.data';
-import { OpcionesComboSexo } from 'src/app/shared/models/shared.models';
+import { SERVICIOS_BASICOS, TEXTO_SELECCIONE } from 'src/app/shared/data/shared.data';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DTOPacienteEncontrado } from '../paciente.models';
 import * as moment from 'moment';
@@ -21,7 +20,7 @@ import { SweetAlertService } from 'src/app/core/modals/sweet-alert.service';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class EditarPacienteComponent {
-  comboSexo: OpcionesComboSexo[] = OPCIONES_SEXO;
+  comboSexo: any[] = [];
   comboNacionalidad: string[] = [];
   comboServiciosBasicos: string[] = SERVICIOS_BASICOS;
 

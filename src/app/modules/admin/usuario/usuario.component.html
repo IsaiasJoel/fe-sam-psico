@@ -93,13 +93,17 @@
                                 <div>
                                     <div>Sexo</div>
                                     <mat-form-field class="w-full">
-                                        <input matInput formControlName="nombre">
+                                        <mat-select formControlName="sexo">
+                                            <ng-container *ngFor="let sexo of sexos">
+                                                <mat-option [value]="sexo">{{sexo.nombre}}</mat-option>
+                                            </ng-container>
+                                        </mat-select>
                                     </mat-form-field>
                                 </div>
                                 <div>
                                     <div>Nacionalidad</div>
                                     <mat-form-field class="w-full">
-                                        <mat-select formControlName="pais" name="food">
+                                        <mat-select formControlName="pais">
                                             <ng-container *ngFor="let pais of paises">
                                                 <mat-option [value]="pais">{{pais.nombre}}</mat-option>
                                             </ng-container>

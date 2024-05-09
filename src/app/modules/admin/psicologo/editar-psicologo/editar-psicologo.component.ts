@@ -1,7 +1,5 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { AbstractControl, FormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
-import { OPCIONES_SEXO } from 'src/app/shared/data/shared.data';
-import { OpcionesComboSexo } from 'src/app/shared/models/shared.models';
 import { PsicologoService } from '../psicologo.service';
 import { ToastrService } from 'ngx-toastr';
 import { FORMATO_FECHA_DMY, TEXTO_CONSULTA_EXITOSA } from 'src/app/core/utils/constants.utils';
@@ -18,7 +16,7 @@ import { VER_USUARIO_ENCONTRADO } from '../modal-ver-psicologo/modal-ver-psicolo
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class EditarPsicologoComponent {
-  comboSexo: OpcionesComboSexo[] = OPCIONES_SEXO;
+  comboSexo: any[] = [];
   comboNacionalidad: string[] = [];
 
   form: UntypedFormGroup;
@@ -78,7 +76,7 @@ export class EditarPsicologoComponent {
       nombres: [null, [Validators.required]],
       dni: [null, [Validators.required]],
       fechaNacimiento: [null, [Validators.required]],
-      sexo: [OPCIONES_SEXO[1].nombre, [Validators.required]],
+      sexo: [/*OPCIONES_SEXO[1].nombre*/, [Validators.required]],
       celular: [null, []],
       nacionalidad: ['PERU', []],
       carrera: [null, []],
