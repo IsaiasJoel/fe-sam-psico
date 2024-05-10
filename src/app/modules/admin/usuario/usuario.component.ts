@@ -1,11 +1,10 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component } from '@angular/core';
 import { lastValueFrom } from 'rxjs';
-import { ApiResponse } from 'src/app/core/models/api-response.interface';
 import { UsuarioService } from './usuario.service';
 import { MatDialog } from '@angular/material/dialog';
 import { SweetAlertService } from 'src/app/core/modals/sweet-alert.service';
 import { DTOUsuarioListar } from './usuario.models';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DTOSexoCombo, Pais } from 'src/app/shared/models/shared.models';
 import { PaisService } from 'src/app/shared/services/pais.service';
 import { SexoService } from 'src/app/shared/services/sexo.service';
@@ -18,7 +17,7 @@ import { DTORolListar } from '../rol/rol.model';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class UsuarioComponent {
-  accion: 'crear' | 'editar' | 'ninguno' = 'crear';
+  accion: 'crear' | 'editar' | 'ninguno' = 'ninguno';
   filtroNombres: string = '';
   form: FormGroup;
   usuarios: DTOUsuarioListar[] = [
@@ -26,7 +25,7 @@ export class UsuarioComponent {
     { id: 2, nombresCompletos: "María López Montalbán", activo: false, tipo: "Usuario Regular" },
     { id: 3, nombresCompletos: "Carlos García Piscoya", activo: true, tipo: "Usuario Regular" }
   ];
-  roles: DTORolListar[] = [];
+
   paises: Pais[] = [];
   sexos: DTOSexoCombo[] = [];
 
@@ -48,7 +47,6 @@ export class UsuarioComponent {
     this._crearFormulario();
     this._obtenerPaises();
     this._obtenerSexos();
-    this._obtenerRoles();
   }
 
   //==========================================================================
@@ -76,6 +74,8 @@ export class UsuarioComponent {
       username: [null, [Validators.required]],
       esPsicologo: [null, [Validators.required]],
       habilitado: [null, [Validators.required]],
+
+      roles: this._formBuilder.array([]),
 
       // Psicologo
       universidad: [null, []],
@@ -107,8 +107,32 @@ export class UsuarioComponent {
 
   private async _obtenerRoles() {
     const http$ = this._rolService.listar$();
-    this.roles = await lastValueFrom(http$);
-    this._changeDetectionRef.markForCheck();
+    // const roles: DTORolListar[] = await lastValueFrom(http$);
+    http$.subscribe(roles => {
+      this._cargarRolesAlFormulario(roles);
+      this._changeDetectionRef.markForCheck();
+    })
+  }
+
+  private _reiniciarForm() {
+    this.form.reset();
+    this.form.patchValue({
+      pais: this.paises.find(pais => pais.iso == 'PE'),
+      sexo: this.sexos.find(x => x.codigo == 'SX09'),
+      // roles: []
+    });
+  }
+
+  private _cargarRolesAlFormulario(roles: DTORolListar[]) {
+    roles.forEach(rol => this._cargarItemRol(rol));
+  }
+
+  private _cargarItemRol(item: DTORolListar) {
+    const nuevoItem = this._formBuilder.group({
+      id: [item.id, [Validators.required]],
+      nombre: [item.nombre, [Validators.required]]
+    });
+    this.roles.push(nuevoItem);
   }
 
   //==========================================================================
@@ -123,62 +147,29 @@ export class UsuarioComponent {
     this._listarUsuarios();
   }
 
-  async resetearContrasenia(codigoUsuario: string) {
-    const ref = await this._sweetAlertService.preguntarSiNo('Esta accion reestablecerá la contraseña por defecto');
-    if (!ref.isConfirmed) return;
-    const respuestaServidor: ApiResponse = await lastValueFrom(this._usuarioService.resetContrasenia$(codigoUsuario));
-    if (!respuestaServidor.successful) return;
-  }
-
-  abrirModalVerMenuesPorUsuario(pidUsuario: number, pNombresCompletos: string) {
-    const ref = this._matDialog.open(null,
-      {
-        data: {
-          codigoUsuario: pidUsuario,
-          nombresUsuario: pNombresCompletos
-        }
-      });
-
-    ref.afterClosed().subscribe(respuestaModal => {
-      if (respuestaModal == 'OK') {
-        // this._abrirSnackBar('Los roles fueron actualizados');
-      }
-    })
-  }
-
-  abrirModalEditarUsuario(pCodigoTrabajador: string) {
-    const ref = this._matDialog.open(null,
-      {
-        data: {
-          codigoTrabajador: pCodigoTrabajador
-        }
-      });
-
-    ref.afterClosed().subscribe(respuestaModal => {
-      if (respuestaModal == 'OK') {
-        // this._abrirSnackBar('El usuario fue editado correctamente');
-        this._listarUsuarios();
-      }
-    });
-  }
-
-  abrirModalCrearUsuario() {
-    const ref = this._matDialog.open(null);
-
-    ref.afterClosed().subscribe(respuestaModal => {
-      if (respuestaModal == 'OK') {
-        // this._abrirSnackBar('El usuario fue creado correctamente');
-        this._listarUsuarios();
-      }
-    });
-  }
+  // async resetearContrasenia(codigoUsuario: string) {
+  //   const ref = await this._sweetAlertService.preguntarSiNo('Esta accion reestablecerá la contraseña por defecto');
+  //   if (!ref.isConfirmed) return;
+  //   const respuestaServidor: ApiResponse = await lastValueFrom(this._usuarioService.resetContrasenia$(codigoUsuario));
+  //   if (!respuestaServidor.successful) return;
+  // }
 
   cancelar() {
-
+    this.accion = 'ninguno';
+    this._reiniciarForm();
+    this._obtenerRoles();
   }
 
   procesarSolicitud() {
-
+    this._sweetAlertService.preguntarSiNo('¿Desea agregar un nuevo usuario?')
+      .then(async respuesta => {
+        if (respuesta.isConfirmed) {
+          console.log(this.form.value);
+          // (this.accion == 'crear') ? await this._crear() : await this._editar();
+          await this._obtenerRoles();
+          this.accion = 'ninguno';
+        }
+      });
   }
 
   ver(id: number) {
@@ -186,6 +177,12 @@ export class UsuarioComponent {
   }
 
   crear() {
+    this._reiniciarForm();
+    this.accion = 'crear';
+    this._obtenerRoles();
+  }
 
+  get roles(): FormArray {
+    return this.form.get('roles') as FormArray;
   }
 }

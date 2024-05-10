@@ -47,13 +47,13 @@
         </div>
 
         <!-- Detalle -->
-        <div class="col-span-4 w-full overflow-auto">
+        <div *ngIf="accion !== 'ninguno'" class="col-span-4 w-full overflow-y-scroll">
             <!-- Crear o Editar-->
             <ng-container *ngIf="accion === 'editar' || 'crear'">
                 <form [formGroup]="form" class="flex flex-col gap-4 h-full w-full">
 
                     <!-- Datos del usuario -->
-                    <div class="flex flex-col justify-between w-full h-full bg-white rounded-lg col-span-1 p-4">
+                    <div class="flex flex-col justify-between w-full bg-white rounded-lg col-span-1 p-4">
                         <div class="font-medium text-2xl font-sans">{{accion == 'editar' ? 'Editar' : 'Crear'}} usuario
                         </div>
                         <div class="mt-4 h-full flex flex-col gap-4">
@@ -148,17 +148,18 @@
                     </div>
 
                     <!-- Roles -->
-                    <div class="flex flex-col justify-between w-full h-full bg-white rounded-lg col-span-1 p-4">
+                    <div class="flex flex-col justify-between w-full bg-white rounded-lg col-span-1 p-4">
                         <div class="font-medium text-2xl font-sans">Roles</div>
-                        <div class="mt-4 h-full flex flex-col">
-                            <ng-container *ngFor="let rol of roles">
-                                <mat-checkbox>{{rol.nombre}}</mat-checkbox>
+                        <div formArrayName="roles" class="mt-4 h-full flex flex-col">
+                            <ng-container *ngFor="let rol of roles.value; let i = index">
+                                <mat-checkbox [formGroupName]="i">{{rol.nombre}}</mat-checkbox>
                             </ng-container>
                         </div>
                     </div>
 
                     <!-- Datos del psicologo -->
-                    <div class="flex flex-col justify-between w-full h-full bg-white rounded-lg col-span-1 p-4">
+                    <div *ngIf="form.get('esPsicologo').value == true"
+                        class="flex flex-col justify-between w-full bg-white rounded-lg col-span-1 p-4">
                         <div class="font-medium text-2xl font-sans">Datos del psicólogo</div>
                         <div class="mt-4 h-full flex flex-col gap-4 mb-20">
                             <div class="grid grid-cols-4 gap-4">
