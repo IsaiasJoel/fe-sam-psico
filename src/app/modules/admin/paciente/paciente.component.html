@@ -1,157 +1,239 @@
-<div class="p-4 flex flex-col h-full">
-    <!-- Header -->
-    <div class="">
-        <div class="flex gap-2 items-center">
-            <div class="font-medium text-4xl mb-2">Pacientes</div>
-            <mat-icon (click)="irAPantallaCrear()" class="icon-size-md hover:cursor-pointer icon-turquesa"
-                [svgIcon]="'plus-circle'" matTooltip="Agregar Paciente"></mat-icon>
+<div class="flex flex-col h-full w-full bg-slate-200 overflow-hidden">
+    <!-- titulo -->
+    <div class="bg-white w-full px-3 py-6 flex items-center justify-between max-h-16">
+        <div class="font-sans text-lg text-slate-600 flex gap-3">
+            <span>Gestión interna</span>
+            <span>></span>
+            <span class="font-medium">Pacientes</span>
         </div>
-        <hr>
+
+        <div class="flex gap-2 items-center justify-center" *ngIf="accion != 'ninguno'">
+            <button mat-raised-button (click)="cancelar()">Cancelar</button>
+            <button mat-raised-button style="background-color: green; color: white;"
+                (click)="procesarSolicitud()">Guardar</button>
+        </div>
     </div>
 
-    <!-- Contenido -->
-    <div class="mt-4 bg-white p-4">
-        <!-- Cabecera tabla -->
-        <div class="w-full grid grid-cols-6 gap-4 mb-4">
-            <!-- Caja de texto-->
-            <div class="col-span-1">
-                <div class="text-label">DNI</div>
+    <!-- Main -->
+    <div class="grid grid-cols-6 w-full h-full px-8 py-4 mt-3 gap-4">
+        <!-- Lista -->
+        <div class="flex flex-col justify-between border-r pr-8 border-r-slate-400 col-span-2 h-full">
+            <!-- Buscador -->
+            <div>
                 <mat-form-field class="w-full">
-                    <input matInput [(ngModel)]="filtroDni" (keypress)="teclaEnterFiltrar($event)">
+                    <!-- (keyup)="filtrar($event)" -->
+                    <input matInput [(ngModel)]="filtroNombres" placeholder="Buscar por nombres">
+                    <mat-icon matPrefix svgIcon="magnify"></mat-icon>
                 </mat-form-field>
             </div>
-
-            <div class="col-span-2">
-                <div class="text-label">Nombres</div>
-                <mat-form-field class="w-full">
-                    <input matInput [(ngModel)]="filtroNombres" (keypress)="teclaEnterFiltrar($event)">
-                </mat-form-field>
-            </div>
-
-            <div class="col-span-1">
-                <div class="text-label">Nacionalidad</div>
-                <mat-form-field class="w-full">
-                    <mat-select [(ngModel)]="filtroNacionalidad" (valueChange)="cambiarFiltroNacionalidad($event)">
-                        <mat-option value="xxx">Seleccione</mat-option>
-                        <mat-option [value]="item" *ngFor="let item of nacionalidades">{{item.nombre}}</mat-option>
-                    </mat-select>
-                </mat-form-field>
-            </div>
-
-            <div class="col-span-1">
-                <div class="text-label">Estado</div>
-                <mat-form-field class="w-full">
-                    <mat-select [(ngModel)]="filtroEstado">
-                        <mat-option value="Seleccione">Seleccione</mat-option>
-                        <mat-option value="A">Activo</mat-option>
-                        <mat-option value="I">Inactivo</mat-option>
-                    </mat-select>
-                </mat-form-field>
-            </div>
-
-            <!-- Botón -->
-            <div class="col-span-1 w-full self-center">
-                <button class="w-full bg-azul" mat-raised-button (click)="clickFiltrar()">
-                    <div class="text-white flex gap-2">
-                        <span class="">Buscar</span>
-                        <mat-icon svgIcon="magnify"></mat-icon>
+            <!-- Lista completa -->
+            <div class="mt-4 h-full overflow-auto flex flex-col gap-2">
+                <ng-container *ngIf="pacientes.length>0; else nocontent">
+                    <div *ngFor="let paciente of pacientes" class="bg-white p-3 rounded-lg cursor-pointer shadow-md">
+                        <button (click)="ver(paciente.id)">
+                            <div class="flex flex-col items-start">
+                                <div class="font-medium text-base">{{paciente.nombres + " " + paciente.apPaterno + " " +
+                                    paciente.apMaterno}}</div>
+                                <!-- <div class="text-slate-600">{{paciente.tipo}}</div> -->
+                            </div>
+                        </button>
                     </div>
-                </button>
+                </ng-container>
+                <ng-template #nocontent>
+                    <div class="p-4">¡La lista está vacía!</div>
+                </ng-template>
             </div>
+            <button mat-raised-button class="mt-8 mb-2" style="background-color: green; color: white;"
+                *ngIf="accion == 'ninguno'" (click)="crear()">Crear nuevo paciente</button>
         </div>
 
-        <!-- Contenido tabla -->
-        <div class="mat-elevation-z8">
-            <table mat-table [dataSource]="dataSource">
+        <!-- Detalle -->
+        <div *ngIf="accion !== 'ninguno'" class="col-span-4 w-full overflow-y-scroll mb-16">
+            <!-- Crear o Editar-->
+            <ng-container *ngIf="accion === 'editar' || 'crear'">
+                <form [formGroup]="form" class="flex flex-col gap-4 h-full w-full">
 
-                <ng-container matColumnDef="nombresApellidos">
-                    <th mat-header-cell *matHeaderCellDef> Nombres y apellidos </th>
-                    <td mat-cell *matCellDef="let element"> {{element | psicologoNombresCompletos}} </td>
-                </ng-container>
+                    <!-- Datos del usuario -->
+                    <div class="flex flex-col justify-between w-full bg-white rounded-lg col-span-1 p-4">
+                        <div class="font-medium text-2xl font-sans">{{accion == 'editar' ? 'Editar' : 'Crear'}} usuario
+                        </div>
+                        <!-- Datos -->
+                        <div class="mt-4 h-full grid grid-cols-3 gap-4">
+                            <!-- Ap paterno -->
+                            <div>
+                                <div class="text-label">Apellido Paterno</div>
+                                <mat-form-field class="w-full">
+                                    <input matInput formControlName="apPaterno">
+                                </mat-form-field>
+                            </div>
 
-                <ng-container matColumnDef="dni">
-                    <th mat-header-cell *matHeaderCellDef> DNI </th>
-                    <td mat-cell *matCellDef="let element"> {{element.dni}} </td>
-                </ng-container>
+                            <!-- Ap materno -->
+                            <div>
+                                <div class="text-label">Apellido Materno</div>
+                                <mat-form-field class="w-full">
+                                    <input matInput formControlName="apMaterno">
+                                </mat-form-field>
+                            </div>
 
-                <ng-container matColumnDef="edad">
-                    <th mat-header-cell *matHeaderCellDef> Edad </th>
-                    <td mat-cell *matCellDef="let element"> {{element.fechaNacimiento | edad}} </td>
-                </ng-container>
+                            <!-- Nombres -->
+                            <div>
+                                <div class="text-label">Nombres</div>
+                                <mat-form-field class="w-full">
+                                    <input matInput formControlName="nombres">
+                                </mat-form-field>
+                            </div>
 
-                <ng-container matColumnDef="nacionalidad">
-                    <th mat-header-cell *matHeaderCellDef> Nacionalidad </th>
-                    <td mat-cell *matCellDef="let element"> {{element.nacionalidad}} </td>
-                </ng-container>
+                            <!-- DNI -->
+                            <div>
+                                <div class="text-label">Documento de identidad</div>
+                                <mat-form-field class="w-full">
+                                    <input matInput formControlName="docIdentidad">
+                                </mat-form-field>
+                            </div>
 
-                <ng-container matColumnDef="sexo">
-                    <th mat-header-cell *matHeaderCellDef> Sexo </th>
-                    <td mat-cell *matCellDef="let element"> {{element.sexo}} </td>
-                </ng-container>
+                            <div>
+                                <div class="text-label">Sexo</div>
+                                <mat-form-field class="w-full">
+                                    <mat-select formControlName="sexo">
+                                        <mat-option [value]="item"
+                                            *ngFor="let item of sexos">{{item.nombre}}</mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
 
-                <ng-container matColumnDef="celular">
-                    <th mat-header-cell *matHeaderCellDef> Contacto </th>
-                    <td mat-cell *matCellDef="let element"> {{element.numeroContacto}} </td>
-                </ng-container>
+                            <!-- Fecha nacimiento -->
+                            <div>
+                                <div class="text-label">Fecha de nacimiento</div>
+                                <mat-form-field class="w-full">
+                                    <input matInput [matDatepicker]="dp" formControlName="fecNacimiento">
+                                    <!-- <mat-hint>MM/DD/YYYY</mat-hint> -->
+                                    <mat-datepicker-toggle matIconSuffix [for]="dp"></mat-datepicker-toggle>
+                                    <mat-datepicker #dp></mat-datepicker>
+                                </mat-form-field>
+                            </div>
 
-                <ng-container matColumnDef="editar">
-                    <th mat-header-cell *matHeaderCellDef></th>
-                    <td mat-cell *matCellDef="let element">
-                        <button mat-raised-button matTooltip="Editar" class="bg-amarillo"
-                            (click)="irAPantallEditar(element.id)">
-                            <mat-icon svgIcon="pencil"></mat-icon>
-                        </button>
-                    </td>
-                </ng-container>
+                            <div>
+                                <div class="text-label">Nacionalidad</div>
+                                <mat-form-field class="w-full">
+                                    <mat-select formControlName="pais">
+                                        <mat-option [value]="pais"
+                                            *ngFor="let pais of paises">{{pais.nombre}}</mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
 
-                <ng-container matColumnDef="verHistoria">
-                    <th mat-header-cell *matHeaderCellDef></th>
-                    <td mat-cell *matCellDef="let element">
-                        <button mat-raised-button class="flex gap-2" color="primary" (click)="verHistoria(element.id)">
-                            <mat-icon svgIcon="text-box-search"></mat-icon>
-                            <div>Ver Historia</div>
-                        </button>
-                    </td>
-                </ng-container>
+                            <!-- Lugar de nacimiento -->
+                            <div>
+                                <div class="text-label">Lugar de nacimiento</div>
+                                <mat-form-field class="w-full">
+                                    <input matInput formControlName="lugarNacimiento">
+                                </mat-form-field>
+                            </div>
 
-                <ng-container matColumnDef="horarioDisponibilidad">
-                    <th mat-header-cell *matHeaderCellDef></th>
-                    <td mat-cell *matCellDef="let element">
-                        <button mat-raised-button class="flex gap-2">
-                            <mat-icon svgIcon="clock"></mat-icon>
-                            <div>Horario disponibilidad</div>
-                        </button>
-                    </td>
-                </ng-container>
+                            <div>
+                                <div class="text-label">Dirección</div>
+                                <mat-form-field class="w-full">
+                                    <input matInput formControlName="direccion">
+                                </mat-form-field>
+                            </div>
 
-                <!-- <ng-container matColumnDef="eliminar">
-                    <th mat-header-cell *matHeaderCellDef></th>
-                    <td mat-cell *matCellDef="let element">
-                        <button mat-raised-button class="bg-gris" *ngIf="element.habilitado" matTooltip="Deshabilitar"
-                            (click)="deshabilitar(element.id)">
-                            <mat-icon svgIcon="account-cancel"></mat-icon>
-                        </button>
-                        <button mat-raised-button class="bg-turquesa" *ngIf="!element.habilitado"
-                            (click)="habilitar(element.id)" matTooltip="Habilitar">
-                            <mat-icon svgIcon="account-check"></mat-icon>
-                        </button>
-                    </td>
-                </ng-container> -->
+                            <ng-container formGroupName="ubigeo">
+                                <div>
+                                    <div class="text-label">Departamento</div>
+                                    <mat-form-field class="w-full">
+                                        <mat-select formControlName="departamento">
+                                            <mat-option *ngFor="let departamento of departamentos"
+                                                [value]="departamento">{{departamento}}</mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                                </div>
 
-                <tr mat-header-row *matHeaderRowDef="columnas"></tr>
-                <tr mat-row *matRowDef="let row; columns: columnas;"></tr>
+                                <div>
+                                    <div class="text-label">Provincia</div>
+                                    <mat-form-field class="w-full">
+                                        <mat-select formControlName="provincia"
+                                            (valueChange)="listarDistritoPorProvincia$($event)">
+                                            <mat-option *ngFor="let provincia of provincias"
+                                                [value]="provincia">{{provincia}}</mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                                </div>
 
-                <!-- Row shown when there is no matching data. -->
-                <tr class="mat-row" *matNoDataRow>
-                    <td class="mat-cell p-4" colspan="4">No hay contenido</td>
-                </tr>
+                                <div>
+                                    <div class="text-label">Distrito</div>
+                                    <mat-form-field class="w-full">
+                                        <mat-select formControlName="distrito">
+                                            <mat-option *ngFor="let distrito of distritos"
+                                                [value]="distrito">{{distrito}}</mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                                </div>
+                            </ng-container>
 
-            </table>
+                            <div>
+                                <div class="text-label">Correo</div>
+                                <mat-form-field class="w-full">
+                                    <input matInput formControlName="correo">
+                                </mat-form-field>
+                            </div>
+                            <div>
+                                <div class="text-label">Ocupación</div>
+                                <mat-form-field class="w-full">
+                                    <input matInput formControlName="ocupacion">
+                                </mat-form-field>
+                            </div>
+                            <div>
+                                <div class="text-label">Carrera o profesión</div>
+                                <mat-form-field class="w-full">
+                                    <input matInput formControlName="carreraProfesion">
+                                </mat-form-field>
+                            </div>
 
-            <mat-paginator [length]="pagination.tamanioTotal" [pageSize]="pagination.tamanioPagina"
-                [pageSizeOptions]="pageableOptions" [showFirstLastButtons]="true">
-            </mat-paginator>
+                            <div>
+                                <div class="text-label">Número de contacto</div>
+                                <mat-form-field class="w-full">
+                                    <input matInput formControlName="numeroContacto">
+                                </mat-form-field>
+                            </div>
+                            <div>
+                                <div class="text-label">Contacto de emergencia</div>
+                                <mat-form-field class="w-full">
+                                    <input matInput formControlName="contactoEmergencia">
+                                </mat-form-field>
+                            </div>
+                            <div>
+                                <div class="text-label">Organización que refiere</div>
+                                <mat-form-field class="w-full">
+                                    <input matInput formControlName="organizacionRefiere">
+                                </mat-form-field>
+                            </div>
 
+                            <div class="col-span-3">
+                                <div class="text-label">Motivo de consulta</div>
+                                <mat-form-field class="w-full">
+                                    <textarea matInput formControlName="motivoConsulta"></textarea>
+                                </mat-form-field>
+                            </div>
+                            <div class="col-span-1">
+                                <div class="text-label">Horario de disponibilidad</div>
+                                <!-- <mat-form-field class="w-full"> -->
+                                <mat-radio-group formControlName="horarioDisponibilidad">
+                                    <mat-radio-button value="M">Mañana</mat-radio-button>
+                                    <mat-radio-button value="T">Tarde</mat-radio-button>
+                                </mat-radio-group>
+                                <!-- </mat-form-field> -->
+                            </div>
+
+                            <div class="col-span-3">
+                                <div class="text-label">Observación</div>
+                                <mat-form-field class="w-full">
+                                    <textarea matInput formControlName="observacion"></textarea>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </ng-container>
         </div>
     </div>
 </div>

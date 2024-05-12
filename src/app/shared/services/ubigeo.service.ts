@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable, Subject, tap } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
-import { DTOBuscarUbigeo } from '../models/shared.models';
 import { environment } from 'src/environments/environment.dev';
 import { ApiResponse } from 'src/app/core/models/api-response.interface';
 import { TEXTO_SELECCIONE } from '../data/shared.data';
@@ -53,31 +52,31 @@ export class UbigeoService {
   // -----------------------------------------------------------------------------------------------------
   // @ Public methods
   // -----------------------------------------------------------------------------------------------------
-  departamentos$(): Observable<ApiResponse> {
+  departamentos$(): Observable<string[]> {
     let currentUrl = `${this._url}/departamentos`;
-    return this.http.get<ApiResponse>(currentUrl).pipe(
-      tap((respServidor: ApiResponse) => {
-        this._ubigeoSeleccionado.departamento.departamentos = respServidor.data;
+    return this.http.get<string[]>(currentUrl).pipe(
+      tap((respServidor: string[]) => {
+        this._ubigeoSeleccionado.departamento.departamentos = respServidor;
         this._ubigeo.next(this._ubigeoSeleccionado);
       })
     );
   }
 
-  provincias$(departamento: string): Observable<any> {
+  provincias$(departamento: string): Observable<string[]> {
     let currentUrl = `${this._url}/departamentos/${departamento}/provincias`;
-    return this.http.get<any>(currentUrl).pipe(
-      tap((respServidor: ApiResponse) => {
-        this._ubigeoSeleccionado.provincia.provinciasPorDepartamento = respServidor.data;
+    return this.http.get<string[]>(currentUrl).pipe(
+      tap((respServidor: string[]) => {
+        this._ubigeoSeleccionado.provincia.provinciasPorDepartamento = respServidor;
         this._ubigeo.next(this._ubigeoSeleccionado);
       })
     );
   }
 
-  distritos$(provincia: string): Observable<any> {
+  distritos$(provincia: string): Observable<string[]> {
     let currentUrl = `${this._url}/provincias/${provincia}/distritos`;
-    return this.http.get<any>(currentUrl).pipe(
-      tap((respServidor: ApiResponse) => {
-        this._ubigeoSeleccionado.distrito.distritosPorProvincia = respServidor.data;
+    return this.http.get<string[]>(currentUrl).pipe(
+      tap((respServidor: string[]) => {
+        this._ubigeoSeleccionado.distrito.distritosPorProvincia = respServidor;
         this._ubigeo.next(this._ubigeoSeleccionado);
       })
     );
@@ -101,12 +100,6 @@ export class UbigeoService {
         distritosPorProvincia: []
       }
     }
-  }
-
-  buscarUbigeoPorDepartamentoProvinciaDistrito$(departamento: string, provincia: string, distrito: string): Observable<DTOBuscarUbigeo> {
-    let currentUrl =
-      `${this._url}/buscarCodigoUbigeoPorDepartamentoProvinciaDistrito?departamento=${departamento}&provincia=${provincia}&distrito=${distrito}`;
-    return this.http.get<any>(currentUrl);
   }
 }
 

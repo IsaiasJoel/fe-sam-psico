@@ -3,14 +3,14 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { PacienteService } from '../paciente.service';
 import { ToastrService } from 'ngx-toastr';
 import { Observable, lastValueFrom, map } from 'rxjs';
-import { FORMATO_FECHA_DMY, TEXTO_CONSULTA_EXITOSA, TEXTO_CONSULTA_FALLO } from 'src/app/core/utils/constants.utils';
+import { TEXTO_CONSULTA_EXITOSA, TEXTO_CONSULTA_FALLO } from 'src/app/core/utils/constants.utils';
 import { StepperOrientation } from '@angular/cdk/stepper';
 import { BreakpointObserver } from '@angular/cdk/layout';
 import { UbigeoService } from 'src/app/shared/services/ubigeo.service';
 import { ApiResponse } from 'src/app/core/models/api-response.interface';
 import { SERVICIOS_BASICOS, TEXTO_SELECCIONE } from 'src/app/shared/data/shared.data';
 import { ActivatedRoute, Router } from '@angular/router';
-import { DTOPacienteEncontrado } from '../paciente.models';
+// import { DTOPacienteEncontrado } from '../paciente.models';
 import * as moment from 'moment';
 import { SweetAlertService } from 'src/app/core/modals/sweet-alert.service';
 
@@ -78,25 +78,25 @@ export class EditarPacienteComponent {
     this.estaCargando = true;
     const id = this._activateRoute.snapshot.paramMap.get('id');
 
-    try {
-      const http$ = this._pacienteService.buscarPorId$(id);
-      const respuestaServidor: ApiResponse = await lastValueFrom(http$);
-      let paciente: DTOPacienteEncontrado = respuestaServidor.data;
+    // try {
+    //   const http$ = this._pacienteService.buscarPorId$(id);
+    //   const respuestaServidor: ApiResponse = await lastValueFrom(http$);
+    //   let paciente = respuestaServidor.data;
 
-      this.personalForm.patchValue(paciente);
-      this.socieconomicoForm.patchValue(paciente);
-      this.familiarForm.patchValue(paciente);
+    //   this.personalForm.patchValue(paciente);
+    //   this.socieconomicoForm.patchValue(paciente);
+    //   this.familiarForm.patchValue(paciente);
 
-      //Formatear y setear la fecha
-      this.personalForm.patchValue({
-        fechaNacimiento: new Date(paciente.fechaNacimiento)
-      });
+    //   //Formatear y setear la fecha
+    //   this.personalForm.patchValue({
+    //     fechaNacimiento: new Date(paciente.fechaNacimiento)
+    //   });
 
-    } catch (error) {
-      const mensaje: string = error.error.message.ERROR;
-      this._sweetAlertService.mostrarMensaje('Error', mensaje, 'error');
-    }
-    this.estaCargando = false;
+    // } catch (error) {
+    //   const mensaje: string = error.error.message.ERROR;
+    //   this._sweetAlertService.mostrarMensaje('Error', mensaje, 'error');
+    // }
+    // this.estaCargando = false;
   }
 
   private async _inicializarUbicacionPorDefecto() {
@@ -114,16 +114,16 @@ export class EditarPacienteComponent {
   }
 
   private async _cargarDepartamentos() {
-    try {
-      this.estaCargando = true;
-      const http$ = this._ubigeoService.departamentos$();
-      const respuestaServidor: ApiResponse = await lastValueFrom(http$);
-      this.departamentos = respuestaServidor.data;
-    } catch (error) {
-      this._toastrService.error(TEXTO_CONSULTA_FALLO);
-    } finally {
-      this.estaCargando = false;
-    }
+    // try {
+    //   this.estaCargando = true;
+    //   const http$ = this._ubigeoService.departamentos$();
+    //   const respuestaServidor: ApiResponse = await lastValueFrom(http$);
+    //   this.departamentos = respuestaServidor.data;
+    // } catch (error) {
+    //   this._toastrService.error(TEXTO_CONSULTA_FALLO);
+    // } finally {
+    //   this.estaCargando = false;
+    // }
   }
 
   private _crearFormPersonal() {
@@ -197,16 +197,16 @@ export class EditarPacienteComponent {
       return;
     }
 
-    try {
-      const http$ = this._pacienteService.editar$(this.personalForm.value, this.socieconomicoForm.value, this.familiarForm.value);
-      await lastValueFrom(http$);
-      this._toastrService.success(TEXTO_CONSULTA_EXITOSA);
-      this._router.navigate(['/pacientes/']);
-    } catch (error) {
-      this._toastrService.error(error.message);
-    } finally {
-      this.estaCargando = false;
-    }
+    // try {
+    //   const http$ = this._pacienteService.editar$(this.personalForm.value, this.socieconomicoForm.value, this.familiarForm.value);
+    //   await lastValueFrom(http$);
+    //   this._toastrService.success(TEXTO_CONSULTA_EXITOSA);
+    //   this._router.navigate(['/pacientes/']);
+    // } catch (error) {
+    //   this._toastrService.error(error.message);
+    // } finally {
+    //   this.estaCargando = false;
+    // }
   }
 
   async listarProvinciaPorDepartamento$(departamentoSeleccionado: string) {
