@@ -9,7 +9,7 @@ export interface DTOAmbienteCrearEditarRequest {
 }
 
 export interface DTOAmbienteListar {
-    id: number;
+    codigo: string;
     nombre: string;
     ubicacion: string;
     aforo: number;

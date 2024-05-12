@@ -1,11 +1,11 @@
-import { Injectable, OnInit } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
 import { DTOMenuMatchPorCodigoRol } from '../menu/menu.model';
 
 @Injectable({
   providedIn: 'root'
 })
-export class RolMenuService implements OnInit {
+export class RolMenuService {
   //======================================================================
   //Variables
   //======================================================================
@@ -17,9 +17,7 @@ export class RolMenuService implements OnInit {
   //======================================================================
   //Ciclo de vida
   //======================================================================
-  constructor() { }
-
-  ngOnInit(): void {
+  constructor() {
     this._aplanarListaDeServidor(); //"aplana" la lista para futuros usos
     this._agregarItemsSeleccionadosAListaParaEnviar(this.listaDesdeServidor);
   }
@@ -49,12 +47,10 @@ export class RolMenuService implements OnInit {
     return indexEncontrado != -1;
   }
 
-
   /** Retorna el indice de la "listaParaEnviar" de acuerdo a un menúCodigo */
   private _buscarIndexPorMenuCodigo(menuCodigo: string): number {
     return this._listaParaEnviar.findIndex(x => x === menuCodigo) ?? -1;
   }
-
 
   private _agregarItemYPadres(menuCodigo: string, menuCodigoPadre: string) {
     this._agregarItem(menuCodigo);//agregarItem

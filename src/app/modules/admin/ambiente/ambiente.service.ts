@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ApiResponse } from 'src/app/core/models/api-response.interface';
 import { environment } from 'src/environments/environment.dev';
-import { DTOAmbienteCrearEditarRequest } from './ambiente.model';
+import { DTOAmbienteCrearEditarRequest, DTOAmbienteListar } from './ambiente.model';
 
 @Injectable({
   providedIn: 'root'
@@ -24,9 +24,9 @@ export class AmbienteService {
   //=====================================================================
   // Métodos HTTP
   //=====================================================================
-  listarTodos$(): Observable<ApiResponse> {
+  listarTodos$(): Observable<DTOAmbienteListar[]> {
     let currentUrl = `${this._url}/`;
-    return this._http.get<any>(currentUrl);
+    return this._http.get<DTOAmbienteListar[]>(currentUrl);
   }
 
   listarCombo$(): Observable<ApiResponse> {

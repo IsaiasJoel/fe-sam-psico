@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ApiResponse } from 'src/app/core/models/api-response.interface';
 import { environment } from 'src/environments/environment.dev';
-import { DTOServicioCrearEditarRequest } from './servicio.model';
+import { DTOServicioCrearEditarRequest, DTOServicioListar } from './servicio.model';
 
 @Injectable({
   providedIn: 'root'
@@ -24,9 +24,9 @@ export class ServiciosService {
   //=====================================================================
   // Métodos HTTP
   //=====================================================================
-  listarTodos$(): Observable<ApiResponse> {
+  listarTodos$(): Observable<DTOServicioListar[]> {
     let currentUrl = `${this._url}/`;
-    return this._http.get<any>(currentUrl);
+    return this._http.get<DTOServicioListar[]>(currentUrl);
   }
 
   listarCombo$(): Observable<ApiResponse> {

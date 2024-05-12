@@ -35,9 +35,8 @@ export class ServicioComponent implements OnInit {
   // Métodos privados
   //===================================================
   private async _listar() {
-    const http$: Observable<ApiResponse> = this._serviciosService.listarTodos$();
-    const respServidor: ApiResponse = await lastValueFrom(http$);
-    this.servicios = respServidor.data;
+    const http$ = this._serviciosService.listarTodos$();
+    this.servicios = await lastValueFrom(http$);
     this._changeDetectorRef.markForCheck();
   }
 
@@ -54,8 +53,8 @@ export class ServicioComponent implements OnInit {
     });
   }
 
-  abrirModalEditar(id: number) {
-    const ref = this._matDialog.open(ModalEditarServicioComponent, { data: { pId: id } });
+  abrirModalEditar(codigo: string) {
+    const ref = this._matDialog.open(ModalEditarServicioComponent, { data: { pId: codigo } });
     ref.afterClosed().subscribe(respuestaModal => {
       if (respuestaModal == 'OK') {
         this._listar();

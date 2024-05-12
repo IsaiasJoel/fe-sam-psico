@@ -1,15 +1,15 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component } from '@angular/core';
-import { lastValueFrom } from 'rxjs';
+import { forkJoin, lastValueFrom } from 'rxjs';
 import { UsuarioService } from './usuario.service';
-import { MatDialog } from '@angular/material/dialog';
 import { SweetAlertService } from 'src/app/core/modals/sweet-alert.service';
 import { DTOUsuarioListar } from './usuario.models';
-import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DTOSexoCombo, Pais } from 'src/app/shared/models/shared.models';
 import { PaisService } from 'src/app/shared/services/pais.service';
 import { SexoService } from 'src/app/shared/services/sexo.service';
 import { RolService } from '../rol/rol.service';
-import { DTORolListar } from '../rol/rol.model';
+import { DTORolMatchPorIdUsuario } from '../rol/rol.model';
+import { UsuarioRolInteraccionService } from './usuario-rol-interaccion.service';
 
 @Component({
   selector: 'usuario',
@@ -17,51 +17,66 @@ import { DTORolListar } from '../rol/rol.model';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class UsuarioComponent {
+  //=====================================
+  // Variables
+  //=====================================
   accion: 'crear' | 'editar' | 'ninguno' = 'ninguno';
-  filtroNombres: string = '';
+  filtroNombres: string;
   form: FormGroup;
-  usuarios: DTOUsuarioListar[] = [
-    { id: 1, nombresCompletos: "Juan Pérez Domínguez", activo: true, tipo: "Administrador" },
-    { id: 2, nombresCompletos: "María López Montalbán", activo: false, tipo: "Usuario Regular" },
-    { id: 3, nombresCompletos: "Carlos García Piscoya", activo: true, tipo: "Usuario Regular" }
-  ];
-
+  usuarios: DTOUsuarioListar[] = [];
   paises: Pais[] = [];
   sexos: DTOSexoCombo[] = [];
+  rolesPorUsuario: DTORolMatchPorIdUsuario[] = [];
 
   //==========================================================================
   // Ciclo de vida
   //==========================================================================
   constructor(
     private _usuarioService: UsuarioService,
-    private _matDialog: MatDialog,
     private _sweetAlertService: SweetAlertService,
     private _changeDetectionRef: ChangeDetectorRef,
     private _formBuilder: FormBuilder,
     private _paisService: PaisService,
     private _sexoService: SexoService,
-    private _rolService: RolService
+    private _rolService: RolService,
+    private _usuarioRolInteraccionService: UsuarioRolInteraccionService
   ) { }
 
   ngOnInit(): void {
     this._crearFormulario();
     this._obtenerPaises();
     this._obtenerSexos();
+    this._obtenerUsuarios();
+    this._suscribirseALosRoles();
   }
 
   //==========================================================================
   // Métodos privados
   //==========================================================================
-  private async _listarUsuarios() {
-    // const http$ = this._usuarioService.listarUsuariosPaginacion$(this._paginator?.pageIndex, this._paginator?.pageSize, this.filtroApellidosNombres, this.filtroEstado);
-    // const respuestaServidor: ApiResponse = await lastValueFrom(http$);
-    // this._cargarDatosDelServidorAlDatasource(respuestaServidor.data);
+  private _suscribirseALosRoles() {
+    this._usuarioRolInteraccionService.roles$
+      .subscribe((data: number[]) => {
+        this.form.patchValue({ roles: data });
+        this._changeDetectionRef.markForCheck();
+      });
+  }
+
+  private async _obtenerUsuarios() {
+    const http$ = this._usuarioService.listarTodos$(this.filtroNombres);
+    this.usuarios = await lastValueFrom(http$);
+    this._changeDetectionRef.markForCheck();
+  }
+
+  private async _obtenerRolesPorUsuario(idUsuario?: number) {
+    const http$ = this._rolService.listarPorUsuario$(idUsuario);
+    this.rolesPorUsuario = await lastValueFrom(http$);
     this._changeDetectionRef.markForCheck();
   }
 
   private _crearFormulario() {
     this.form = this._formBuilder.group({
       // Usuario
+      id: [null, [Validators.required]],
       dni: [null, [Validators.required]],
       nombres: [null, [Validators.required]],
       apPaterno: [null, [Validators.required]],
@@ -72,18 +87,18 @@ export class UsuarioComponent {
       celular: [null, []],
       carreraProfesional: [null, [Validators.required]],
       username: [null, [Validators.required]],
-      esPsicologo: [null, [Validators.required]],
-      habilitado: [null, [Validators.required]],
-
-      roles: this._formBuilder.array([]),
-
-      // Psicologo
-      universidad: [null, []],
-      anioEgreso: [null, []],
-      esColegiado: [null, []],
-      numColegiatura: [null, []],
-      especialidad: [null, []],
-      resumenProfesional: [null, []]
+      esPsicologo: [false, [Validators.required]],
+      habilitado: [false, [Validators.required]],
+      roles: [[], []],
+      psicologo: this._formBuilder.group({
+        id: [null, []],
+        universidad: [null, []],
+        anioEgreso: [null, []],
+        esColegiado: [null, []],
+        numColegiatura: [null, []],
+        especialidad: [null, []],
+        resumenProfesional: [null, []]
+      })
     });
   }
 
@@ -105,34 +120,22 @@ export class UsuarioComponent {
     this._changeDetectionRef.markForCheck();
   }
 
-  private async _obtenerRoles() {
-    const http$ = this._rolService.listar$();
-    // const roles: DTORolListar[] = await lastValueFrom(http$);
-    http$.subscribe(roles => {
-      this._cargarRolesAlFormulario(roles);
-      this._changeDetectionRef.markForCheck();
-    })
-  }
-
   private _reiniciarForm() {
     this.form.reset();
     this.form.patchValue({
       pais: this.paises.find(pais => pais.iso == 'PE'),
       sexo: this.sexos.find(x => x.codigo == 'SX09'),
-      // roles: []
     });
   }
 
-  private _cargarRolesAlFormulario(roles: DTORolListar[]) {
-    roles.forEach(rol => this._cargarItemRol(rol));
+  private async _crear() {
+    const http$ = this._usuarioService.crear$(this.form.value);
+    await lastValueFrom(http$);
   }
 
-  private _cargarItemRol(item: DTORolListar) {
-    const nuevoItem = this._formBuilder.group({
-      id: [item.id, [Validators.required]],
-      nombre: [item.nombre, [Validators.required]]
-    });
-    this.roles.push(nuevoItem);
+  private async _editar() {
+    const http$ = this._usuarioService.editar$(this.form.value);
+    await lastValueFrom(http$);
   }
 
   //==========================================================================
@@ -140,11 +143,11 @@ export class UsuarioComponent {
   //==========================================================================
   filtrar(event: KeyboardEvent) {
     if (event.key != 'Enter') return;
-    this._listarUsuarios();
+    this._obtenerUsuarios();
   }
 
   clickFiltrar() {
-    this._listarUsuarios();
+    this._obtenerUsuarios();
   }
 
   // async resetearContrasenia(codigoUsuario: string) {
@@ -154,35 +157,51 @@ export class UsuarioComponent {
   //   if (!respuestaServidor.successful) return;
   // }
 
-  cancelar() {
-    this.accion = 'ninguno';
-    this._reiniciarForm();
-    this._obtenerRoles();
-  }
 
   procesarSolicitud() {
     this._sweetAlertService.preguntarSiNo('¿Desea agregar un nuevo usuario?')
       .then(async respuesta => {
         if (respuesta.isConfirmed) {
           console.log(this.form.value);
-          // (this.accion == 'crear') ? await this._crear() : await this._editar();
-          await this._obtenerRoles();
+          (this.accion == 'crear') ? await this._crear() : await this._editar();
+          await this._obtenerUsuarios();
           this.accion = 'ninguno';
         }
       });
   }
 
   ver(id: number) {
+    this.accion = 'editar';
+    const httpUsuario$ = this._usuarioService.ver$(id);
+    const httpRolesPorUsuario$ = this._rolService.listarPorUsuario$(id);
 
+    forkJoin({
+      usuario: httpUsuario$,
+      rolesPorUsuario: httpRolesPorUsuario$
+    }).subscribe(data => {
+      this.form.patchValue(data.usuario);
+      this.form.patchValue({
+        sexo: this.sexos.find(x => x.codigo == data.usuario.sexo.codigo),
+        pais: this.paises.find(x => x.id == data.usuario.pais.id)
+      })
+      this.rolesPorUsuario = data.rolesPorUsuario;
+      this._changeDetectionRef.markForCheck();
+    })
   }
 
-  crear() {
-    this._reiniciarForm();
+  async crear() {
     this.accion = 'crear';
-    this._obtenerRoles();
+    this._reiniciarForm();
+    this._obtenerRolesPorUsuario();
   }
 
-  get roles(): FormArray {
-    return this.form.get('roles') as FormArray;
+  cancelar() {
+    this.accion = 'ninguno';
+    this._reiniciarForm();
+    this._obtenerUsuarios();
+  }
+
+  agregarAListaParaEnviar(id: number) {
+    this._usuarioRolInteraccionService.roles = id;
   }
 }

@@ -1,9 +1,9 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, ReplaySubject, of, tap } from 'rxjs';
 import { ApiResponse } from 'src/app/core/models/api-response.interface';
 import { environment } from 'src/environments/environment.dev';
-import { DTOUsuarioCrearActualizar, DTOUsuarioSesion } from './usuario.models';
+import { DTOUsuarioCrearActualizar, DTOUsuarioListar, DTOUsuarioSesion } from './usuario.models';
 import { USUARIO } from 'src/app/shared/data/shared.data';
 
 @Injectable({
@@ -69,29 +69,40 @@ export class UsuarioService {
     return this._http.get<any>(currentUrl);
   }
 
-  listarUsuariosPaginacion$(numeroPagina: number, tamanioPagina: number, dni?: string, nombre?: string, username?: string, estado?: string, esSuperUsuario?: string): Observable<ApiResponse> {
-    let urlActual: string = `${this._url}/page?numeroPagina=${numeroPagina}&tamanioPagina=${tamanioPagina}`;
-    if (dni) urlActual += `&dni=${dni}`;
-    if (nombre) urlActual += `&nombres=${nombre}`;
-    if (username) urlActual += `&username=${username}`;
-    if (estado && estado !== 'X') urlActual += `&estado=${estado}`;
-    if (esSuperUsuario && esSuperUsuario !== 'X') urlActual += `&esSuperUsuario=${esSuperUsuario}`;
-    return this._http.get<ApiResponse>(urlActual);
-  }
-
-  buscarUsuarioPorCodigo$(codigo: string): Observable<ApiResponse> {
-    let urlActual: string = `${this._url}/${codigo}`;
-    return this._http.get<ApiResponse>(urlActual);
-  }
-
-  buscarUsuarioPorCodigoParaEditar$(codigo: string): Observable<ApiResponse> {
-    let urlActual: string = `${this._url}/editar/${codigo}`;
-    return this._http.get<ApiResponse>(urlActual);
-  }
-
-  editar$(item: DTOUsuarioCrearActualizar): Observable<ApiResponse> {
+  listarTodos$(nombres?: string): Observable<DTOUsuarioListar[]> {
     let urlActual: string = `${this._url}/`;
-    return this._http.put<ApiResponse>(urlActual, item);
+
+    //Evaluar parámetros
+    let parametros = new HttpParams();
+    if (nombres) {
+      parametros.set('nombres', nombres);
+    }
+
+    return this._http.get<DTOUsuarioListar[]>(urlActual, { params: parametros });
+  }
+
+  buscarUsuarioPorCodigo$(codigo: string): Observable<DTOUsuarioCrearActualizar> {
+    let urlActual: string = `${this._url}/${codigo}`;
+    return this._http.get<DTOUsuarioCrearActualizar>(urlActual);
+  }
+
+  ver$(id: number): Observable<DTOUsuarioCrearActualizar> {
+    let urlActual: string = `${this._url}/${id}`;
+    return this._http.get<DTOUsuarioCrearActualizar>(urlActual);
+  }
+
+  editar$(item: DTOUsuarioCrearActualizar): Observable<DTOUsuarioCrearActualizar> {
+    if (!item.esPsicologo) {
+      item.psicologo = null;
+      item.esPsicologo = false;
+    }
+
+    if (item.habilitado == null) {
+      item.habilitado = true;
+    }
+
+    let urlActual: string = `${this._url}/`;
+    return this._http.put<DTOUsuarioCrearActualizar>(urlActual, item);
   }
 
   resetContrasenia$(codigoUsuario: string): Observable<ApiResponse> {
@@ -100,6 +111,15 @@ export class UsuarioService {
   }
 
   crear$(item: DTOUsuarioCrearActualizar): Observable<ApiResponse> {
+    if (!item.esPsicologo) {
+      item.psicologo = null;
+      item.esPsicologo = false;
+    }
+
+    if (item.habilitado == null) {
+      item.habilitado = true;
+    }
+
     let urlActual: string = `${this._url}/`;
     return this._http.post<ApiResponse>(urlActual, item);
   }

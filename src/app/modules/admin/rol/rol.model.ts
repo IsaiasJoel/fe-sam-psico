@@ -1,8 +1,8 @@
-// export interface DTORolMatchPorCodigoUsuario {
-//     idRol: string;
-//     nombreRol: string;
-//     match: string;
-// }
+export interface DTORolMatchPorIdUsuario {
+    id: number;
+    nombre: string;
+    match: boolean; //si le pertenece o no al usuario
+}
 
 // export interface DTORolSimple {
 //     id: string;

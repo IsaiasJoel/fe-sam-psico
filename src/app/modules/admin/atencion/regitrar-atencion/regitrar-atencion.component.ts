@@ -17,27 +17,27 @@ export class RegitrarAtencionComponent implements OnInit {
   //==================================================
   form: FormGroup;
   servicios: DTOServicioListar[] = [
-    {
-      id: 1,
-      nombre: 'Atención con costo social',
-      costo: 50,
-      habilitado: true,
-      imagen: 'https://cdn.pixabay.com/photo/2018/09/04/11/57/psychotherapy-3652949_960_720.jpg'
-    },
-    {
-      id: 2,
-      nombre: 'Terapia fisica',
-      costo: 100,
-      habilitado: true,
-      imagen: 'https://cdn.pixabay.com/photo/2017/08/31/10/16/psychology-2704066_960_720.jpg'
-    },
-    {
-      id: 3,
-      nombre: 'Atención médica general',
-      costo: 80,
-      habilitado: true,
-      imagen: 'https://cdn.pixabay.com/photo/2019/04/30/15/42/psychology-4165142_960_720.jpg'
-    }
+    // {
+    //   id: 1,
+    //   nombre: 'Atención con costo social',
+    //   costo: 50,
+    //   habilitado: true,
+    //   imagen: 'https://cdn.pixabay.com/photo/2018/09/04/11/57/psychotherapy-3652949_960_720.jpg'
+    // },
+    // {
+    //   id: 2,
+    //   nombre: 'Terapia fisica',
+    //   costo: 100,
+    //   habilitado: true,
+    //   imagen: 'https://cdn.pixabay.com/photo/2017/08/31/10/16/psychology-2704066_960_720.jpg'
+    // },
+    // {
+    //   id: 3,
+    //   nombre: 'Atención médica general',
+    //   costo: 80,
+    //   habilitado: true,
+    //   imagen: 'https://cdn.pixabay.com/photo/2019/04/30/15/42/psychology-4165142_960_720.jpg'
+    // }
   ];
   proyectos: Proyecto[] = [
     { id: 1, nombre: 'Centro de escucha' },

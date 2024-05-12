@@ -22,35 +22,15 @@ export interface DTOPsicologoListar {
     habilitado: boolean;
 }
 
-// export interface DTOPsicologoEnSesion {
-//     id: string;
-//     apPaterno: string;
-//     apMaterno: string;
-//     nombres: string;
-//     roles: any[];
-// }
-
-// export interface DTOPsicologoCrearEditarRequest {
-//     id: number;
-//     apPaterno: string;
-//     apMaterno: string;
-//     nombres: string;
-//     dni: string;
-//     fechaNacimiento: string;
-//     sexo: string;
-//     celular: string;
-//     nacionalidad: string;
-//     carrera: string;
-//     especialidad: string;
-//     universidad: string;
-//     anioEgreso: string;
-//     colegiado: boolean;
-//     numeroColegiatura: string;
-//     resumenProfesional: string;
-//     habilitado: boolean;
-//     correo: string;
-//     contrasenia: string;
-// }
+export interface DTOPsicologoCrearEditarRequest {
+    id: number;
+    universidad: string;
+    anioEgreso: string;
+    esColegiado: boolean;
+    numColegiatura: string;
+    especialidad: string;
+    resumenProfesional: string;
+}
 
 export interface DTOPsicologoEncontrado {
     id: number;

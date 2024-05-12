@@ -35,9 +35,8 @@ export class AmbienteComponent {
   // Métodos privados
   //===================================================
   private async _listar() {
-    const http$: Observable<ApiResponse> = this._ambienteService.listarTodos$();
-    const respServidor: ApiResponse = await lastValueFrom(http$);
-    this.ambientes = respServidor.data;
+    const http$ = this._ambienteService.listarTodos$();
+    this.ambientes = await lastValueFrom(http$);
     this._changeDetectorRef.markForCheck();
   }
 
@@ -54,8 +53,8 @@ export class AmbienteComponent {
     });
   }
 
-  abrirModalEditar(id: number) {
-    const ref = this._matDialog.open(ModalEditarAmbienteComponent, { data: { pId: id } });
+  abrirModalEditar(codigo: string) {
+    const ref = this._matDialog.open(ModalEditarAmbienteComponent, { data: { pId: codigo } });
     ref.afterClosed().subscribe(respuestaModal => {
       if (respuestaModal == 'OK') {
         this._listar();

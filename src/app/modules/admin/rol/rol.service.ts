@@ -2,7 +2,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment.dev';
-import { DTORolListar, DTORolRequestCrearEditar } from './rol.model';
+import { DTORolListar, DTORolMatchPorIdUsuario, DTORolRequestCrearEditar } from './rol.model';
 
 @Injectable({
   providedIn: 'root'
@@ -24,6 +24,11 @@ export class RolService {
     }
 
     return this._http.get<DTORolListar[]>(urlActual, { params: parametros });
+  }
+
+  listarPorUsuario$(idUsuario?: number): Observable<DTORolMatchPorIdUsuario[]> {
+    let urlActual: string = `${this.url}/usuarios/${idUsuario ?? 0}`;
+    return this._http.get<DTORolMatchPorIdUsuario[]>(urlActual);
   }
 
   ver$(id: number): Observable<DTORolRequestCrearEditar> {

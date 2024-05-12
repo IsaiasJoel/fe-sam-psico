@@ -150,9 +150,10 @@
                     <!-- Roles -->
                     <div class="flex flex-col justify-between w-full bg-white rounded-lg col-span-1 p-4">
                         <div class="font-medium text-2xl font-sans">Roles</div>
-                        <div formArrayName="roles" class="mt-4 h-full flex flex-col">
-                            <ng-container *ngFor="let rol of roles.value; let i = index">
-                                <mat-checkbox [formGroupName]="i">{{rol.nombre}}</mat-checkbox>
+                        <div class="mt-4 h-full flex flex-col">
+                            <ng-container *ngFor="let rol of rolesPorUsuario; let i = index">
+                                <mat-checkbox (click)="agregarAListaParaEnviar(rol.id)"
+                                    [checked]="rol.match">{{rol.nombre}}</mat-checkbox>
                             </ng-container>
                         </div>
                     </div>
@@ -161,7 +162,7 @@
                     <div *ngIf="form.get('esPsicologo').value == true"
                         class="flex flex-col justify-between w-full bg-white rounded-lg col-span-1 p-4">
                         <div class="font-medium text-2xl font-sans">Datos del psicólogo</div>
-                        <div class="mt-4 h-full flex flex-col gap-4 mb-20">
+                        <div formGroupName="psicologo" class="mt-4 h-full flex flex-col gap-4 mb-20">
                             <div class="grid grid-cols-4 gap-4">
                                 <div>
                                     <div>Universidad</div>

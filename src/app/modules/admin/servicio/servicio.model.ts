@@ -6,7 +6,7 @@ export interface DTOServicioCrearEditarRequest {
 }
 
 export interface DTOServicioListar {
-    id: number;
+    codigo: string;
     nombre: string;
     costo: number;
     imagen: string;
