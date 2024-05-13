@@ -55,7 +55,7 @@
 
                     <!-- Datos del usuario -->
                     <div class="flex flex-col justify-between w-full bg-white rounded-lg col-span-1 p-4">
-                        <div class="font-medium text-2xl font-sans">{{accion == 'editar' ? 'Editar' : 'Crear'}} usuario
+                        <div class="font-medium text-2xl font-sans">{{accion == 'editar' ? 'Editar' : 'Crear'}} paciente
                         </div>
                         <!-- Datos -->
                         <div class="mt-4 h-full grid grid-cols-3 gap-4">
@@ -104,12 +104,29 @@
                             <!-- Fecha nacimiento -->
                             <div>
                                 <div class="text-label">Fecha de nacimiento</div>
-                                <mat-form-field class="w-full">
-                                    <input matInput [matDatepicker]="dp" formControlName="fecNacimiento">
-                                    <!-- <mat-hint>MM/DD/YYYY</mat-hint> -->
-                                    <mat-datepicker-toggle matIconSuffix [for]="dp"></mat-datepicker-toggle>
-                                    <mat-datepicker #dp></mat-datepicker>
-                                </mat-form-field>
+                                <div class="grid grid-cols-3 gap-4">
+                                    <mat-form-field>
+                                        <mat-select>
+                                            <mat-option>1</mat-option>
+                                            <mat-option>2</mat-option>
+                                            <mat-option>3</mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                                    <mat-form-field>
+                                        <mat-select>
+                                            <mat-option>Enero</mat-option>
+                                            <mat-option>Febrero</mat-option>
+                                            <mat-option>Marzo</mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                                    <mat-form-field>
+                                        <mat-select>
+                                            <mat-option>1999</mat-option>
+                                            <mat-option>2000</mat-option>
+                                            <mat-option>2001</mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                                </div>
                             </div>
 
                             <div>

@@ -9,7 +9,6 @@ import { SweetAlertService } from 'src/app/core/modals/sweet-alert.service';
 import { SexoService } from 'src/app/shared/services/sexo.service';
 import { UbigeoService } from 'src/app/shared/services/ubigeo.service';
 import { TEXTO_SELECCIONE } from 'src/app/shared/data/shared.data';
-import * as moment from 'moment';
 
 @Component({
   selector: 'app-paciente',

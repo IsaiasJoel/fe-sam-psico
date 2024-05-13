@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { Observable, Subject, tap } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment.dev';
-import { ApiResponse } from 'src/app/core/models/api-response.interface';
 import { TEXTO_SELECCIONE } from '../data/shared.data';
 
 @Injectable({

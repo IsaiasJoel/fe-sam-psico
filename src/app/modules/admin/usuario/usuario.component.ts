@@ -158,7 +158,7 @@ export class UsuarioComponent {
   // }
 
 
-  procesarSolicitud() {
+  async procesarSolicitud() {
     this._sweetAlertService.preguntarSiNo('¿Desea agregar un nuevo usuario?')
       .then(async respuesta => {
         if (respuesta.isConfirmed) {
@@ -166,6 +166,7 @@ export class UsuarioComponent {
           (this.accion == 'crear') ? await this._crear() : await this._editar();
           await this._obtenerUsuarios();
           this.accion = 'ninguno';
+          this._changeDetectionRef.markForCheck();
         }
       });
   }
