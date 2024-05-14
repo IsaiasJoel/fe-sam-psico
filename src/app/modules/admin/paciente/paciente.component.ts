@@ -9,6 +9,7 @@ import { SweetAlertService } from 'src/app/core/modals/sweet-alert.service';
 import { SexoService } from 'src/app/shared/services/sexo.service';
 import { UbigeoService } from 'src/app/shared/services/ubigeo.service';
 import { TEXTO_SELECCIONE } from 'src/app/shared/data/shared.data';
+import { ControlFecha, FechaService } from 'src/app/shared/services/fecha.service';
 
 @Component({
   selector: 'app-paciente',
@@ -29,6 +30,7 @@ export class PacienteComponent {
   provincias: string[] = [];
   distritos: string[] = [];
   textoSeleccione: string = TEXTO_SELECCIONE;
+  controlesFecha: ControlFecha;
 
   //===================================================
   // Ciclo de vida
@@ -40,7 +42,8 @@ export class PacienteComponent {
     private _paisService: PaisService,
     private _formBuilder: FormBuilder,
     private _ubigeoService: UbigeoService,
-    private _sexoService: SexoService
+    private _sexoService: SexoService,
+    public fechaService: FechaService
   ) {
   }
 
@@ -48,6 +51,7 @@ export class PacienteComponent {
     this._crearFormulario();
     this._cargarData();
     this._suscribirseAlUbigeo();
+    this._suscribirseALosControles();
   }
 
   //=====================================
@@ -69,6 +73,16 @@ export class PacienteComponent {
         })
         this._changeDetectorRef.markForCheck();
       });
+  }
+
+  private _suscribirseALosControles() {
+    this.controlesFecha = this.fechaService.controlesFecha;
+    this.fechaService.fechaSeleccionada$
+      .subscribe(fecha => {
+        console.log('se obtuvo una fecha válida: ',fecha);
+        
+        this.form.patchValue({ fecNacimiento: fecha });
+      })
   }
 
   private _cargarData() {

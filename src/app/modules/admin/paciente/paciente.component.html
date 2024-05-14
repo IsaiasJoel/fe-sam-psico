@@ -17,12 +17,12 @@
     <!-- Main -->
     <div class="grid grid-cols-6 w-full h-full px-8 py-4 mt-3 gap-4">
         <!-- Lista -->
-        <div class="flex flex-col justify-between border-r pr-8 border-r-slate-400 col-span-2 h-full">
+        <div class="flex flex-col justify-between border-r pr-8 border-r-slate-400 col-span-1 h-full">
             <!-- Buscador -->
             <div>
                 <mat-form-field class="w-full">
                     <!-- (keyup)="filtrar($event)" -->
-                    <input matInput [(ngModel)]="filtroNombres" placeholder="Buscar por nombres">
+                    <input matInput [(ngModel)]="filtroNombres" placeholder="Nombres">
                     <mat-icon matPrefix svgIcon="magnify"></mat-icon>
                 </mat-form-field>
             </div>
@@ -32,7 +32,7 @@
                     <div *ngFor="let paciente of pacientes" class="bg-white p-3 rounded-lg cursor-pointer shadow-md">
                         <button (click)="ver(paciente.id)">
                             <div class="flex flex-col items-start">
-                                <div class="font-medium text-base">{{paciente.nombres + " " + paciente.apPaterno + " " +
+                                <div class="font-medium">{{paciente.nombres + " " + paciente.apPaterno + " " +
                                     paciente.apMaterno}}</div>
                                 <!-- <div class="text-slate-600">{{paciente.tipo}}</div> -->
                             </div>
@@ -48,7 +48,7 @@
         </div>
 
         <!-- Detalle -->
-        <div *ngIf="accion !== 'ninguno'" class="col-span-4 w-full overflow-y-scroll mb-16">
+        <div *ngIf="accion !== 'ninguno'" class="col-span-5 w-full overflow-y-scroll mb-16">
             <!-- Crear o Editar-->
             <ng-container *ngIf="accion === 'editar' || 'crear'">
                 <form [formGroup]="form" class="flex flex-col gap-4 h-full w-full">
@@ -104,26 +104,26 @@
                             <!-- Fecha nacimiento -->
                             <div>
                                 <div class="text-label">Fecha de nacimiento</div>
-                                <div class="grid grid-cols-3 gap-4">
+                                <div class="grid grid-cols-3 gap-1">
                                     <mat-form-field>
                                         <mat-select>
-                                            <mat-option>1</mat-option>
-                                            <mat-option>2</mat-option>
-                                            <mat-option>3</mat-option>
+                                            <mat-option *ngFor="let dia of controlesFecha.dias"
+                                                (valueChange)="fechaService.dia = dia"
+                                                [value]="dia">{{dia}}</mat-option>
                                         </mat-select>
                                     </mat-form-field>
                                     <mat-form-field>
                                         <mat-select>
-                                            <mat-option>Enero</mat-option>
-                                            <mat-option>Febrero</mat-option>
-                                            <mat-option>Marzo</mat-option>
+                                            <mat-option *ngFor="let mes of controlesFecha.meses"
+                                                (valueChange)="fechaService.mes = mes"
+                                                [value]="mes">{{mes}}</mat-option>
                                         </mat-select>
                                     </mat-form-field>
                                     <mat-form-field>
                                         <mat-select>
-                                            <mat-option>1999</mat-option>
-                                            <mat-option>2000</mat-option>
-                                            <mat-option>2001</mat-option>
+                                            <mat-option *ngFor="let anio of controlesFecha.anios"
+                                                (valueChange)="fechaService.anio = anio"
+                                                [value]="anio">{{anio}}</mat-option>
                                         </mat-select>
                                     </mat-form-field>
                                 </div>
