@@ -2,15 +2,20 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component } from '@angular/
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { PacienteService } from '../paciente.service';
 import { ToastrService } from 'ngx-toastr';
-import { lastValueFrom } from 'rxjs';
+import { forkJoin, lastValueFrom } from 'rxjs';
 import { TEXTO_CONSULTA_EXITOSA } from 'src/app/core/utils/constants.utils';
 import { UbigeoService } from 'src/app/shared/services/ubigeo.service';
-import { ApiResponse } from 'src/app/core/models/api-response.interface';
-import { SERVICIOS_BASICOS, TEXTO_SELECCIONE } from 'src/app/shared/data/shared.data';
-import { Pais } from 'src/app/shared/models/shared.models';
+import { SERVICIOS_BASICOS } from 'src/app/shared/data/shared.data';
+import { DTOSexoCombo, Pais } from 'src/app/shared/models/shared.models';
 import { Router } from '@angular/router';
 import { SweetAlertService } from 'src/app/core/modals/sweet-alert.service';
 import { PaisService } from 'src/app/shared/services/pais.service';
+import { ControlFecha, FechaService } from 'src/app/shared/services/fecha.service';
+import { DTOServicioCombo } from '../../servicio/servicio.model';
+import { DTOAmbienteCombo } from '../../ambiente/ambiente.model';
+import { SexoService } from 'src/app/shared/services/sexo.service';
+import { ServiciosService } from '../../servicio/servicios.service';
+import { AmbienteService } from '../../ambiente/ambiente.service';
 
 @Component({
   selector: 'app-crear-paciente',
@@ -18,75 +23,148 @@ import { PaisService } from 'src/app/shared/services/pais.service';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CrearPacienteComponent {
-  comboSexo: any[] = [];
-  comboNacionalidad: Pais[] = [];
+  // -----------------------------------------------------------------------------------------------------
+  // @ Variables
+  // -----------------------------------------------------------------------------------------------------
   comboServiciosBasicos: string[] = SERVICIOS_BASICOS;
   departamentos: string[] = [];
   provincias: string[] = [];
   distritos: string[] = [];
-  textoSeleccione: string = TEXTO_SELECCIONE;
   form: FormGroup;
+  paises: Pais[] = [];
+  sexos: DTOSexoCombo[] = [];
+  controlesFecha: ControlFecha;
+  servicios: DTOServicioCombo[] = [];
+  ambientes: DTOAmbienteCombo[] = [];
 
+  // -----------------------------------------------------------------------------------------------------
+  // @ Ciclo de vida
+  // -----------------------------------------------------------------------------------------------------
   constructor(
+    public fechaService: FechaService,
+
     private _formBuilder: FormBuilder,
     private _pacienteService: PacienteService,
     private _toastrService: ToastrService,
     private _ubigeoService: UbigeoService,
     private _router: Router,
     private _sweetAlertService: SweetAlertService,
+    private _changeDetectorRef: ChangeDetectorRef,
     private _paisService: PaisService,
-    private _changeDetectorRef: ChangeDetectorRef
+    private _sexoService: SexoService,
+    private _servicioService: ServiciosService,
+    private _ambienteService: AmbienteService
   ) { }
 
   ngOnInit(): void {
     this._crearFormulario();
-    this._cargarPaises();
-    this._cargarUbigeos();
-    this._changeDetectorRef.markForCheck();
+    this._suscribirseAlUbigeo();
+    this._suscribirseALosControlesDeFecha();
+    this._cargarDatosIniciales();
   }
 
   // -----------------------------------------------------------------------------------------------------
   // @ Métodos privados
   // -----------------------------------------------------------------------------------------------------
-  private _cargarUbigeos() {
-    this._ubigeoService.ubigeo$.subscribe(ubigeo => {
-      this.departamentos = ubigeo.departamento.departamentos;
-      this.form.get('departamento').setValue(ubigeo.departamento.seleccionado);
-      this.provincias = ubigeo.provincia.provinciasPorDepartamento;
-      this.form.get('provincia').setValue(ubigeo.provincia.seleccionado);
-      this.distritos = ubigeo.distrito.distritosPorProvincia;
-      this.form.get('distrito').setValue(ubigeo.distrito.seleccionado);
-      this._changeDetectorRef.markForCheck();
+  private _cargarDatosIniciales() {
+    const paises$ = this._paisService.paises$();
+    const sexos$ = this._sexoService.sexos$();
+    const servicios$ = this._servicioService.listarCombo$();
+    const ambientes$ = this._ambienteService.listarCombo$();
+
+    return forkJoin({
+      paises: paises$,
+      sexos: sexos$,
+      servicios: servicios$,
+      ambientes: ambientes$
+    }).subscribe(data => {
+      this._setearData(data);
+      this._setearValoresPredeterminados();
     });
   }
 
-  private async _cargarPaises() {
-    const http$ = this._paisService.paises$();
-    this.comboNacionalidad = await lastValueFrom(http$);
+  private _setearData({ paises, sexos, servicios, ambientes }) {
+    this.ambientes = ambientes;
+    this.servicios = servicios;
+    this.sexos = sexos;
+    this.paises = paises;
+    this._changeDetectorRef.markForCheck();
+  }
+
+  private _setearValoresPredeterminados() {
+    const servicioPorDefecto = this.servicios.find(serv => serv.codigo === 'SE01');
+    const sexoPorDefecto = this.sexos.find(sexo => sexo.codigo === 'SX09');
+    const paisPorDefecto = this.paises.find(pais => pais.iso == 'PE');
+    const ambientePorDefecto = this.ambientes.length > 0 ? this.ambientes[0] : undefined;
+
     this.form.patchValue({
-      nacionalidad: this.comboNacionalidad.find(pais => pais.iso == 'PE')
+      servicio: servicioPorDefecto,
+      sexo: sexoPorDefecto,
+      pais: paisPorDefecto,
+      ambiente: ambientePorDefecto
     });
+    this._changeDetectorRef.markForCheck();
+  }
+
+  private _suscribirseAlUbigeo() {
+    this._ubigeoService.ubigeo$
+      .subscribe(ubigeo => {
+        this.departamentos = ubigeo.departamento.departamentos;
+        this.provincias = ubigeo.provincia.provinciasPorDepartamento;
+        this.distritos = ubigeo.distrito.distritosPorProvincia;
+
+        this.form.patchValue({
+          ubigeo: {
+            departamento: ubigeo.departamento.seleccionado,
+            provincia: ubigeo.provincia.seleccionado,
+            distrito: ubigeo.distrito.seleccionado
+          }
+        })
+        this._changeDetectorRef.markForCheck();
+      });
+  }
+
+  private _suscribirseALosControlesDeFecha() {
+    this.controlesFecha = this.fechaService.controlesFecha;
+    this.fechaService.fechaSeleccionada$
+      .subscribe(fecha => {
+        this.form.patchValue({ fecNacimiento: fecha });
+      })
   }
 
   private _crearFormulario() {
     this.form = this._formBuilder.group({
       // Personal
+      id: [null, [Validators.required]],
       apPaterno: ['', [Validators.required]],
       apMaterno: ['', [Validators.required]],
       nombres: ['', [Validators.required]],
-      dni: ['', [Validators.required]],
-      fechaNacimiento: [null, [Validators.required]],
+      docIdentidad: ['', [Validators.required]],
+      sexo: [null, [Validators.required]],
+      fecNacimiento: [null, [Validators.required]],
+      pais: [null, []],
       lugarNacimiento: ['', [Validators.required]],
       direccion: ['',],
-      departamento: [null, [Validators.required]],
-      provincia: [null, [Validators.required]],
-      distrito: [null, [Validators.required]],
-      numeroContacto: ['', [Validators.required]],
-      sexo: ['SELECCIONE', [Validators.required]],
-      nacionalidad: [null, []],
+      ubigeo: this._formBuilder.group({
+        departamento: [null, [Validators.required]],
+        provincia: [null, [Validators.required]],
+        distrito: [null, [Validators.required]],
+      }),
       correo: ['',],
-      carrera: ['',],
       ocupacion: ['',],
+      numeroContacto: ['', [Validators.required]],
+      carreraProfesion: [null,],
+      organizacionRefiere: [null, []],
+      vinculoNic: ['SV', []],
+
+      // Atencion
+      modalidad: ['P', []],
+      motivoConsulta: [null, []],
+      horarioDisponibilidad: ['M', []],
+      observacion: [null, []],
+      terminoAtenciones: [false, []],
+      servicio: [],
+      ambiente: [],
 
       // Socioeconómico
       tipoVivienda: ['',],
@@ -122,15 +200,16 @@ export class CrearPacienteComponent {
 
   listarProvinciaPorDepartamento$(departamentoSeleccionado: string) {
     this._ubigeoService.departamento = departamentoSeleccionado;
+    this._changeDetectorRef.markForCheck();
   }
 
   listarDistritoPorProvincia$(provinciaSeleccionada: string) {
     this._ubigeoService.provincia = provinciaSeleccionada;
+    this._changeDetectorRef.markForCheck();
   }
 
   cambioValorNacionalidad(nuevoValor: Pais) {
     if (nuevoValor.iso == 'PE') {
-      this._cargarUbigeos();
       this.form.get('departamento').enable();
       this.form.get('provincia').enable();
       this.form.get('distrito').enable();
@@ -142,9 +221,5 @@ export class CrearPacienteComponent {
       this.form.get('provincia').disable();
       this.form.get('distrito').disable();
     }
-  }
-
-  irAPantallaListar() {
-    this._router.navigate(['/pacientes/']);
   }
 }

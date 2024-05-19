@@ -14,7 +14,7 @@ export interface DTOServicioListar {
 }
 
 export interface DTOServicioCombo {
-    id: number;
+    codigo: string;
     nombre: string;
     costo: number;
 }

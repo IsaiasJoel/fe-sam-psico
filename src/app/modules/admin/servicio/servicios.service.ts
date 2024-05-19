@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ApiResponse } from 'src/app/core/models/api-response.interface';
 import { environment } from 'src/environments/environment.dev';
-import { DTOServicioCrearEditarRequest, DTOServicioListar } from './servicio.model';
+import { DTOServicioCombo, DTOServicioCrearEditarRequest, DTOServicioListar } from './servicio.model';
 
 @Injectable({
   providedIn: 'root'
@@ -29,7 +29,7 @@ export class ServiciosService {
     return this._http.get<DTOServicioListar[]>(currentUrl);
   }
 
-  listarCombo$(): Observable<ApiResponse> {
+  listarCombo$(): Observable<DTOServicioCombo[]> {
     let currentUrl = `${this._url}/combo`;
     return this._http.get<any>(currentUrl);
   }

@@ -16,12 +16,19 @@ export class FechaService {
    * en el contexto de Array.from, la expresión (_, index) significa que la función de mapeo acepta dos parámetros, pero el primero (representado por _) no se utiliza dentro de la función. El segundo parámetro (index) es el índice del elemento en el objeto iterable.
    */
   private _dias: number[] = Array.from({ length: 31 }, (_, index) => index + 1); //del 1 al 31
-  private _meses: string[] = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
+  private _meses: Mes[] = [
+    { ordinal: 1, nombre: 'Enero' }, { ordinal: 2, nombre: 'Febrero' },
+    { ordinal: 3, nombre: 'Marzo' }, { ordinal: 4, nombre: 'Abril' },
+    { ordinal: 5, nombre: 'Mayo' }, { ordinal: 6, nombre: 'Junio' },
+    { ordinal: 7, nombre: 'Julio' }, { ordinal: 8, nombre: 'Agosto' },
+    { ordinal: 9, nombre: 'Septiembre' }, { ordinal: 10, nombre: 'Octubre' },
+    { ordinal: 11, nombre: 'Noviembre' }, { ordinal: 12, nombre: 'Diciembre' }
+  ];
   private _anios: number[] = Array.from({ length: this._anioFin - this._anioInicio + 1 }, (_, index) => this._anioInicio + index).sort((a, b) => b - a);;
 
   private _fechaSeleccionada: ReplaySubject<string> = new ReplaySubject<string>;
   private _dia: number;
-  private _mes: string;
+  private _mes: Mes;
   private _anio: number;
 
   get controlesFecha(): ControlFecha {
@@ -41,7 +48,7 @@ export class FechaService {
     this._procesarFecha();
   }
 
-  set mes(mes: string) {
+  set mes(mes: Mes) {
     this._mes = mes;
     this._procesarFecha();
   }
@@ -65,25 +72,29 @@ export class FechaService {
   // @ Métodos privados
   // -----------------------------------------------------------------------------------------------------
   private _esFechaValida(): boolean {
-    const fecha: string = `${this._anio}-${this._mes}-${this._dia}`;
+    if (!this._anio || !this._mes || !this._dia) {
+      return false;
+    }
+    const fecha: string = `${this._anio}-${this._mes.ordinal}-${this._dia}`;
     const fechaFormateada = new Date(fecha);
     return !isNaN(fechaFormateada.getTime());
   }
 
   private _procesarFecha() {
-    console.log('Evaluando fecha...');
     if (this._esFechaValida()) {
-      console.log('Es fecha válida');
-      const fecha: string = `${this._anio}-${this._mes}-${this._dia}`;
+      const fecha: string = `${this._anio}-${this._mes.ordinal}-${this._dia}`;
       this._fechaSeleccionada.next(fecha);
-    } else {
-      console.log('NO es fecha válida');
     }
   }
 }
 
 export interface ControlFecha {
   dias: number[];
-  meses: string[];
+  meses: Mes[];
   anios: number[];
+}
+
+export interface Mes {
+  ordinal: number;
+  nombre: string;
 }

@@ -1,366 +1,384 @@
-<div class="h-max p-8 bg-white">
-    <!-- Cabecera -->
-    <div class="flex items-center justify-between">
-        <div class="font-medium text-4xl">Editar paciente</div>
-        <a class="flex items-center" routerLink="../">
-            <mat-icon svgIcon="pan-left"></mat-icon>
-            <span>Regresar</span>
-        </a>
+<div class="flex flex-col h-full w-full bg-slate-200">
+    <!-- barra de navegación -->
+    <div class="bg-white w-full px-3 py-6 flex items-center justify-between max-h-16">
+        <div class="font-sans text-lg text-slate-600 flex gap-3">
+            <span>Gestión de casos</span>
+            <span>></span>
+            <span class="">Pacientes</span>
+            <span>></span>
+            <span class="font-medium">Editar paciente</span>
+        </div>
+
+        <div class="flex gap-2 items-center justify-center">
+            <button mat-raised-button routerLink="../">Cancelar</button>
+            <button mat-raised-button style="background-color: green; color: white;"
+                (click)="procesarSolicitud()">Guardar</button>
+        </div>
     </div>
 
-    <hr class="my-4">
-
-    <!-- Cuerpo -->
-    <mat-stepper class="w-full" [orientation]="(stepperOrientation | async)!">
-
-        <!-- Datos personales -->
-        <mat-step [stepControl]="personalForm" label="Datos personales" class="w-full">
-            <div class="w-full flex items-center justify-center">
-                <form [formGroup]="personalForm" class="w-full mt-4 flex flex-col gap-4" style="width: 50%;">
-                    <!-- Ap paterno -->
-                    <div>
-                        <div class="text-label">Apellido Paterno</div>
-                        <mat-form-field class="w-full">
-                            <input matInput formControlName="apPaterno">
-                        </mat-form-field>
-                    </div>
-
-                    <!-- Ap materno -->
-                    <div>
-                        <div class="text-label">Apellido Materno</div>
-                        <mat-form-field class="w-full">
-                            <input matInput formControlName="apMaterno">
-                        </mat-form-field>
-                    </div>
-
-                    <!-- Nombres -->
-                    <div>
-                        <div class="text-label">Nombres</div>
-                        <mat-form-field class="w-full">
-                            <input matInput formControlName="nombres">
-                        </mat-form-field>
-                    </div>
-
-                    <!-- DNI -->
-                    <div>
-                        <div class="text-label">DNI</div>
-                        <mat-form-field class="w-full">
-                            <input matInput formControlName="dni" mask="99999999">
-                        </mat-form-field>
-                    </div>
-
-                    <!-- Fecha nacimiento -->
-                    <div>
-                        <div class="text-label">Fecha de nacimiento</div>
-                        <mat-form-field class="w-full">
-                            <input matInput [matDatepicker]="dp" formControlName="fechaNacimiento">
-                            <!-- <mat-hint>MM/DD/YYYY</mat-hint> -->
-                            <mat-datepicker-toggle matIconSuffix [for]="dp"></mat-datepicker-toggle>
-                            <mat-datepicker #dp></mat-datepicker>
-                        </mat-form-field>
-                    </div>
-
-                    <!-- Lugar de nacimiento -->
-                    <div>
-                        <div class="text-label">Lugar de nacimiento</div>
-                        <mat-form-field class="w-full">
-                            <input matInput formControlName="lugarNacimiento">
-                        </mat-form-field>
-                    </div>
-
-                    <div>
-                        <div class="text-label">Dirección</div>
-                        <mat-form-field class="w-full">
-                            <input matInput formControlName="direccion">
-                        </mat-form-field>
-                    </div>
-
-                    <div>
-                        <div class="text-label">Departamento</div>
-                        <mat-form-field class="w-full">
-                            <mat-select formControlName="departamento"
-                                (valueChange)="listarProvinciaPorDepartamento$($event)">
-                                <mat-option *ngFor="let departamento of departamentos"
-                                    [value]="departamento">{{departamento}}</mat-option>
-                            </mat-select>
-                        </mat-form-field>
-                    </div>
-
-                    <div>
-                        <div class="text-label">Provincia</div>
-                        <mat-form-field class="w-full">
-                            <mat-select formControlName="provincia" (valueChange)="listarDistritoPorProvincia$($event)">
-                                <mat-option [value]="this.textoSeleccione">SELECCIONE</mat-option>
-                                <mat-option *ngFor="let provincia of provincias"
-                                    [value]="provincia">{{provincia}}</mat-option>
-                            </mat-select>
-                        </mat-form-field>
-                    </div>
-
-                    <div>
-                        <div class="text-label">Distrito</div>
-                        <mat-form-field class="w-full">
-                            <mat-select formControlName="distrito">
-                                <mat-option [value]="this.textoSeleccione">SELECCIONE</mat-option>
-                                <mat-option *ngFor="let distrito of distritos"
-                                    [value]="distrito">{{distrito}}</mat-option>
-                            </mat-select>
-                        </mat-form-field>
-                    </div>
-
-                    <div>
-                        <div class="text-label">Número de contacto</div>
-                        <mat-form-field class="w-full">
-                            <input matInput formControlName="numeroContacto">
-                        </mat-form-field>
-                    </div>
-
-                    <div>
-                        <div class="text-label">Sexo</div>
-                        <mat-form-field class="w-full">
-                            <mat-select formControlName="sexo">
-                                <mat-option [value]="this.textoSeleccione">SELECCIONE</mat-option>
-                                <mat-option [value]="item.nombre"
-                                    *ngFor="let item of comboSexo">{{item.nombre}}</mat-option>
-                            </mat-select>
-                        </mat-form-field>
-                    </div>
-
-                    <div>
-                        <div class="text-label">Nacionalidad</div>
-                        <mat-form-field class="w-full">
-                            <mat-select formControlName="nacionalidad">
-                                <mat-option [value]="this.textoSeleccione">SELECCIONE</mat-option>
-                                <mat-option [value]="item" *ngFor="let item of comboNacionalidad">{{item}}</mat-option>
-                            </mat-select>
-                        </mat-form-field>
-                    </div>
-
-
-                    <div>
-                        <div class="text-label">Carrera</div>
-                        <mat-form-field class="w-full">
-                            <input matInput formControlName="carrera">
-                        </mat-form-field>
-                    </div>
-
-                    <div>
-                        <div class="text-label">Ocupación</div>
-                        <mat-form-field class="w-full">
-                            <input matInput formControlName="ocupacion">
-                        </mat-form-field>
-                    </div>
-
-                    <div>
-                        <div class="text-label">Correo</div>
-                        <mat-form-field class="w-full">
-                            <input matInput formControlName="correo">
-                        </mat-form-field>
-                    </div>
-                    <div class="w-full col-span-4 flex justify-end">
-                        <button mat-button matStepperNext class="bg-gris" matTooltip="Siguiente">
-                            <mat-icon svgIcon="arrow-right-bold" style="color: white;"></mat-icon>
-                            <span class="text-white">Siguiente</span>
-                        </button>
-                    </div>
-                </form>
+    <div class="px-3 pt-6 overflow-auto">
+        <!-- Header -->
+        <div class="">
+            <div class="flex gap-2 items-center justify-between">
+                <div class="font-medium text-4xl mb-2">Editar paciente</div>
+                <a class="flex items-center" routerLink="../">
+                    <mat-icon svgIcon="pan-left"></mat-icon>
+                    <span>Regresar</span>
+                </a>
             </div>
-        </mat-step>
+            <hr>
+        </div>
 
-        <!-- Socioeconómico -->
-        <mat-step [stepControl]="socieconomicoForm" label="Socioeconómico" class="w-full">
-            <div class="w-full flex items-center justify-center">
-                <form [formGroup]="socieconomicoForm" class="mt-4 flex flex-col gap-4" style="width: 50%;">
-                    <div>
-                        <div class="text-label">Tipo de vivienda</div>
-                        <mat-form-field class="w-full">
-                            <input matInput formControlName="tipoVivienda">
-                        </mat-form-field>
+        <!-- Main -->
+        <div class="">
+            <!-- Cuerpo -->
+            <form [formGroup]="form" class="w-full mt-4 flex flex-col gap-4">
+                <!-- Datos personales -->
+                <div class="bg-white p-4 rounded-xl shadow-lg">
+                    <div class="border-b text-base font-medium text-gray-500 mb-4">Datos personales</div>
+                    <div class="grid grid-cols-5 gap-4">
+                        <!-- Ap paterno -->
+                        <div>
+                            <div class="text-label">Apellido Paterno</div>
+                            <mat-form-field class="w-full">
+                                <input matInput formControlName="apPaterno">
+                            </mat-form-field>
+                        </div>
+
+                        <!-- Ap materno -->
+                        <div>
+                            <div class="text-label">Apellido Materno</div>
+                            <mat-form-field class="w-full">
+                                <input matInput formControlName="apMaterno">
+                            </mat-form-field>
+                        </div>
+
+                        <!-- Nombres -->
+                        <div>
+                            <div class="text-label">Nombres</div>
+                            <mat-form-field class="w-full">
+                                <input matInput formControlName="nombres">
+                            </mat-form-field>
+                        </div>
+
+                        <!-- DNI -->
+                        <div>
+                            <div class="text-label">DNI</div>
+                            <mat-form-field class="w-full">
+                                <input matInput formControlName="docIdentidad" mask="99999999">
+                            </mat-form-field>
+                        </div>
+
+                        <!-- Sexo -->
+                        <div>
+                            <div class="text-label">Sexo</div>
+                            <mat-form-field class="w-full">
+                                <mat-select formControlName="sexo">
+                                    <mat-option [value]="item" *ngFor="let item of sexos">{{item.nombre}}</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+
+                        <!-- Fecha nacimiento -->
+                        <div class="col-span-2">
+                            <div class="text-label">Fecha de nacimiento</div>
+                            <div class="grid grid-cols-3 gap-1">
+                                <mat-form-field>
+                                    <mat-select (valueChange)="fechaService.dia = $event">
+                                        <mat-option *ngFor="let dia of controlesFecha.dias"
+                                            [value]="dia">{{dia}}</mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                                <mat-form-field>
+                                    <mat-select (valueChange)="fechaService.mes = $event">
+                                        <mat-option *ngFor="let mes of controlesFecha.meses"
+                                            [value]="mes">{{mes.nombre}}</mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                                <mat-form-field>
+                                    <mat-select (valueChange)="fechaService.anio = $event">
+                                        <mat-option *ngFor="let anio of controlesFecha.anios"
+                                            [value]="anio">{{anio}}</mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+                        </div>
+
+                        <div>
+                            <div class="text-label">Nacionalidad</div>
+                            <mat-form-field class="w-full">
+                                <mat-select formControlName="pais">
+                                    <mat-option [value]="pais" *ngFor="let pais of paises">{{pais.nombre}}</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+
+                        <!-- Lugar de nacimiento -->
+                        <div>
+                            <div class="text-label">Lugar de nacimiento</div>
+                            <mat-form-field class="w-full">
+                                <input matInput formControlName="lugarNacimiento">
+                            </mat-form-field>
+                        </div>
+
+                        <div>
+                            <div class="text-label">Dirección de residencia</div>
+                            <mat-form-field class="w-full">
+                                <input matInput formControlName="direccion">
+                            </mat-form-field>
+                        </div>
+
+                        <ng-container formGroupName="ubigeo">
+                            <div>
+                                <div class="text-label">Departamento</div>
+                                <mat-form-field class="w-full">
+                                    <mat-select formControlName="departamento"
+                                        (valueChange)="listarProvinciaPorDepartamento$($event)">
+                                        <mat-option *ngFor="let departamento of departamentos"
+                                            [value]="departamento">{{departamento}}</mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+
+                            <div>
+                                <div class="text-label">Provincia</div>
+                                <mat-form-field class="w-full">
+                                    <mat-select formControlName="provincia"
+                                        (valueChange)="listarDistritoPorProvincia$($event)">
+                                        <mat-option *ngFor="let provincia of provincias"
+                                            [value]="provincia">{{provincia}}</mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+
+                            <div>
+                                <div class="text-label">Distrito</div>
+                                <mat-form-field class="w-full">
+                                    <mat-select formControlName="distrito">
+                                        <mat-option *ngFor="let distrito of distritos"
+                                            [value]="distrito">{{distrito}}</mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+                        </ng-container>
+
+                        <div>
+                            <div class="text-label">Correo</div>
+                            <mat-form-field class="w-full">
+                                <input matInput formControlName="correo">
+                            </mat-form-field>
+                        </div>
+
+                        <div>
+                            <div class="text-label">Ocupación</div>
+                            <mat-form-field class="w-full">
+                                <input matInput formControlName="ocupacion">
+                            </mat-form-field>
+                        </div>
+
+                        <div>
+                            <div class="text-label">Carrera o profesión</div>
+                            <mat-form-field class="w-full">
+                                <input matInput formControlName="carreraProfesion">
+                            </mat-form-field>
+                        </div>
+
+                        <div>
+                            <div class="text-label">Número de contacto</div>
+                            <mat-form-field class="w-full">
+                                <input matInput formControlName="numeroContacto">
+                            </mat-form-field>
+                        </div>
+
+                        <div>
+                            <div class="text-label">Organización que refiere</div>
+                            <mat-form-field class="w-full">
+                                <input matInput formControlName="organizacionRefiere">
+                            </mat-form-field>
+                        </div>
+
+                        <div class="col-span-2">
+                            <div class="text-label">Si formas parte de Nic Maish, por favor especifica el tipo de
+                                relación</div>
+                            <mat-form-field class="w-full">
+                                <mat-select formControlName="vinculoNic">
+                                    <mat-option value="SV">Sin vínculo</mat-option>
+                                    <mat-option value="VL">Voluntario</mat-option>
+                                    <mat-option value="PR">Practicante</mat-option>
+                                    <mat-option value="GS">Gestor</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+
+                        <div class="col-span-1">
+                            <div class="text-label">Habilitado en el sistema</div>
+                            <mat-form-field class="w-full">
+                                <mat-select formControlName="habilitado">
+                                    <mat-option [value]="true">SI</mat-option>
+                                    <mat-option [value]="false">NO</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
                     </div>
-
-                    <div>
-                        <div class="text-label">¿Con cuántas habitaciones o camas cuenta su vivienda?</div>
-                        <mat-form-field class="w-full">
-                            <input matInput formControlName="habitacionesCamas">
-                        </mat-form-field>
-                    </div>
-
-                    <div>
-                        <div class="text-label">¿Cuenta con los siguientes servicios básicos?</div>
-                        <mat-form-field class="w-full">
-                            <mat-select matInput formControlName="serviciosBasicos" multiple>
-                                <mat-option [value]="servicio"
-                                    *ngFor="let servicio of comboServiciosBasicos">{{servicio}}</mat-option>
-                            </mat-select>
-                        </mat-form-field>
-                    </div>
-
-                    <div>
-                        <div class="text-label">Mencione sus gastos mensuales de forma específica</div>
-                        <mat-form-field class="w-full">
-                            <input matInput formControlName="gastosMensuales">
-                        </mat-form-field>
-                    </div>
-
-                    <div class="col-span-2">
-                        <div class="text-label">¿Con cuántos familiares vive actualmente? Mencionar a cada uno y su
-                            ingreso
-                            mensual en soles y quienes aportan dentro de la familia</div>
-                        <mat-form-field class="w-full">
-                            <input matInput formControlName="cantidadFamiliares">
-                        </mat-form-field>
-                    </div>
-
-                    <div>
-                        <div class="text-label">Tipo de seguro al cual pertenece</div>
-                        <mat-form-field class="w-full">
-                            <input matInput formControlName="tipoSeguro">
-                        </mat-form-field>
-                    </div>
-
-                    <div>
-                        <div class="text-label">Categoria socioeconómica</div>
-                        <mat-form-field class="w-full">
-                            <input matInput formControlName="categorizacionSocioeconomica">
-                        </mat-form-field>
-                    </div>
-
-                    <div class="w-full col-span-2 flex justify-between">
-                        <button mat-button matStepperPrevious class="bg-gris-opaco">
-                            <mat-icon svgIcon="arrow-left-bold" style="color: white;"></mat-icon>
-                            <span class="text-white">Anterior</span>
-                        </button>
-
-                        <button mat-button matStepperNext class="bg-gris" matTooltip="Siguiente">
-                            <mat-icon svgIcon="arrow-right-bold" style="color: white;"></mat-icon>
-                            <span class="text-white">Siguiente</span>
-                        </button>
-                    </div>
-                </form>
-            </div>
-        </mat-step>
-
-        <!-- Familiar -->
-        <mat-step [stepControl]="familiarForm" label="Familiar" class="w-full">
-            <div class="w-full flex flex-col items-center justify-center">
-                <form [formGroup]="familiarForm" class="mt-4 flex flex-col gap-4" style="width: 50%;">
-                    <div>
-                        <div class="text-label">Contacto de emergencia</div>
-                        <mat-form-field class="w-full">
-                            <input matInput formControlName="contactoEmergencia">
-                        </mat-form-field>
-                    </div>
-                    <div>
-                        <div class="text-label">Parentezco</div>
-                        <mat-form-field class="w-full">
-                            <input matInput formControlName="parentezco">
-                        </mat-form-field>
-                    </div>
-                    <div>
-                        <div class="text-label">Numero emergencia</div>
-                        <mat-form-field class="w-full">
-                            <input matInput formControlName="numeroEmergencia">
-                        </mat-form-field>
-                    </div>
-                    <div>
-                        <div class="text-label">Enfermedades que poseen los familiares</div>
-                        <mat-form-field class="w-full">
-                            <input matInput formControlName="enfermedadesDelLosFamiliares">
-                        </mat-form-field>
-                    </div>
-                    <!-- <div class="w-full col-span-2 flex justify-between">
-                        <button mat-button matStepperPrevious class="bg-gris-opaco">
-                            <mat-icon svgIcon="arrow-left-bold" style="color: white;"></mat-icon>
-                            <span class="text-white">Anterior</span>
-                        </button>
-    
-                        <button mat-button matStepperNext class="bg-gris" matTooltip="Siguiente">
-                            <mat-icon svgIcon="arrow-right-bold" style="color: white;"></mat-icon>
-                            <span class="text-white">Siguiente</span>
-                        </button>
-                    </div> -->
-                    <!-- Footer -->
-                    <div class="flex gap-2 self-end">
-                        <button mat-raised-button (click)="irAPantallaListar()">Cancelar</button>
-                        <button mat-raised-button class="bg-azul disabled:bg-gris" (click)="procesarSolicitud()"
-                            [disabled]="estaCargando">
-                            <span *ngIf="!estaCargando" class="text-white">Guardar</span>
-                            <span *ngIf="estaCargando" class="text-white">Cargando...</span>
-                        </button>
-                    </div>
-                </form>
-
-
-
-            </div>
-        </mat-step>
-
-        <!-- Consulta -->
-        <!-- <mat-step [stepControl]="consultaForm" label="Consulta">
-            <form [formGroup]="consultaForm" class="mt-4 grid grid-cols-2 gap-4">
-                <div>
-                    <div class="text-label">Atención que solicita</div>
-                    <mat-form-field class="w-full">
-                        <input matInput formControlName="atencionSolicita">
-                    </mat-form-field>
                 </div>
 
-                <div>
-                    <div class="text-label">Proyecto que refiere</div>
-                    <mat-form-field class="w-full">
-                        <input matInput formControlName="proyectoRefiere">
-                    </mat-form-field>
-                </div>
+                <!-- Atención -->
+                <div class="bg-white p-4 rounded-xl shadow-lg">
+                    <div class="border-b text-base font-medium text-gray-500 mb-4">Sobre la atención</div>
+                    <div class="grid grid-cols-2 gap-4">
+                        <!-- Atención que solicita -->
+                        <div>
+                            <div class="text-label">Servicio que solicita</div>
+                            <mat-form-field class="w-full">
+                                <mat-select formControlName="servicio">
+                                    <mat-option *ngFor="let servicio of servicios"
+                                        [value]="servicio">{{servicio.nombre}}</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
 
-                <div class="col-span-2">
-                    <div class="text-label">Motivo de consulta</div>
-                    <mat-form-field class="w-full">
-                        <input matInput formControlName="motivoConsulta">
-                    </mat-form-field>
-                </div>
+                        <!-- Modalidad -->
+                        <div class="col-span-1">
+                            <div class="text-label">Modalidad</div>
+                            <mat-radio-group formControlName="modalidad">
+                                <mat-radio-button value="P">Presencial</mat-radio-button>
+                                <mat-radio-button value="V">Virtual</mat-radio-button>
+                            </mat-radio-group>
+                        </div>
 
-                <div>
-                    <div class="text-label">Modalidad</div>
-                    <mat-form-field class="w-full">
-                        <input matInput formControlName="modalidad">
-                    </mat-form-field>
-                </div>
+                        <!-- Motivo de consulta -->
+                        <div class="col-span-3">
+                            <div class="text-label">Motivo de consulta</div>
+                            <mat-form-field class="w-full">
+                                <textarea matInput formControlName="motivoConsulta"></textarea>
+                            </mat-form-field>
+                        </div>
 
-                <div>
-                    <div class="text-label">Horario de disponibilidad</div>
-                    <mat-form-field class="w-full">
-                        <input matInput formControlName="horarioDisponibilidad">
-                    </mat-form-field>
-                </div>
+                        <!-- Ambiente -->
+                        <div>
+                            <div class="text-label">Si es modalidad presencial, indicar para cuál Centro de escucha fue
+                                registrado el paciente</div>
+                            <mat-form-field class="w-full">
+                                <mat-select formControlName="ambiente">
+                                    <mat-option *ngFor="let ambiente of ambientes"
+                                        [value]="ambiente">{{ambiente.nombre}}</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
 
-                <div class="col-span-2">
-                    <div class="text-label">Si formas parte de NIC MAISH, por favor, especifica el tipo de relación.
+                        <!-- Horario de disponibilidad -->
+                        <div class="col-span-1">
+                            <div class="text-label">Horario de disponibilidad</div>
+                            <!-- <mat-form-field class="w-full"> -->
+                            <mat-radio-group formControlName="horarioDisponibilidad">
+                                <mat-radio-button value="M">Mañana</mat-radio-button>
+                                <mat-radio-button value="T">Tarde</mat-radio-button>
+                            </mat-radio-group>
+                            <!-- </mat-form-field> -->
+                        </div>
+
+                        <!-- Observación -->
+                        <div class="col-span-3">
+                            <div class="text-label">Observación</div>
+                            <mat-form-field class="w-full">
+                                <textarea matInput formControlName="observacion"></textarea>
+                            </mat-form-field>
+                        </div>
                     </div>
-                    <mat-form-field class="w-full">
-                        <input matInput formControlName="siFormasParteDeNic">
-                    </mat-form-field>
                 </div>
 
-                <div class="col-span-2">
-                    <div class="text-label">En caso pudiera colaborar económicamente para asegurar la permanencia de los
-                        servicios de salud física y mental del Centro de Escucha, ¿cuánto podría aportar por sesión?
+                <!-- Socioeconómico -->
+                <div class="bg-white p-4 rounded-xl shadow-lg">
+                    <div class="border-b text-base font-medium text-gray-500 mb-4">Datos socioeconómicos</div>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <div class="text-label">Tipo de vivienda</div>
+                            <mat-form-field class="w-full">
+                                <input matInput formControlName="tipoVivienda">
+                            </mat-form-field>
+                        </div>
+
+                        <div>
+                            <div class="text-label">¿Con cuántas habitaciones o camas cuenta su vivienda?</div>
+                            <mat-form-field class="w-full">
+                                <input matInput formControlName="habitacionesCamas">
+                            </mat-form-field>
+                        </div>
+
+                        <div>
+                            <div class="text-label">¿Cuenta con los siguientes servicios básicos?</div>
+                            <mat-form-field class="w-full">
+                                <mat-select matInput formControlName="serviciosBasicos" multiple>
+                                    <mat-option [value]="servicio"
+                                        *ngFor="let servicio of comboServiciosBasicos">{{servicio}}</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+
+                        <div>
+                            <div class="text-label">Mencione sus gastos mensuales de forma específica</div>
+                            <mat-form-field class="w-full">
+                                <input matInput formControlName="gastosMensuales">
+                            </mat-form-field>
+                        </div>
+
+                        <div class="col-span-2">
+                            <div class="text-label">¿Con cuántos familiares vive actualmente? Mencionar a cada uno y su
+                                ingreso
+                                mensual en soles y quienes aportan dentro de la familia</div>
+                            <mat-form-field class="w-full">
+                                <input matInput formControlName="cantidadFamiliares">
+                            </mat-form-field>
+                        </div>
+
+                        <div>
+                            <div class="text-label">Tipo de seguro al cual pertenece</div>
+                            <mat-form-field class="w-full">
+                                <input matInput formControlName="tipoSeguro">
+                            </mat-form-field>
+                        </div>
+
+                        <div>
+                            <div class="text-label">Categoria socioeconómica</div>
+                            <mat-form-field class="w-full">
+                                <input matInput formControlName="categorizacionSocioeconomica">
+                            </mat-form-field>
+                        </div>
                     </div>
-                    <mat-form-field class="w-full">
-                        <input matInput formControlName="colaboracionEconomica">
-                    </mat-form-field>
                 </div>
 
-                <div class="w-full col-span-2 flex justify-between">
-                    <button mat-button matStepperPrevious class="bg-gris-opaco">
-                        <mat-icon svgIcon="arrow-left-bold" style="color: white;"></mat-icon>
-                        <span class="text-white">Anterior</span>
-                    </button>
+                <!-- Familiar -->
+                <div class="bg-white p-4 rounded-xl shadow-lg">
+                    <div class="border-b text-base font-medium text-gray-500 mb-4">Datos familiares</div>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <div class="text-label">Contacto de emergencia</div>
+                            <mat-form-field class="w-full">
+                                <input matInput formControlName="contactoEmergencia">
+                            </mat-form-field>
+                        </div>
+                        <div>
+                            <div class="text-label">Parentezco</div>
+                            <mat-form-field class="w-full">
+                                <input matInput formControlName="parentezco">
+                            </mat-form-field>
+                        </div>
+                        <div>
+                            <div class="text-label">Numero emergencia</div>
+                            <mat-form-field class="w-full">
+                                <input matInput formControlName="numeroEmergencia">
+                            </mat-form-field>
+                        </div>
+                        <div>
+                            <div class="text-label">Enfermedades que poseen los familiares</div>
+                            <mat-form-field class="w-full">
+                                <input matInput formControlName="enfermedadesDelLosFamiliares">
+                            </mat-form-field>
+                        </div>
+                    </div>
                 </div>
             </form>
-        </mat-step> -->
-    </mat-stepper>
-
-    <!-- <hr class="my-4"> -->
-
+        </div>
+    </div>
 
 </div>

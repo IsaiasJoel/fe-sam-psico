@@ -9,12 +9,13 @@ import { SharedModule } from 'src/app/shared/shared.module';
 import { CrearPacienteComponent } from './crear-paciente/crear-paciente.component';
 import { EditarPacienteComponent } from './editar-paciente/editar-paciente.component';
 import { HistoriaClinicaPacienteComponent } from './historia-clinica-paciente/historia-clinica-paciente.component';
+import { ListarPacienteComponent } from './listar-paciente/listar-paciente.component';
 
 const routes: Route[] = [
-  { path: '', component: PacienteComponent },
+  { path: '', component: ListarPacienteComponent },
   { path: 'crear', component: CrearPacienteComponent },
   { path: ':id', component: EditarPacienteComponent },
-  { path: 'historias/:id', component: HistoriaClinicaPacienteComponent },
+  { path: ':id/historias', component: HistoriaClinicaPacienteComponent },
 ];
 
 @NgModule({
@@ -22,7 +23,8 @@ const routes: Route[] = [
     PacienteComponent,
     CrearPacienteComponent,
     EditarPacienteComponent,
-    HistoriaClinicaPacienteComponent
+    HistoriaClinicaPacienteComponent,
+    ListarPacienteComponent
   ],
   imports: [
     CommonModule,

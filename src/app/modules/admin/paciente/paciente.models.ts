@@ -1,6 +1,8 @@
 import { Cie, CodigoAlerta, DTOSexoCombo, Pais, Ubigeo } from "src/app/shared/models/shared.models";
 import { DTOPsicologoCombo } from "../psicologo/psicologo.models";
 import { DTOAtencionHistoriaItem } from "../atencion/atencion.models";
+import { DTOServicioCombo } from "../servicio/servicio.model";
+import { DTOAmbienteCombo } from "../ambiente/ambiente.model";
 
 export interface DTOPacienteCrearEditarRequest {
     id: number;
@@ -10,66 +12,48 @@ export interface DTOPacienteCrearEditarRequest {
     docIdentidad: string;
     sexo: DTOSexoCombo;
     fecNacimiento: string; //fecha
-    pais:Pais;
+    pais: Pais;
     lugarNacimiento: string;
     direccion: string;
-    ubigeo:Ubigeo;
+    ubigeo: Ubigeo;
     correo: string;
     ocupacion: string;
-    carreraProfesion: string;
     numeroContacto: string;
-    contactoEmergencia: string;
+    carreraProfesion: string;
     organizacionRefiere: string;
+    vinculoNic: 'SV' | 'VL' | 'PR' | 'GS';
+
+    // Atención
+    modalidad: 'P' | 'V';
     motivoConsulta: string;
-    horarioDisponibilidad: string;
+    horarioDisponibilidad: 'M' | 'T';
     observacion: string;
-    habilitado: boolean;
     terminoAtenciones: boolean;
+    servicio: DTOServicioCombo;
+    ambiente: DTOAmbienteCombo;
+
+
+    // Socioeconómico
+    tipoVivienda: string;
+    habitacionesCamas: string;
+    serviciosBasicos: string;
+    gastosMensuales: string;
+    cantidadFamiliares: string;
+    tipoSeguro: string;
+    categorizacionSocioeconomica: string;
+
+    //Familiar
+    contactoEmergencia: string;
+    parentezco: string;
+    numeroEmergencia: string;
+    enfermedadesDelLosFamiliares: string;
 }
-
-// export interface DTOPacienteEncontrado {
-//     id: number;
-
-//     //Datos personales
-//     apPaterno: string;
-//     apMaterno: string;
-//     nombres: string;
-//     fechaNacimiento: string; //fecha
-//     dni: string;
-//     lugarNacimiento: string;
-//     direccion: string;
-//     departamento: string;
-//     provincia: string;
-//     distrito: string;
-//     numeroContacto: string;
-//     sexo: string;
-//     nacionalidad: string;
-//     correo: string;
-//     carreraOProfesion: string;
-//     ocupacion: string;
-
-//     //Nivel socioeconómico
-//     tipoVivienda: string;
-//     habitacionesOcamas: string;
-//     serviciosBasicos: string;
-//     gastosMensuales: string;
-//     informacionGastoFamiliar: string;
-//     tipoDeSeguro: string;
-//     categorizacionSocioeconomica: string;
-
-//     //Familiar
-//     contactoEmergencia: string;
-//     parentezcoContactoEmergencia: string;
-//     numeroContactoEmergencia: string;
-
-//     habilitado: boolean;
-// }
 
 export interface DTOPacienteListar {
     id: number;
-    apPaterno: string;
-    apMaterno: string;
-    nombres: string;
+    nombresCompletos: string;
+    fechaNacimiento: string;
+    nacionalidad: string;
     sexo: string;
 }
 

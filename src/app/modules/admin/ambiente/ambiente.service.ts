@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ApiResponse } from 'src/app/core/models/api-response.interface';
 import { environment } from 'src/environments/environment.dev';
-import { DTOAmbienteCrearEditarRequest, DTOAmbienteListar } from './ambiente.model';
+import { DTOAmbienteCombo, DTOAmbienteCrearEditarRequest, DTOAmbienteListar } from './ambiente.model';
 
 @Injectable({
   providedIn: 'root'
@@ -29,7 +29,7 @@ export class AmbienteService {
     return this._http.get<DTOAmbienteListar[]>(currentUrl);
   }
 
-  listarCombo$(): Observable<ApiResponse> {
+  listarCombo$(): Observable<DTOAmbienteCombo[]> {
     let currentUrl = `${this._url}/combo`;
     return this._http.get<any>(currentUrl);
   }

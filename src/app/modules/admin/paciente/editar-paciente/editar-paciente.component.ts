@@ -1,18 +1,21 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { PacienteService } from '../paciente.service';
 import { ToastrService } from 'ngx-toastr';
-import { Observable, lastValueFrom, map } from 'rxjs';
-import { TEXTO_CONSULTA_EXITOSA, TEXTO_CONSULTA_FALLO } from 'src/app/core/utils/constants.utils';
-import { StepperOrientation } from '@angular/cdk/stepper';
-import { BreakpointObserver } from '@angular/cdk/layout';
+import { concatMap, forkJoin, lastValueFrom } from 'rxjs';
+import { TEXTO_CONSULTA_EXITOSA } from 'src/app/core/utils/constants.utils';
 import { UbigeoService } from 'src/app/shared/services/ubigeo.service';
-import { ApiResponse } from 'src/app/core/models/api-response.interface';
-import { SERVICIOS_BASICOS, TEXTO_SELECCIONE } from 'src/app/shared/data/shared.data';
+import { SERVICIOS_BASICOS } from 'src/app/shared/data/shared.data';
 import { ActivatedRoute, Router } from '@angular/router';
-// import { DTOPacienteEncontrado } from '../paciente.models';
-import * as moment from 'moment';
 import { SweetAlertService } from 'src/app/core/modals/sweet-alert.service';
+import { DTOSexoCombo, Pais } from 'src/app/shared/models/shared.models';
+import { ControlFecha, FechaService } from 'src/app/shared/services/fecha.service';
+import { DTOServicioCombo } from '../../servicio/servicio.model';
+import { DTOAmbienteCombo } from '../../ambiente/ambiente.model';
+import { PaisService } from 'src/app/shared/services/pais.service';
+import { SexoService } from 'src/app/shared/services/sexo.service';
+import { ServiciosService } from '../../servicio/servicios.service';
+import { AmbienteService } from '../../ambiente/ambiente.service';
 
 @Component({
   selector: 'app-editar-paciente',
@@ -20,148 +23,175 @@ import { SweetAlertService } from 'src/app/core/modals/sweet-alert.service';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class EditarPacienteComponent {
-  comboSexo: any[] = [];
-  comboNacionalidad: string[] = [];
+  // -----------------------------------------------------------------------------------------------------
+  // @ Variables
+  // -----------------------------------------------------------------------------------------------------
   comboServiciosBasicos: string[] = SERVICIOS_BASICOS;
-
-  estaCargando: boolean = false;
   departamentos: string[] = [];
   provincias: string[] = [];
   distritos: string[] = [];
+  form: FormGroup;
+  paises: Pais[] = [];
+  sexos: DTOSexoCombo[] = [];
+  controlesFecha: ControlFecha;
+  servicios: DTOServicioCombo[] = [];
+  ambientes: DTOAmbienteCombo[] = [];
 
-  textoSeleccione: string = TEXTO_SELECCIONE;
-
-  // Formularios
-  personalForm: FormGroup;
-  socieconomicoForm: FormGroup;
-  familiarForm: FormGroup;
-  stepperOrientation: Observable<StepperOrientation>;
-  //Fin formularios
-
+  // -----------------------------------------------------------------------------------------------------
+  // @ Ciclo de vida
+  // -----------------------------------------------------------------------------------------------------
   constructor(
-    breakpointObserver: BreakpointObserver,
+    public fechaService: FechaService,
+
     private _formBuilder: FormBuilder,
     private _pacienteService: PacienteService,
     private _toastrService: ToastrService,
     private _ubigeoService: UbigeoService,
     private _router: Router,
-    private _activateRoute: ActivatedRoute,
-    private _sweetAlertService: SweetAlertService
-  ) {
-    this.stepperOrientation = breakpointObserver
-      .observe('(min-width: 800px)')
-      .pipe(map(({ matches }) => (matches ? 'horizontal' : 'vertical')));
-  }
+    private _sweetAlertService: SweetAlertService,
+    private _changeDetectorRef: ChangeDetectorRef,
+    private _paisService: PaisService,
+    private _sexoService: SexoService,
+    private _servicioService: ServiciosService,
+    private _ambienteService: AmbienteService,
+    private _route: ActivatedRoute
+  ) { }
 
   ngOnInit(): void {
-    //cargar data
-    this._cargarDepartamentos();
-    this._crearYCargarFormulario();
-    this._inicializarUbicacionPorDefecto();
+    this._crearFormulario();
+    this._suscribirseAlUbigeo();
+    this._suscribirseALosControlesDeFecha();
+    this._cargarDatosIniciales();
+    this._obtenerObjeto();
   }
 
   // -----------------------------------------------------------------------------------------------------
   // @ Métodos privados
   // -----------------------------------------------------------------------------------------------------
-  private _crearFormularios() {
-    this._crearFormPersonal();
-    this._crearFormSocioeconomico();
-    this._crearFormFamiliar();
+  private _obtenerObjeto() {
+    this._route.paramMap
+      .pipe(
+        concatMap(params => {
+          const id = Number(params.get('id'));
+          return this._pacienteService.ver$(id);
+        })
+      ).subscribe(paciente => {
+        this.form.patchValue(paciente);
+        this._changeDetectorRef.markForCheck();
+      });
   }
 
-  private _crearYCargarFormulario() {
-    this._crearFormularios();
-    this._cargarDatosAlFormulario();
-  }
+  private _cargarDatosIniciales() {
+    const paises$ = this._paisService.paises$();
+    const sexos$ = this._sexoService.sexos$();
+    const servicios$ = this._servicioService.listarCombo$();
+    const ambientes$ = this._ambienteService.listarCombo$();
 
-  private async _cargarDatosAlFormulario() {
-    this.estaCargando = true;
-    const id = this._activateRoute.snapshot.paramMap.get('id');
-
-    // try {
-    //   const http$ = this._pacienteService.buscarPorId$(id);
-    //   const respuestaServidor: ApiResponse = await lastValueFrom(http$);
-    //   let paciente = respuestaServidor.data;
-
-    //   this.personalForm.patchValue(paciente);
-    //   this.socieconomicoForm.patchValue(paciente);
-    //   this.familiarForm.patchValue(paciente);
-
-    //   //Formatear y setear la fecha
-    //   this.personalForm.patchValue({
-    //     fechaNacimiento: new Date(paciente.fechaNacimiento)
-    //   });
-
-    // } catch (error) {
-    //   const mensaje: string = error.error.message.ERROR;
-    //   this._sweetAlertService.mostrarMensaje('Error', mensaje, 'error');
-    // }
-    // this.estaCargando = false;
-  }
-
-  private async _inicializarUbicacionPorDefecto() {
-    const departamento: string = this.personalForm.get('departamento').value;
-
-    //setear provincia por defecto
-    this.listarProvinciaPorDepartamento$(departamento)
-    const provincia: string = 'CHICLAYO';
-    this.listarDistritoPorProvincia$(provincia);
-    this.personalForm.get('provincia').setValue(provincia);
-
-    //setear distritos por defecto
-    const distrito: string = 'CHICLAYO';
-    this.personalForm.get('distrito').setValue(distrito);
-  }
-
-  private async _cargarDepartamentos() {
-    // try {
-    //   this.estaCargando = true;
-    //   const http$ = this._ubigeoService.departamentos$();
-    //   const respuestaServidor: ApiResponse = await lastValueFrom(http$);
-    //   this.departamentos = respuestaServidor.data;
-    // } catch (error) {
-    //   this._toastrService.error(TEXTO_CONSULTA_FALLO);
-    // } finally {
-    //   this.estaCargando = false;
-    // }
-  }
-
-  private _crearFormPersonal() {
-    this.personalForm = this._formBuilder.group({
-      id: ['', [Validators.required]],
-      apPaterno: ['', [Validators.required]],
-      apMaterno: ['', [Validators.required]],
-      nombres: ['', [Validators.required]],
-      dni: ['', [Validators.required]],
-      fechaNacimiento: ['', [Validators.required]],
-      lugarNacimiento: ['', [Validators.required]],
-      direccion: ['',],
-      departamento: ['LAMBAYEQUE', [Validators.required]],
-      provincia: ['SELECCIONE', [Validators.required]],
-      distrito: ['SELECCIONE', [Validators.required]],
-      numeroContacto: ['', [Validators.required]],
-      sexo: ['SELECCIONE', [Validators.required]],
-      nacionalidad: ['SELECCIONE',],
-      correo: ['',],
-      carrera: ['',],
-      ocupacion: ['',]
+    return forkJoin({
+      paises: paises$,
+      sexos: sexos$,
+      servicios: servicios$,
+      ambientes: ambientes$
+    }).subscribe(data => {
+      this._setearData(data);
+      this._setearValoresPredeterminados();
     });
   }
 
-  private _crearFormSocioeconomico() {
-    this.socieconomicoForm = this._formBuilder.group({
+  private _setearData({ paises, sexos, servicios, ambientes }) {
+    this.ambientes = ambientes;
+    this.servicios = servicios;
+    this.sexos = sexos;
+    this.paises = paises;
+    this._changeDetectorRef.markForCheck();
+  }
+
+  private _setearValoresPredeterminados() {
+    const servicioPorDefecto = this.servicios.find(serv => serv.codigo === 'SE01');
+    const sexoPorDefecto = this.sexos.find(sexo => sexo.codigo === 'SX09');
+    const paisPorDefecto = this.paises.find(pais => pais.iso == 'PE');
+    const ambientePorDefecto = this.ambientes.length > 0 ? this.ambientes[0] : undefined;
+
+    this.form.patchValue({
+      servicio: servicioPorDefecto,
+      sexo: sexoPorDefecto,
+      pais: paisPorDefecto,
+      ambiente: ambientePorDefecto
+    });
+    this._changeDetectorRef.markForCheck();
+  }
+
+  private _suscribirseAlUbigeo() {
+    this._ubigeoService.ubigeo$
+      .subscribe(ubigeo => {
+        this.departamentos = ubigeo.departamento.departamentos;
+        this.provincias = ubigeo.provincia.provinciasPorDepartamento;
+        this.distritos = ubigeo.distrito.distritosPorProvincia;
+
+        this.form.patchValue({
+          ubigeo: {
+            departamento: ubigeo.departamento.seleccionado,
+            provincia: ubigeo.provincia.seleccionado,
+            distrito: ubigeo.distrito.seleccionado
+          }
+        })
+        this._changeDetectorRef.markForCheck();
+      });
+  }
+
+  private _suscribirseALosControlesDeFecha() {
+    this.controlesFecha = this.fechaService.controlesFecha;
+    this.fechaService.fechaSeleccionada$
+      .subscribe(fecha => {
+        this.form.patchValue({ fecNacimiento: fecha });
+      })
+  }
+
+  private _crearFormulario() {
+    this.form = this._formBuilder.group({
+      // Personal
+      id: [null, [Validators.required]],
+      apPaterno: ['', [Validators.required]],
+      apMaterno: ['', [Validators.required]],
+      nombres: ['', [Validators.required]],
+      docIdentidad: ['', [Validators.required]],
+      sexo: [null, [Validators.required]],
+      fecNacimiento: [null, [Validators.required]],
+      pais: [null, []],
+      lugarNacimiento: ['', [Validators.required]],
+      direccion: ['',],
+      ubigeo: this._formBuilder.group({
+        departamento: [null, [Validators.required]],
+        provincia: [null, [Validators.required]],
+        distrito: [null, [Validators.required]],
+      }),
+      correo: ['',],
+      ocupacion: ['',],
+      numeroContacto: ['', [Validators.required]],
+      carreraProfesion: [null,],
+      organizacionRefiere: [null, []],
+      vinculoNic: ['SV', []],
+      habilitado: [],
+
+      // Atencion
+      modalidad: ['P', []],
+      motivoConsulta: [null, []],
+      horarioDisponibilidad: ['M', []],
+      observacion: [null, []],
+      terminoAtenciones: [false, []],
+      servicio: [],
+      ambiente: [],
+
+      // Socioeconómico
       tipoVivienda: ['',],
       habitacionesCamas: ['',],
       serviciosBasicos: ['',],
       gastosMensuales: ['',],
       cantidadFamiliares: ['',],
       tipoSeguro: ['',],
-      categorizacionSocioeconomica: ['',]
-    });
-  }
+      categorizacionSocioeconomica: ['',],
 
-  private _crearFormFamiliar() {
-    this.familiarForm = this._formBuilder.group({
+      // Familiar
       contactoEmergencia: ['',],
       parentezco: ['',],
       numeroEmergencia: ['',],
@@ -169,70 +199,43 @@ export class EditarPacienteComponent {
     });
   }
 
-  // private _crearFormConsulta() {
-  //   this.consultaForm = this._formBuilder.group({
-  //     atencionSolicita: ['',],
-  //     proyectoRefiere: ['',],
-  //     motivoConsulta: ['',],
-  //     modalidad: ['',],
-  //     horarioDisponibilidad: ['',],
-  //     siFormasParteDeNic: ['',],
-  //     colaboracionEconomica: ['',],
-  //   });
-  // }
-
-  /**Al menos un formulario es inválido */
-  private _formulariosSonInvalidos(): boolean {
-    return this.personalForm.invalid || this.socieconomicoForm.invalid || this.familiarForm.invalid;
-  }
-
   // -----------------------------------------------------------------------------------------------------
   // @ Métodos públicos
   // -----------------------------------------------------------------------------------------------------
   async procesarSolicitud() {
-    this.estaCargando = true;
-
-    if (this._formulariosSonInvalidos()) {
-      this.estaCargando = false;
+    if (this.form.invalid) {
+      this._sweetAlertService.mostrarMensaje('¡Cuidado!', 'Algunos datos ingresados son inválidos', 'warning');
       return;
     }
 
-    // try {
-    //   const http$ = this._pacienteService.editar$(this.personalForm.value, this.socieconomicoForm.value, this.familiarForm.value);
-    //   await lastValueFrom(http$);
-    //   this._toastrService.success(TEXTO_CONSULTA_EXITOSA);
-    //   this._router.navigate(['/pacientes/']);
-    // } catch (error) {
-    //   this._toastrService.error(error.message);
-    // } finally {
-    //   this.estaCargando = false;
-    // }
-  }
-
-  async listarProvinciaPorDepartamento$(departamentoSeleccionado: string) {
-    //reiniciar combo provincias
-    this.personalForm.get('provincia').setValue(this.textoSeleccione);
-    this.provincias = [];
-
-    //reinicar combo distritos
-    this.personalForm.get('distrito').setValue(this.textoSeleccione);
-    this.distritos = [];
-
-    // const http$ = this._ubigeoService.provinciasPorDepartamento$(departamentoSeleccionado);
-    // const respuestaServidor: ApiResponse = await lastValueFrom(http$);
-    // this.provincias = respuestaServidor.data;
-  }
-
-  async listarDistritoPorProvincia$(provinciaSeleccionada: any) {
-    this.personalForm.get('distrito').setValue(this.textoSeleccione);
-    this.distritos = [];
-
-    // const http$ = this._ubigeoService.distritoPorProvincia$(provinciaSeleccionada);
-    // const respuestaServidor = await lastValueFrom(http$);
-    // this.distritos = respuestaServidor.data;
-  }
-
-  irAPantallaListar() {
+    const http$ = this._pacienteService.crear$(this.form.value);
+    await lastValueFrom(http$);
+    this._toastrService.success(TEXTO_CONSULTA_EXITOSA);
     this._router.navigate(['/pacientes/']);
+  }
+
+  listarProvinciaPorDepartamento$(departamentoSeleccionado: string) {
+    this._ubigeoService.departamento = departamentoSeleccionado;
+    this._changeDetectorRef.markForCheck();
+  }
+
+  listarDistritoPorProvincia$(provinciaSeleccionada: string) {
+    this._ubigeoService.provincia = provinciaSeleccionada;
+    this._changeDetectorRef.markForCheck();
+  }
+
+  cambioValorNacionalidad(nuevoValor: Pais) {
+    if (nuevoValor.iso == 'PE') {
+      this.form.get('departamento').enable();
+      this.form.get('provincia').enable();
+      this.form.get('distrito').enable();
+    } else {
+      this.departamentos = [];
+      this.provincias = [];
+      this.distritos = [];
+      this.form.get('departamento').disable();
+      this.form.get('provincia').disable();
+      this.form.get('distrito').disable();
+    }
   }
 }
