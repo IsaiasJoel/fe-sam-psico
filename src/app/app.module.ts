@@ -8,7 +8,6 @@ import { appRoutes } from './app.routing';
 import { environment } from 'src/environments/environment.dev';
 import { JwtModule } from '@auth0/angular-jwt';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
-import { AuthInterceptor } from './core/auth/guards/auth.interceptor';
 import { MaterialModule } from './core/modules/material/material.module';
 import { ToastrModule } from 'ngx-toastr';
 import { MatIconModule, MatIconRegistry } from '@angular/material/icon';
@@ -21,6 +20,7 @@ import { MAT_DIALOG_DEFAULT_OPTIONS } from '@angular/material/dialog';
 import { SharedModule } from './shared/shared.module';
 import { LoaderInterceptor } from './shared/components/loader/loader.interceptor';
 import { GroupNavigationComponent } from './layout/group-navigation/group-navigation.component';
+import { AuthInterceptor } from './core/auth/auth.interceptor';
 
 export function tokenGetter() {
   return sessionStorage.getItem(environment.TOKEN_NAME);
