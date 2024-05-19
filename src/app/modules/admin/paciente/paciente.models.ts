@@ -36,7 +36,7 @@ export interface DTOPacienteCrearEditarRequest {
     // Socioeconómico
     tipoVivienda: string;
     habitacionesCamas: string;
-    serviciosBasicos: string;
+    serviciosBasicos: string[];
     gastosMensuales: string;
     cantidadFamiliares: string;
     tipoSeguro: string;

@@ -59,9 +59,9 @@ export class PacienteService {
   }
 
   editar$(item: DTOPacienteCrearEditarRequest): Observable<DTOPacienteCrearEditarRequest> {
-    const fechaNacimiento = moment(new Date(item.fecNacimiento)).format(FORMATO_FECHA_ESTANDAR);
-    item.fecNacimiento = fechaNacimiento;
-    let urlActual: string = `${this._url}/${item.id}`;
+    // const fechaNacimiento = moment(new Date(item.fecNacimiento)).format(FORMATO_FECHA_ESTANDAR);
+    // item.fecNacimiento = fechaNacimiento;
+    let urlActual: string = `${this._url}/`;
     return this._http.put<DTOPacienteCrearEditarRequest>(urlActual, item);
   }
 }

@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component } from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { PacienteService } from '../paciente.service';
 import { ToastrService } from 'ngx-toastr';
@@ -22,7 +22,7 @@ import { AmbienteService } from '../../ambiente/ambiente.service';
   templateUrl: './editar-paciente.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class EditarPacienteComponent {
+export class EditarPacienteComponent implements AfterViewInit {
   // -----------------------------------------------------------------------------------------------------
   // @ Variables
   // -----------------------------------------------------------------------------------------------------
@@ -57,11 +57,15 @@ export class EditarPacienteComponent {
     private _route: ActivatedRoute
   ) { }
 
+
   ngOnInit(): void {
     this._crearFormulario();
     this._suscribirseAlUbigeo();
-    this._suscribirseALosControlesDeFecha();
+    // this._suscribirseALosControlesDeFecha();
     this._cargarDatosIniciales();
+  }
+
+  ngAfterViewInit(): void {
     this._obtenerObjeto();
   }
 
@@ -76,7 +80,30 @@ export class EditarPacienteComponent {
           return this._pacienteService.ver$(id);
         })
       ).subscribe(paciente => {
+        // Setear sexo
+        const sexoEncontrado = this.sexos.find(x => x.codigo == paciente?.sexo?.codigo);
+
+        //Setear pais
+        const paisEncontrado = this.paises.find(x => x.iso === paciente?.pais?.iso);
+
+        //Setear servicio que solicita
+        const servicioEncontrado = this.servicios.find(x => x.codigo === paciente?.servicio?.codigo);
+
+        // Setear ambiente
+        const ambienteEncontrado = this.ambientes.find(x => x.codigo === paciente?.ambiente?.codigo);
+
+        // Setear todo
         this.form.patchValue(paciente);
+        this._ubigeoService.departamento = paciente.ubigeo.departamento;
+        this._ubigeoService.provincia = paciente.ubigeo.provincia;
+        this._ubigeoService.distrito = paciente.ubigeo.distrito;
+        this.form.patchValue({
+          sexo: sexoEncontrado,
+          pais: paisEncontrado,
+          servicio: servicioEncontrado,
+          ambiente: ambienteEncontrado,
+          // serviciosBasicos: ''
+        });
         this._changeDetectorRef.markForCheck();
       });
   }
@@ -139,63 +166,63 @@ export class EditarPacienteComponent {
       });
   }
 
-  private _suscribirseALosControlesDeFecha() {
-    this.controlesFecha = this.fechaService.controlesFecha;
-    this.fechaService.fechaSeleccionada$
-      .subscribe(fecha => {
-        this.form.patchValue({ fecNacimiento: fecha });
-      })
-  }
+  // private _suscribirseALosControlesDeFecha() {
+  //   this.controlesFecha = this.fechaService.controlesFecha;
+  //   this.fechaService.fechaSeleccionada$
+  //     .subscribe(fecha => {
+  //       this.form.patchValue({ fecNacimiento: fecha });
+  //     })
+  // }
 
   private _crearFormulario() {
     this.form = this._formBuilder.group({
       // Personal
       id: [null, [Validators.required]],
-      apPaterno: ['', [Validators.required]],
-      apMaterno: ['', [Validators.required]],
-      nombres: ['', [Validators.required]],
-      docIdentidad: ['', [Validators.required]],
+      apPaterno: [null, [Validators.required]],
+      apMaterno: [null, [Validators.required]],
+      nombres: [null, [Validators.required]],
+      docIdentidad: [null, [Validators.required]],
       sexo: [null, [Validators.required]],
       fecNacimiento: [null, [Validators.required]],
       pais: [null, []],
-      lugarNacimiento: ['', [Validators.required]],
-      direccion: ['',],
+      lugarNacimiento: [null, [Validators.required]],
+      direccion: [null,],
       ubigeo: this._formBuilder.group({
         departamento: [null, [Validators.required]],
         provincia: [null, [Validators.required]],
         distrito: [null, [Validators.required]],
       }),
-      correo: ['',],
-      ocupacion: ['',],
-      numeroContacto: ['', [Validators.required]],
+      correo: [null,],
+      ocupacion: [null,],
+      numeroContacto: [null, [Validators.required]],
       carreraProfesion: [null,],
       organizacionRefiere: [null, []],
-      vinculoNic: ['SV', []],
+      vinculoNic: [],
       habilitado: [],
 
       // Atencion
-      modalidad: ['P', []],
+      modalidad: [null, []],
       motivoConsulta: [null, []],
-      horarioDisponibilidad: ['M', []],
+      horarioDisponibilidad: [null, []],
       observacion: [null, []],
       terminoAtenciones: [false, []],
       servicio: [],
       ambiente: [],
 
       // Socioeconómico
-      tipoVivienda: ['',],
-      habitacionesCamas: ['',],
-      serviciosBasicos: ['',],
-      gastosMensuales: ['',],
-      cantidadFamiliares: ['',],
-      tipoSeguro: ['',],
-      categorizacionSocioeconomica: ['',],
+      tipoVivienda: [null,],
+      habitacionesCamas: [null,],
+      serviciosBasicos: [null,],
+      gastosMensuales: [null,],
+      informacionGastoFamiliar: [null,],
+      tipoSeguro: [null,],
+      categorizacionSocioeconomica: [null,],
 
       // Familiar
-      contactoEmergencia: ['',],
-      parentezco: ['',],
-      numeroEmergencia: ['',],
-      enfermedadesDelLosFamiliares: ['',]
+      contactoEmergencia: [null,],
+      parentezcoContactoEmergencia: [null,],
+      numeroContactoEmergencia: [null,],
+      enfermedadesFamiliares: [null,]
     });
   }
 
@@ -208,10 +235,15 @@ export class EditarPacienteComponent {
       return;
     }
 
-    const http$ = this._pacienteService.crear$(this.form.value);
-    await lastValueFrom(http$);
-    this._toastrService.success(TEXTO_CONSULTA_EXITOSA);
-    this._router.navigate(['/pacientes/']);
+    this._sweetAlertService.preguntarSiNo('Editar paciente?')
+      .then(async resp => {
+        if (resp.isConfirmed) {
+          const http$ = this._pacienteService.editar$(this.form.value);
+          await lastValueFrom(http$);
+          this._toastrService.success(TEXTO_CONSULTA_EXITOSA);
+          this._router.navigate(['/pacientes/']);
+        }
+      })
   }
 
   listarProvinciaPorDepartamento$(departamentoSeleccionado: string) {

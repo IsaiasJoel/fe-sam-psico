@@ -52,9 +52,9 @@ export class RegitrarAtencionComponent implements OnInit {
     { id: 5, nombresCompletos: 'Elisa Nevado' }
   ];
   ambientes: DTOAmbienteCombo[] = [
-    { id: 1, nombre: 'Ambiente 1' },
-    { id: 2, nombre: 'Ambiente 2' },
-    { id: 3, nombre: 'Ambiente 3' }
+    // { id: 1, nombre: 'Ambiente 1' },
+    // { id: 2, nombre: 'Ambiente 2' },
+    // { id: 3, nombre: 'Ambiente 3' }
   ];
 
   dateClass: MatCalendarCellClassFunction<Date> = (cellDate, view) => {

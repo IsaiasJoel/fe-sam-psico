@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ReplaySubject } from 'rxjs';
+import { ReplaySubject, throwError } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -84,6 +84,8 @@ export class FechaService {
     if (this._esFechaValida()) {
       const fecha: string = `${this._anio}-${this._mes.ordinal}-${this._dia}`;
       this._fechaSeleccionada.next(fecha);
+    } else {
+      this._fechaSeleccionada.next(null);
     }
   }
 }

@@ -31,12 +31,15 @@ export class AuthInterceptor implements HttpInterceptor {
             .pipe(tap(event => {
                 if (event instanceof HttpResponse) {
                     if (event.body && event.body.error === true && event.body.errorMessage) {
-                        this._toastrService.error(event.body.errorMessage, 'Error', this.toastrTimeOut);
-                        throw new Error(event.body.errorMessage);
+                        this._toastrService.error(event?.body?.errorMessage, 'Error', this.toastrTimeOut);
+                        // throw new Error(event.body.errorMessage);
                     }
                 }
             })).pipe(catchError((err: HttpErrorResponse) => {
-                this._toastrService.error(err.error.message.ERROR, 'Error', this.toastrTimeOut);
+                if (err.status == 401) this._router.navigate(['iniciar-sesion']);
+
+                let error = (err?.error?.message?.ERROR) ? err?.error?.message?.ERROR : '¡Ha ocurrido un error!';
+                this._toastrService.error(`Codigo: ${err.status}`, error, this.toastrTimeOut);
                 return throwError(() => err);
             }));
     }

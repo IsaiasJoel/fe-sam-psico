@@ -81,8 +81,13 @@
 
                         <!-- Fecha nacimiento -->
                         <div class="col-span-2">
-                            <div class="text-label">Fecha de nacimiento</div>
-                            <div class="grid grid-cols-3 gap-1">
+                            <div class="text-label">Fecha de nacimiento </div>
+                            <mat-form-field class="w-full">
+                                <input matInput [matDatepicker]="dp" formControlName="fecNacimiento">
+                                <mat-datepicker-toggle matIconSuffix [for]="dp"></mat-datepicker-toggle>
+                                <mat-datepicker #dp></mat-datepicker>
+                            </mat-form-field>
+                            <!-- <div class="grid grid-cols-3 gap-1">
                                 <mat-form-field>
                                     <mat-select (valueChange)="fechaService.dia = $event">
                                         <mat-option *ngFor="let dia of controlesFecha.dias"
@@ -101,7 +106,7 @@
                                             [value]="anio">{{anio}}</mat-option>
                                     </mat-select>
                                 </mat-form-field>
-                            </div>
+                            </div> -->
                         </div>
 
                         <div>
@@ -317,7 +322,7 @@
                                 ingreso
                                 mensual en soles y quienes aportan dentro de la familia</div>
                             <mat-form-field class="w-full">
-                                <input matInput formControlName="cantidadFamiliares">
+                                <input matInput formControlName="informacionGastoFamiliar">
                             </mat-form-field>
                         </div>
 
@@ -350,19 +355,19 @@
                         <div>
                             <div class="text-label">Parentezco</div>
                             <mat-form-field class="w-full">
-                                <input matInput formControlName="parentezco">
+                                <input matInput formControlName="parentezcoContactoEmergencia">
                             </mat-form-field>
                         </div>
                         <div>
                             <div class="text-label">Numero emergencia</div>
                             <mat-form-field class="w-full">
-                                <input matInput formControlName="numeroEmergencia">
+                                <input matInput formControlName="numeroContactoEmergencia">
                             </mat-form-field>
                         </div>
                         <div>
                             <div class="text-label">Enfermedades que poseen los familiares</div>
                             <mat-form-field class="w-full">
-                                <input matInput formControlName="enfermedadesDelLosFamiliares">
+                                <input matInput formControlName="enfermedadesFamiliares">
                             </mat-form-field>
                         </div>
                     </div>

@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ApiResponse } from 'src/app/core/models/api-response.interface';
 import { environment } from 'src/environments/environment.dev';
-import { DTOAmbienteCombo, DTOAmbienteCrearEditarRequest, DTOAmbienteListar } from './ambiente.model';
+import { DTOAmbienteCombo, /*DTOAmbienteCrearEditarRequest, */DTOAmbienteListar } from './ambiente.model';
 
 @Injectable({
   providedIn: 'root'
@@ -34,7 +34,7 @@ export class AmbienteService {
     return this._http.get<any>(currentUrl);
   }
 
-  agregar$(item: DTOAmbienteCrearEditarRequest): Observable<ApiResponse> {
+  agregar$(item: any): Observable<ApiResponse> {
     let currentUrl = `${this._url}/`;
     return this._http.post<any>(currentUrl, { item });
   }
@@ -44,7 +44,7 @@ export class AmbienteService {
     return this._http.get<any>(currentUrl);
   }
 
-  editar$(item: DTOAmbienteCrearEditarRequest): Observable<ApiResponse> {
+  editar$(item: any): Observable<ApiResponse> {
     let currentUrl = `${this._url}/`;
     return this._http.put<any>(currentUrl, { item });
   }

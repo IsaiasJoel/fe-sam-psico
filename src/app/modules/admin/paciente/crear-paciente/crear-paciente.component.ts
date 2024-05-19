@@ -36,6 +36,7 @@ export class CrearPacienteComponent {
   controlesFecha: ControlFecha;
   servicios: DTOServicioCombo[] = [];
   ambientes: DTOAmbienteCombo[] = [];
+  fechaInvalida: boolean = false;
 
   // -----------------------------------------------------------------------------------------------------
   // @ Ciclo de vida
@@ -59,7 +60,7 @@ export class CrearPacienteComponent {
   ngOnInit(): void {
     this._crearFormulario();
     this._suscribirseAlUbigeo();
-    this._suscribirseALosControlesDeFecha();
+    // this._suscribirseALosControlesDeFecha();
     this._cargarDatosIniciales();
   }
 
@@ -124,18 +125,21 @@ export class CrearPacienteComponent {
       });
   }
 
-  private _suscribirseALosControlesDeFecha() {
-    this.controlesFecha = this.fechaService.controlesFecha;
-    this.fechaService.fechaSeleccionada$
-      .subscribe(fecha => {
-        this.form.patchValue({ fecNacimiento: fecha });
-      })
-  }
+  // private _suscribirseALosControlesDeFecha() {
+  //   this.controlesFecha = this.fechaService.controlesFecha;
+  //   this.fechaService.fechaSeleccionada$
+  //     .subscribe(fecha => {
+  //       console.log('fecha recibida: ', fecha);
+  //       this.form.patchValue({ fecNacimiento: fecha });
+  //       this.fechaInvalida = !fecha;
+  //       this._changeDetectorRef.markForCheck();
+  //     })
+  // }
 
   private _crearFormulario() {
     this.form = this._formBuilder.group({
       // Personal
-      id: [null, [Validators.required]],
+      id: [null, []],
       apPaterno: ['', [Validators.required]],
       apMaterno: ['', [Validators.required]],
       nombres: ['', [Validators.required]],
@@ -146,16 +150,17 @@ export class CrearPacienteComponent {
       lugarNacimiento: ['', [Validators.required]],
       direccion: ['',],
       ubigeo: this._formBuilder.group({
-        departamento: [null, [Validators.required]],
-        provincia: [null, [Validators.required]],
-        distrito: [null, [Validators.required]],
+        departamento: [null, []],
+        provincia: [null, []],
+        distrito: [null, []],
       }),
       correo: ['',],
       ocupacion: ['',],
-      numeroContacto: ['', [Validators.required]],
+      numeroContacto: ['', []],
       carreraProfesion: [null,],
       organizacionRefiere: [null, []],
       vinculoNic: ['SV', []],
+      habilitado: [true, []],
 
       // Atencion
       modalidad: ['P', []],
@@ -171,15 +176,15 @@ export class CrearPacienteComponent {
       habitacionesCamas: ['',],
       serviciosBasicos: ['',],
       gastosMensuales: ['',],
-      cantidadFamiliares: ['',],
+      informacionGastoFamiliar: ['',],
       tipoSeguro: ['',],
       categorizacionSocioeconomica: ['',],
 
       // Familiar
       contactoEmergencia: ['',],
-      parentezco: ['',],
-      numeroEmergencia: ['',],
-      enfermedadesDelLosFamiliares: ['',]
+      parentezcoContactoEmergencia: ['',],
+      numeroContactoEmergencia: ['',],
+      enfermedadesFamiliares: ['',]
     });
   }
 
@@ -192,10 +197,16 @@ export class CrearPacienteComponent {
       return;
     }
 
-    const http$ = this._pacienteService.crear$(this.form.value);
-    await lastValueFrom(http$);
-    this._toastrService.success(TEXTO_CONSULTA_EXITOSA);
-    this._router.navigate(['/pacientes/']);
+    this._sweetAlertService.preguntarSiNo('Crear paciente?')
+      .then(async resp => {
+        if (resp.isConfirmed) {
+          const http$ = this._pacienteService.crear$(this.form.value);
+          await lastValueFrom(http$);
+          this._toastrService.success(TEXTO_CONSULTA_EXITOSA);
+          this._router.navigate(['/pacientes/']);
+        }
+      })
+
   }
 
   listarProvinciaPorDepartamento$(departamentoSeleccionado: string) {
