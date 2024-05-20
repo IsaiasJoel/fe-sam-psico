@@ -35,8 +35,8 @@ export class CasosAsignadosPorPsicologoComponent {
           { codigo: 'B', descripcion: 'CIE-B' }
         ],
         codigosAlerta: [
-          { codigo: 'A', nombre: 'ALERTA-A' },
-          { codigo: 'B', nombre: 'ALERTA-B' }
+          { codigo: 'A', descripcion: 'ALERTA-A' },
+          { codigo: 'B', descripcion: 'ALERTA-B' }
         ]
       },
       {
@@ -52,8 +52,8 @@ export class CasosAsignadosPorPsicologoComponent {
           { codigo: 'B', descripcion: 'CIE-B' }
         ],
         codigosAlerta: [
-          { codigo: 'A', nombre: 'ALERTA-A' },
-          { codigo: 'B', nombre: 'ALERTA-B' }
+          { codigo: 'A', descripcion: 'ALERTA-A' },
+          { codigo: 'B', descripcion: 'ALERTA-B' }
         ]
       },
       {
@@ -69,8 +69,8 @@ export class CasosAsignadosPorPsicologoComponent {
           { codigo: 'B', descripcion: 'CIE-B' }
         ],
         codigosAlerta: [
-          { codigo: 'A', nombre: 'ALERTA-A' },
-          { codigo: 'B', nombre: 'ALERTA-B' }
+          { codigo: 'A', descripcion: 'ALERTA-A' },
+          { codigo: 'B', descripcion: 'ALERTA-B' }
         ]
       },
       {
@@ -86,8 +86,8 @@ export class CasosAsignadosPorPsicologoComponent {
           { codigo: 'B', descripcion: 'CIE-B' }
         ],
         codigosAlerta: [
-          { codigo: 'A', nombre: 'ALERTA-A' },
-          { codigo: 'B', nombre: 'ALERTA-B' }
+          { codigo: 'A', descripcion: 'ALERTA-A' },
+          { codigo: 'B', descripcion: 'ALERTA-B' }
         ]
       }
     ]

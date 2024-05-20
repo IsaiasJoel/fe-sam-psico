@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ApiResponse } from 'src/app/core/models/api-response.interface';
 import { environment } from 'src/environments/environment.dev';
-import { DTOPacienteCrearEditarRequest, DTOPacienteListar } from './paciente.models';
+import { DTOPacienteCrearEditarRequest, DTOPacienteHistoria, DTOPacienteListar } from './paciente.models';
 import * as moment from 'moment';
 import { FORMATO_FECHA_ESTANDAR } from 'src/app/core/utils/constants.utils';
 
@@ -38,6 +38,11 @@ export class PacienteService {
   ver$(id: number): Observable<DTOPacienteCrearEditarRequest> {
     let currentUrl = `${this._url}/${id}`;
     return this._http.get<DTOPacienteCrearEditarRequest>(currentUrl);
+  }
+
+  verAtenciones$(id: number): Observable<DTOPacienteHistoria> {
+    let currentUrl = `${this._url}/${id}/atenciones`;
+    return this._http.get<any>(currentUrl);
   }
 
   listarTodos$(filtroNombres?: string): Observable<DTOPacienteListar[]> {

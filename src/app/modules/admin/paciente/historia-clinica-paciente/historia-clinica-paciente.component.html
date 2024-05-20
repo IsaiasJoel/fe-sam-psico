@@ -2,26 +2,26 @@
     <!-- Header -->
     <div class="flex items-center justify-between w-full">
         <div class="flex gap-2 flex-col mb-2">
-            <div class="font-medium text-4xl">{{historia.paciente.nombresCompletos}}</div>
+            <div class="font-medium text-4xl">{{historia?.paciente?.nombresCompletos}}</div>
             <div class="text-lg flex text-opacity-80 text-gray-700">
                 <div class="flex gap-2 border-r border-gray-400 px-2" matTooltip="Sexo">
                     <mat-icon svgIcon="gender-male-female"></mat-icon>
-                    <div>{{historia.paciente.sexo}}</div>
+                    <div>{{historia?.paciente?.sexo | campoVacio}}</div>
                 </div>
 
                 <div class="flex gap-2 border-r border-gray-400 px-2" matTooltip="Edad">
                     <mat-icon svgIcon="cake-variant"></mat-icon>
-                    <div>{{historia.paciente.edad}}</div>
+                    <div>{{historia?.paciente?.fecNacimiento | edad}}</div>
                 </div>
 
                 <div class="flex gap-2 border-r border-gray-400 px-2" matTooltip="Nacionalidad">
                     <mat-icon svgIcon="earth"></mat-icon>
-                    <div>{{historia.paciente.nacionalidad}}</div>
+                    <div>{{historia?.paciente?.nacionalidad | campoVacio}}</div>
                 </div>
 
                 <div class="flex gap-2 px-2" matTooltip="Psicólogo">
                     <mat-icon svgIcon="account-heart"></mat-icon>
-                    <div>Psi. {{historia.psicologo.nombresCompletos}}</div>
+                    <div>Psi. {{historia?.psicologo?.nombresCompletos ?? 'No asignado'}}</div>
                 </div>
             </div>
         </div>
@@ -33,46 +33,49 @@
     <div class="bg-white flex flex-col gap-4 shadow-lg p-4 mb-4">
         <div>
             <div class="texto-label-azul">Código de alerta</div>
-            <div class="flex gap-2 col-span-4">
-                <mat-chip *ngFor="let item of historia.paciente.codigosAlerta">
-                    {{item.nombre}}
+            <div class="flex gap-2 col-span-4"
+                *ngIf="historia?.paciente?.codigosAlerta.length > 0;else codigosAlertaVacio">
+                <mat-chip *ngFor="let item of historia?.paciente?.codigosAlerta">
+                    {{item.descripcion}}
                 </mat-chip>
             </div>
+            <ng-template #codigosAlertaVacio>
+                <div>Sin códigos de alerta</div>
+            </ng-template>
         </div>
 
         <div>
             <div class="texto-label-azul">Aspectro presuntivo</div>
-            <div>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laudantium impedit exercitationem qui
-                placeat
-                est, adipisci repellat quos voluptatum optio nam eligendi fuga, eum eos nihil cum perspiciatis ab
-                explicabo quasi?
-            </div>
+            <div>{{historia?.paciente?.aspectroPresuntivo | campoVacio}}</div>
         </div>
 
         <div>
             <div class="texto-label-azul">CIE</div>
-            <div class="flex gap-2 col-span-4">
-                <mat-chip *ngFor="let item of historia.paciente.cie" [matTooltip]="item.descripcion">
+            <div class="flex gap-2 col-span-4" *ngIf="historia?.paciente?.cie.length > 0;else sinCie">
+                <mat-chip *ngFor="let item of historia?.paciente?.cie" [matTooltip]="item.descripcion">
                     {{item.codigo}}
                 </mat-chip>
             </div>
+            <ng-template #sinCie>
+                <div>Sin CIE</div>
+            </ng-template>
         </div>
     </div>
     <hr>
 
     <!-- Body -->
     <div class="mt-2 flex flex-col gap-4">
-        <div class="flex items-center justify-between">
+        <!-- <div class="flex items-center justify-between">
             <div class="flex gap-2">
                 <button class="px-2 rounded-xl text-green-800 bg-green-100 flex items-center gap-1"
                     matTooltip="Atenciones realizadas">
                     <mat-icon svgIcon="check"></mat-icon>
-                    {{historia.atenciones.length}} atenciones realizadas
+                    {{historia?.atenciones?.length}} atenciones realizadas
                 </button>
                 <button class="px-2 rounded-xl text-red-800 bg-red-100 flex items-center gap-1"
                     matTooltip="Atenciones canceladas">
                     <mat-icon svgIcon="cancel"></mat-icon>
-                    {{historia.numAtencionesCanceladas}} atenciones canceladas
+                    {{historia?.numAtencionesCanceladas}} atenciones canceladas
                 </button>
             </div>
 
@@ -91,54 +94,62 @@
                     <div>Más antiguo</div>
                 </button>
             </mat-menu>
-        </div>
+        </div> -->
 
-        <div class="p-4 bg-white rounded-lg flex flex-col gap-4" *ngFor="let atencion of historia.atenciones">
-            <div class="flex gap-2">
-                <div class="rounded-lg px-2 py-1 bg-gray-200 flex items-center gap-1"
-                    matTooltip="Fecha y hora de consulta">
-                    <mat-icon svgIcon="clock"></mat-icon>
-                    {{atencion.fechaHora}}
+        <div class="font-medium text-2xl">Atenciones</div>
+        <ng-container *ngIf="historia?.atenciones?.length > 0; else sinAtenciones">
+            <div class="p-4 bg-white rounded-lg flex flex-col gap-4" *ngFor="let atencion of historia?.atenciones">
+                <div class="flex gap-2">
+                    <div class="rounded-lg px-2 py-1 bg-gray-200 flex items-center gap-1"
+                        matTooltip="Fecha y hora de consulta">
+                        <mat-icon svgIcon="clock"></mat-icon>
+                        {{atencion.fechaHora}}
+                    </div>
+                    <div class="rounded-lg px-2 py-1 bg-sky-100 flex items-center gap-1" matTooltip="Ambiente">
+                        <mat-icon svgIcon="sofa-single"></mat-icon>
+                        {{atencion.ambiente}}
+                    </div>
+                    <div class="rounded-lg px-2 py-1 flex items-center gap-1" matTooltip="Estado del pago"
+                        [ngClass]="{'bg-amber-200':atencion.estadoPago=='PENDIENTE','bg-green-200':atencion.estadoPago=='PAGADO','bg-red-200':atencion.estadoPago=='GRATIS'}">
+                        <mat-icon svgIcon="cash-multiple"></mat-icon>
+                        {{atencion.estadoPago}}
+                    </div>
                 </div>
-                <div class="rounded-lg px-2 py-1 bg-sky-100 flex items-center gap-1" matTooltip="Ambiente">
-                    <mat-icon svgIcon="sofa-single"></mat-icon>
-                    {{atencion.ambiente}}
-                </div>
-                <div class="rounded-lg px-2 py-1 flex items-center gap-1" matTooltip="Estado del pago"
-                    [ngClass]="{'bg-amber-200':atencion.estadoPago=='PENDIENTE','bg-green-200':atencion.estadoPago=='PAGADO','bg-red-200':atencion.estadoPago=='GRATIS'}">
-                    <mat-icon svgIcon="cash-multiple"></mat-icon>
-                    {{atencion.estadoPago}}
-                </div>
-            </div>
 
-            <div class="flex flex-col gap-4">
-                <div>
-                    <div class="texto-label-azul">Observación de conducta</div>
-                    <div>{{atencion.informe.observacionConducta}}</div>
+                <div class="flex flex-col gap-4">
+                    <div>
+                        <div class="texto-label-azul">Observación de conducta</div>
+                        <div>{{atencion.informe.observacionConducta}}</div>
+                    </div>
+                    <div>
+                        <div class="texto-label-azul">Análisis de intervención</div>
+                        <div>{{atencion.informe.analisisIntervencion}}</div>
+                    </div>
+                    <div>
+                        <div class="texto-label-azul">Conclusiones</div>
+                        <div>{{atencion.informe.conclusiones}}</div>
+                    </div>
+                    <div>
+                        <div class="texto-label-azul">Recomendaciones</div>
+                        <div>{{atencion.informe.recomendaciones}}</div>
+                    </div>
                 </div>
-                <div>
-                    <div class="texto-label-azul">Análisis de intervención</div>
-                    <div>{{atencion.informe.analisisIntervencion}}</div>
-                </div>
-                <div>
-                    <div class="texto-label-azul">Conclusiones</div>
-                    <div>{{atencion.informe.conclusiones}}</div>
-                </div>
-                <div>
-                    <div class="texto-label-azul">Recomendaciones</div>
-                    <div>{{atencion.informe.recomendaciones}}</div>
-                </div>
-            </div>
 
 
-            <div class="flex gap-4">
-                <div *ngFor="let archivo of atencion.archivosAdjuntos" class="flex">
-                    <div class="flex flex-col items-center w-24 p-3 rounded-md hover:shadow-xl hover:cursor-pointer">
-                        <img src="assets/images/icono-pdf.webp" alt="">
-                        <div>{{archivo.nombre}}</div>
+                <div class="flex gap-4">
+                    <div *ngFor="let archivo of atencion.archivosAdjuntos" class="flex">
+                        <div
+                            class="flex flex-col items-center w-24 p-3 rounded-md hover:shadow-xl hover:cursor-pointer">
+                            <img src="assets/images/icono-pdf.webp" alt="">
+                            <div>{{archivo.nombre}}</div>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
+        </ng-container>
+
+        <ng-template #sinAtenciones>
+            <div>El paciente aún no registra atenciones</div>
+        </ng-template>
     </div>
 </div>

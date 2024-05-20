@@ -1,9 +1,10 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { PsicologoNombresCompletosPipe } from './pipes/psicologo-nombres-completos.pipe';
-import { EdadPipe } from './pipes/psicologo-edad.pipe';
+import { EdadPipe } from './pipes/edad.pipe';
 import { LoaderComponent } from './components/loader/loader.component';
 import { MaterialModule } from '../core/modules/material/material.module';
+import { CampoVacioPipe } from './pipes/campo-vacio.pipe';
 
 
 
@@ -12,6 +13,7 @@ import { MaterialModule } from '../core/modules/material/material.module';
     PsicologoNombresCompletosPipe,
     EdadPipe,
     LoaderComponent,
+    CampoVacioPipe,
   ],
   imports: [
     CommonModule,
@@ -20,6 +22,7 @@ import { MaterialModule } from '../core/modules/material/material.module';
   exports: [
     PsicologoNombresCompletosPipe,
     EdadPipe,
+    CampoVacioPipe,
     LoaderComponent
   ]
 })

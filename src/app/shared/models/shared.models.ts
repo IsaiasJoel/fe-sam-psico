@@ -56,7 +56,7 @@ export interface Cie {
 
 export interface CodigoAlerta {
     codigo: string;
-    nombre: string;
+    descripcion: string;
 }
 
 export interface Proyecto {

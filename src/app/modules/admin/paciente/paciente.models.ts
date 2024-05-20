@@ -62,7 +62,7 @@ export interface DTOPacienteHistoriaItem {
     nombresCompletos: string;
     aspectroPresuntivo: string;
     sexo: string;
-    edad: number;
+    fecNacimiento: string;
     nacionalidad: string;
     cie: Cie[];
     codigosAlerta: CodigoAlerta[];

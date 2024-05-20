@@ -65,14 +65,14 @@
                     <mat-form-field class="w-full">
                         <mat-select multiple [(ngModel)]="codigosDeAlertaSeleccionados">
                             <mat-option *ngFor="let codigo of codigosDeAlerta"
-                                [value]="codigo">{{codigo.nombre}}</mat-option>
+                                [value]="codigo">{{codigo.descripcion}}</mat-option>
                         </mat-select>
                     </mat-form-field>
                 </div>
             </div>
             <div class="flex gap-2 mt-2 col-span-4">
                 <mat-chip *ngFor="let item of codigosDeAlertaSeleccionados">
-                    {{item.nombre}}
+                    {{item.descripcion}}
                 </mat-chip>
             </div>
         </div>

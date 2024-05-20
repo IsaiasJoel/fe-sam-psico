@@ -16,16 +16,16 @@ export class InformeAtencionComponent {
   ];
 
   codigosDeAlerta: CodigoAlerta[] = [
-    { codigo: '01', nombre: 'Suicidio' },
-    { codigo: '02', nombre: 'Violación sexual' },
-    { codigo: '03', nombre: 'Diversidad sexual' },
-    { codigo: '04', nombre: 'Xenofobia' },
-    { codigo: '04', nombre: 'fsdfdsggfkj' },
-    { codigo: '04', nombre: 'fsdfdsggfkj' },
-    { codigo: '04', nombre: 'fsdfdsggfkj' },
-    { codigo: '04', nombre: 'fsdfdsggfkj' },
-    { codigo: '04', nombre: 'fsdfdsggfkj' },
-    { codigo: '04', nombre: 'fsdfdsggfkj' },
-    { codigo: '04', nombre: 'fsdfdsggfkj' },
+    { codigo: '01', descripcion: 'Suicidio' },
+    { codigo: '02', descripcion: 'Violación sexual' },
+    { codigo: '03', descripcion: 'Diversidad sexual' },
+    { codigo: '04', descripcion: 'Xenofobia' },
+    { codigo: '04', descripcion: 'fsdfdsggfkj' },
+    { codigo: '04', descripcion: 'fsdfdsggfkj' },
+    { codigo: '04', descripcion: 'fsdfdsggfkj' },
+    { codigo: '04', descripcion: 'fsdfdsggfkj' },
+    { codigo: '04', descripcion: 'fsdfdsggfkj' },
+    { codigo: '04', descripcion: 'fsdfdsggfkj' },
+    { codigo: '04', descripcion: 'fsdfdsggfkj' },
   ];
 }
