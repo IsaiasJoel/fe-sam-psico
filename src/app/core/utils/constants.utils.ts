@@ -17,4 +17,4 @@ export const TEXTO_CONSULTA_FALLO: string = "No se cargaron los datos";
 export const FORMATO_FECHA_HORA_ESTANDAR = "yyyy-MM-DDTHH:mm:ss";
 export const FORMATO_FECHA_HORA_DMY = "dd-MM-yyyy HH:mm:ss";
 export const FORMATO_FECHA_DMY = "DD-MM-yyyy";
-export const FORMATO_FECHA_ESTANDAR = "yyyy-DD-MM";
+export const FORMATO_FECHA_ESTANDAR = "yyyy-MM-DD";

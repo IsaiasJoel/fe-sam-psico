@@ -5,6 +5,8 @@ import { ApiResponse } from 'src/app/core/models/api-response.interface';
 import { environment } from 'src/environments/environment.dev';
 import { DTOUsuarioCrearActualizar, DTOUsuarioListar, DTOUsuarioSesion } from './usuario.models';
 import { USUARIO } from 'src/app/shared/data/shared.data';
+import * as moment from 'moment';
+import { FORMATO_FECHA_ESTANDAR } from 'src/app/core/utils/constants.utils';
 
 @Injectable({
   providedIn: 'root'
@@ -120,6 +122,7 @@ export class UsuarioService {
       item.habilitado = true;
     }
 
+    item.fecNacimiento = moment(item.fecNacimiento).format(FORMATO_FECHA_ESTANDAR);
     let urlActual: string = `${this._url}/`;
     return this._http.post<ApiResponse>(urlActual, item);
   }

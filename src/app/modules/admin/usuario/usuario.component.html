@@ -88,7 +88,9 @@
                                 <div>
                                     <div>Fec Nacimiento</div>
                                     <mat-form-field class="w-full">
-                                        <input matInput formControlName="fecNacimiento">
+                                        <input matInput [matDatepicker]="dp" formControlName="fecNacimiento">
+                                        <mat-datepicker-toggle matIconSuffix [for]="dp"></mat-datepicker-toggle>
+                                        <mat-datepicker #dp></mat-datepicker>
                                     </mat-form-field>
                                 </div>
                                 <div>

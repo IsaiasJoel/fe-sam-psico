@@ -145,7 +145,7 @@ export class CrearPacienteComponent {
       nombres: ['', [Validators.required]],
       docIdentidad: ['', [Validators.required]],
       sexo: [null, [Validators.required]],
-      fecNacimiento: [null, [Validators.required]],
+      // fecNacimiento: [null, [Validators.required]],
       pais: [null, []],
       lugarNacimiento: ['', [Validators.required]],
       direccion: ['',],
