@@ -18,7 +18,7 @@ const routes: Route[] = [
   { path: '', component: PsicologoComponent },
   { path: 'crear', component: CrearPsicologoComponent },
   { path: ':id', component: EditarPsicologoComponent },
-  { path: ':id/casos-asignados', component: CasosAsignadosPorPsicologoComponent },
+  { path: ':id/pacientes-asignados', component: CasosAsignadosPorPsicologoComponent },
 ];
 
 @NgModule({

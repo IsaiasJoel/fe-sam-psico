@@ -20,7 +20,7 @@ export class PsicologoComponent {
   @ViewChild(MatPaginator) _paginator: MatPaginator;
   @ViewChild(MatSort) _sort: MatSort;
 
-  columnas: string[] = ['nombresApellidos', 'dni', 'carrera', 'especialidad', 'casosAsignados', 'horario', 'estado', 'editar'/*, 'eliminar'*/];
+  columnas: string[] = ['nombresApellidos', /*'dni',*/ 'carrera', 'especialidad', 'casosAsignados', 'horario', /*'estado', 'editar', 'eliminar'*/];
   dataSource: MatTableDataSource<DTOPsicologoListar>;
   estaCargando: boolean = false;
 

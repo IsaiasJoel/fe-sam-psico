@@ -1,5 +1,6 @@
 //========================================
 // TYPES
+//========================================
 
 import { Cie, CodigoAlerta } from "src/app/shared/models/shared.models";
 
@@ -106,7 +107,7 @@ export interface DTOPsicologoCasoAsignadoCaso {
     estado: string;
     idPaciente: number;
     paciente: string;
-    edad: number;
+    fecNacimiento: string;
     nacionalidad: string;
     motivoConsulta: string;
     aspectroPresuntivo: string;

@@ -13,14 +13,15 @@ export const MockNavigationMenues: DTOMenuNavegacion[] = [
         id: 1, tipo: 'grupo', nombre: 'Gestión de casos', icono: '', url: '', hijos: [
             { id: 1, tipo: 'basico', nombre: 'Pacientes', icono: 'account-heart', url: 'pacientes' },
             { id: 1, tipo: 'basico', nombre: 'Psicologos', icono: 'account', url: 'psicologos' },
-            { id: 1, tipo: 'basico', nombre: 'Atenciones', icono: 'account-child', url: 'atenciones' }
+            // { id: 1, tipo: 'basico', nombre: 'Atenciones', icono: 'account-child', url: 'atenciones' }
         ]
     },
 
     // Personal
     {
         id: 1, tipo: 'grupo', nombre: 'Personal', icono: '', url: '', hijos: [
-            { id: 1, tipo: 'basico', nombre: 'Mis atenciones', icono: 'heart-pulse', url: 'mis-atenciones' }
+            { id: 1, tipo: 'basico', nombre: 'Mis atenciones', icono: 'heart-pulse', url: 'mis-atenciones' },
+            { id: 2, tipo: 'basico', nombre: 'Mis pacientes', icono: 'account-heart', url: 'mis-pacientes' }
         ]
     },
 

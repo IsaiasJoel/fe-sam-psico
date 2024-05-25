@@ -65,16 +65,16 @@ export class CrearPsicologoComponent {
       return;
     }
 
-    try {
-      const http$ = this._psicologoService.crear$(this.form.value);
-      await lastValueFrom(http$);
-      this._toastrService.success(TEXTO_CONSULTA_EXITOSA);
-      this._router.navigate(['/psicologos/']);
-    } catch (error) {
-      this._toastrService.error(error.message.ERROR);
-    } finally {
-      this.estaCargando = false;
-    }
+    // try {
+    //   const http$ = this._psicologoService.crear$(this.form.value);
+    //   await lastValueFrom(http$);
+    //   this._toastrService.success(TEXTO_CONSULTA_EXITOSA);
+    //   this._router.navigate(['/psicologos/']);
+    // } catch (error) {
+    //   this._toastrService.error(error.message.ERROR);
+    // } finally {
+    //   this.estaCargando = false;
+    // }
   }
 
   cambioSelectColegiado() {

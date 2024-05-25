@@ -3,7 +3,7 @@
     <div class="flex items-center justify-between w-full">
         <div class="flex gap-2 flex-col">
             <div class="font-medium text-4xl mb-2">Casos asignados</div>
-            <div class="font-light text-2xl mb-2">{{casosAsignados.psicologo}}</div>
+            <div class="font-light text-2xl mb-2">{{casosAsignados?.psicologo}}</div>
         </div>
         <a class="flex items-center" routerLink="../../">
             <mat-icon svgIcon="pan-left"></mat-icon>
@@ -17,15 +17,15 @@
         <div class="flex justify-between gap-8 text-white">
             <div class="basis-1/3 w-full rounded-md bg-green-600 p-4">
                 <div class="text-xl font-medium">En proceso</div>
-                <div class="flex text-2xl">{{casosAsignados.estadistica.proceso}}</div>
+                <div class="flex text-2xl">{{casosAsignados?.estadistica?.proceso}}</div>
             </div>
             <div class="basis-1/3 w-full rounded-md bg-orange-600 p-4">
                 <div class="text-xl font-medium">Culminadas</div>
-                <div class="flex text-2xl">{{casosAsignados.estadistica.culminados}}</div>
+                <div class="flex text-2xl">{{casosAsignados?.estadistica?.culminados}}</div>
             </div>
             <div class="basis-1/3 w-full rounded-md bg-blue-600 p-4">
                 <div class="text-xl font-medium">Total asignadas</div>
-                <div class="flex text-2xl">{{casosAsignados.estadistica.totalAsignados}}</div>
+                <div class="flex text-2xl">{{casosAsignados?.estadistica?.totalAsignados}}</div>
             </div>
         </div>
 
@@ -60,26 +60,26 @@
         </div>
         <div class="mt-4 flex flex-col gap-4">
             <!-- Este va a iterar -->
-            <ng-container *ngFor="let caso of casosAsignados.casos">
+            <ng-container *ngFor="let caso of casosAsignados?.casos">
                 <div class="w-full bg-white rounded-md shadow-lg">
-                    <div [ngClass]="{'bg-green-600':caso.estado=='En proceso','bg-red-700':caso.estado=='Culminado'}"
-                        class=" inline-flex px-2 text-white text-xs rounded-md">{{caso.estado}}</div>
+                    <div [ngClass]="{'bg-green-600':caso?.estado=='En proceso','bg-red-700':caso?.estado=='Culminado'}"
+                        class=" inline-flex px-2 text-white text-xs rounded-md">{{caso?.estado}}</div>
                     <div class="p-4 grid grid-cols-10">
                         <div class="col-span-2 flex flex-col gap-4">
                             <div>
-                                <div class="font-medium text-lg">{{caso.paciente}}</div>
-                                <div>{{caso.edad}} | {{caso.nacionalidad}} </div>
+                                <div class="font-medium text-lg">{{caso?.paciente}}</div>
+                                <div>{{caso?.fecNacimiento}} | {{caso?.nacionalidad}} </div>
                             </div>
                         </div>
                         <div class="col-span-8 flex flex-col gap-4">
                             <div>
                                 <div class="text-blue-500 font-medium">Motivo de consulta</div>
-                                <div>{{caso.motivoConsulta}}</div>
+                                <div>{{caso?.motivoConsulta}}</div>
                             </div>
                             <div>
                                 <div class="text-blue-500 font-medium">Códigos de alerta</div>
                                 <div class="flex gap-2 col-span-4">
-                                    <mat-chip *ngFor="let item of caso.codigosAlerta">
+                                    <mat-chip *ngFor="let item of caso?.codigosAlerta">
                                         {{item.descripcion}}
                                     </mat-chip>
                                 </div>
@@ -91,8 +91,8 @@
                             <div>
                                 <div class="text-blue-500 font-medium">CIE</div>
                                 <div class="flex gap-2 col-span-4">
-                                    <mat-chip *ngFor="let item of caso.cie" [matTooltip]="item.descripcion">
-                                        {{item.codigo}}
+                                    <mat-chip *ngFor="let item of caso?.cie" [matTooltip]="item.descripcion">
+                                        {{item?.codigo}}
                                     </mat-chip>
                                 </div>
                             </div>

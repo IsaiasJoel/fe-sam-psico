@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ApiResponse } from 'src/app/core/models/api-response.interface';
 import { environment } from 'src/environments/environment.dev';
+import { DTOPsicologoCasoAsignado } from './psicologo.models';
 
 @Injectable({
   providedIn: 'root'
@@ -42,10 +43,10 @@ export class PsicologoService {
   //=====================================================================
   // Métodos HTTP
   //=====================================================================
-  // buscarPsicologoPorCorreo$(correo: string): Observable<ApiResponse> {
-  //   let currentUrl = `${this._url}/?correo=${correo}`;
-  //   return this._http.get<any>(currentUrl);
-  // }
+  listarCasosAsignadosPorPsicologo$(id: number): Observable<DTOPsicologoCasoAsignado> {
+    let currentUrl = `${this._url}/${id}/casos-asignados`;
+    return this._http.get<any>(currentUrl);
+  }
 
   // buscarPsicologoPorId$(id: number): Observable<ApiResponse> {
   //   let currentUrl = `${this._url}/${id}`;
@@ -65,21 +66,21 @@ export class PsicologoService {
   //   return this._http.get<ApiResponse>(urlActual);
   // }
 
-  crear$(item: any): Observable<ApiResponse> {
-    let formulario= null;
-    // const fechaNacimiento = moment(new Date(formulario.fechaNacimiento)).format(FORMATO_FECHA_ESTANDAR);
-    // formulario.fechaNacimiento = fechaNacimiento;
+  // crear$(item: any): Observable<ApiResponse> {
+  //   let formulario= null;
+  //   // const fechaNacimiento = moment(new Date(formulario.fechaNacimiento)).format(FORMATO_FECHA_ESTANDAR);
+  //   // formulario.fechaNacimiento = fechaNacimiento;
 
-    let urlActual: string = `${this._url}/`;
-    return this._http.post<ApiResponse>(urlActual, formulario);
-  }
+  //   let urlActual: string = `${this._url}/`;
+  //   return this._http.post<ApiResponse>(urlActual, formulario);
+  // }
 
-  editar$(item: any): Observable<ApiResponse> {
-    let formulario = null;
-    // const fechaNacimiento = moment(new Date(formulario.fechaNacimiento)).format(FORMATO_FECHA_ESTANDAR);
-    // formulario.fechaNacimiento = fechaNacimiento;
+  // editar$(item: any): Observable<ApiResponse> {
+  //   let formulario = null;
+  //   // const fechaNacimiento = moment(new Date(formulario.fechaNacimiento)).format(FORMATO_FECHA_ESTANDAR);
+  //   // formulario.fechaNacimiento = fechaNacimiento;
 
-    let urlActual: string = `${this._url}/${formulario.id}`;
-    return this._http.put<ApiResponse>(urlActual, formulario);
-  }
+  //   let urlActual: string = `${this._url}/${formulario.id}`;
+  //   return this._http.put<ApiResponse>(urlActual, formulario);
+  // }
 }

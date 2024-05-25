@@ -74,6 +74,7 @@ export const appRoutes: Route[] = [
             { path: 'psicologos', loadChildren: () => import('./modules/admin/psicologo/psicologo.module').then(m => m.PsicologoModule) },
             { path: 'atenciones', loadChildren: () => import('../app/modules/admin/atencion/atencion.module').then(m => m.AtencionModule) },
             { path: 'mis-atenciones', loadChildren: () => import('./modules/admin/mis-atenciones/mis-atenciones.module').then(m => m.MisAtencionesModule) },
+            { path: 'mis-pacientes', loadChildren: () => import('./modules/admin/mis-pacientes/mis-pacientes.module').then(m => m.MisPacientesModule) },
             { path: 'servicios', loadChildren: () => import('../app/modules/admin/servicio/servicio.module').then(m => m.ServicioModule) },
             { path: 'ambientes', loadChildren: () => import('../app/modules/admin/ambiente/ambiente.module').then(m => m.AmbienteModule) },
             { path: 'usuarios', loadChildren: () => import('../app/modules/admin/usuario/usuario.module').then(m => m.UsuarioModule) },
