@@ -144,16 +144,35 @@ export class CrearPacienteComponent {
       apMaterno: ['', [Validators.required]],
       nombres: ['', [Validators.required]],
       docIdentidad: ['', [Validators.required]],
-      sexo: [null, [Validators.required]],
-      // fecNacimiento: [null, [Validators.required]],
-      pais: [null, []],
-      lugarNacimiento: ['', [Validators.required]],
-      direccion: ['',],
+      sexo: this._formBuilder.group({
+        codigo: [null, [Validators.required]],
+        nombre: [null, [Validators.required]],
+      }),
       ubigeo: this._formBuilder.group({
         departamento: [null, []],
         provincia: [null, []],
         distrito: [null, []],
       }),
+      pais: this._formBuilder.group({
+        iso: [null, []]
+      }),
+
+      // Socioeconómico
+      nivelSocioeconomico: this._formBuilder.group({
+        id: [null, [Validators.required]],
+        tipoVivienda: ['',],
+        habitacionesCamas: ['',],
+        serviciosBasicos: ['',],
+        gastosMensuales: ['',],
+        informacionGastoFamiliar: ['',],
+        tipoSeguro: ['',],
+        categorizacionSocioeconomica: ['',],
+      }),
+      casoAsignado: this._formBuilder.group({
+        
+      }),
+      lugarNacimiento: ['', [Validators.required]],
+      direccion: ['',],
       correo: ['',],
       ocupacion: ['',],
       numeroContacto: ['', []],
@@ -171,14 +190,7 @@ export class CrearPacienteComponent {
       servicio: [],
       ambiente: [],
 
-      // Socioeconómico
-      tipoVivienda: ['',],
-      habitacionesCamas: ['',],
-      serviciosBasicos: ['',],
-      gastosMensuales: ['',],
-      informacionGastoFamiliar: ['',],
-      tipoSeguro: ['',],
-      categorizacionSocioeconomica: ['',],
+
 
       // Familiar
       contactoEmergencia: ['',],
